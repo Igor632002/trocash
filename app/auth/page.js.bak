@@ -34,7 +34,7 @@ export default function AuthPage() {
           const { error: profileErr } = await supabase.from("profiles").insert([
             {
               id: authData.user.id,
-           //   email: email,
+              email: email,
               display_name: displayName || email.split("@")[0],
               area,
             },
