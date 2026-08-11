@@ -15,16 +15,37 @@ export default function Home(){
   const [notice, setNotice] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // 🔐 Перевірити залогованого користувача
+  // // 🔐 Перевірити залогованого користувача
+  // useEffect(() => {
+  //   supabase.auth.onAuthStateChange((event, session) => {
+  //     if (!session?.user) {
+  //       router.push("/auth");
+  //     } else {
+  //       setUser(session.user);
+  //     }
+  //   });
+  // }, [router]);
+
+
+    // 🔐 Перевірити залогованого користувача
   useEffect(() => {
     supabase.auth.onAuthStateChange((event, session) => {
       if (!session?.user) {
+        console.log("❌ Користувач не залогований");
         router.push("/auth");
       } else {
+        console.log("✅ Користувач залогований:");
+        console.log("📧 Email (логін):", session.user.email);
+        console.log("🆔 ID:", session.user.id);
+        console.log("👤 Повні дані користувача:", session.user);
+        console.log("🔑 Сесія токен:", session.access_token ? "✅ Присутній" : "❌ Відсутній");
         setUser(session.user);
       }
     });
   }, [router]);
+
+
+
 
   // 📥 Завантажити офери з БД
   useEffect(() => {
