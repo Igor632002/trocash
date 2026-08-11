@@ -31,14 +31,12 @@ export default function Home(){
   useEffect(() => {
     supabase.auth.onAuthStateChange((event, session) => {
       if (!session?.user) {
-        console.log("❌ Користувач не залогований");
+        setNotice("❌ Користувач не залогований");
         router.push("/auth");
       } else {
-        console.log("✅ Користувач залогований:");
-        console.log("📧 Email (логін):", session.user.email);
-        console.log("🆔 ID:", session.user.id);
-        console.log("👤 Повні дані користувача:", session.user);
-        console.log("🔑 Сесія токен:", session.access_token ? "✅ Присутній" : "❌ Відсутній");
+        setNotice(
+          `✅ Користувач залогований:\n📧 Email: ${session.user.email}\n🆔 ID: ${session.user.id}\n🔑 Токен: ${session.access_token ? "✅ Присутній" : "❌ Відсутній"}`
+        );
         setUser(session.user);
       }
     });
