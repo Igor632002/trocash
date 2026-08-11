@@ -1,8 +1,10 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 
 export default function AuthPage() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
@@ -50,7 +52,8 @@ export default function AuthPage() {
           password,
         });
         if (signinErr) throw signinErr;
-        // Redirect will happen automatically via auth state change
+        // Redirect to home page after successful login
+        router.push("/");
       }
     } catch (err) {
       setError("❌ " + err.message);

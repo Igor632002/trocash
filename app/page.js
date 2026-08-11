@@ -38,12 +38,10 @@ export default function Home(){
           `✅ Користувач залогований:\n📧 Email: ${session.user.email}\n🆔 ID: ${session.user.id}\n🔑 Токен: ${session.access_token ? "✅ Присутній" : "❌ Відсутній"}`
         );
         setUser(session.user);
+        router.push("/");
       }
     });
   }, [router]);
-
-
-
 
   // 📥 Завантажити офери з БД
   useEffect(() => {
