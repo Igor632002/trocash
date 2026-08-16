@@ -42,7 +42,7 @@ export default function AuthPage() {
           if (profileErr) throw profileErr;
         }
 
-        setError("✅ Conta criada! Verifique seu email.");
+        setError(" Conta criada! Verifique seu email.");
         setEmail("");
         setPassword("");
         setDisplayName("");
@@ -57,7 +57,7 @@ export default function AuthPage() {
         router.push("/");
       }
     } catch (err) {
-      setError("❌ " + err.message);
+      setError(err.message);
     } finally {
       setLoading(false);
     }
