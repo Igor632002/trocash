@@ -62,6 +62,7 @@ export default function HomeView(props) {
     visibleListings = [],
     addPhotos,
     photos = [],
+    removePhoto,
     form,
     setForm,
     addOffer,
@@ -130,42 +131,42 @@ export default function HomeView(props) {
         </div>
       </header>
 
-{/* --- HERO --- */}
-<section id="top" className="hero">
-  <div className="hero-image" aria-hidden="true" />
-  <div className="hero-overlay" />
-  <div className="hero-inner">
-    <div className="hero-content">
-      <div className="eyebrow">{copy?.hero1}</div>
-      <h1 className="hero-title">
-        <span>{copy?.hero1}</span>
-        <strong>{copy?.hero2}</strong>
-      </h1>
-      <p className="hero-sub">{copy?.heroSub}</p>
+      {/* --- HERO --- */}
+      <section id="top" className="hero">
+        <div className="hero-image" aria-hidden="true" />
+        <div className="hero-overlay" />
+        <div className="hero-inner">
+          <div className="hero-content">
+            <div className="eyebrow">{copy?.hero1}</div>
+            <h1 className="hero-title">
+              <span>{copy?.hero1}</span>
+              <strong>{copy?.hero2}</strong>
+            </h1>
+            <p className="hero-sub">{copy?.heroSub}</p>
 
-      <div className="hero-actions">
-        <button className="gold-btn large" onClick={() => scrollTo && scrollTo("explore")}>
-          {copy?.explore} →
-        </button>
-        <button
-          className="light-btn large nav-btn"
-          onClick={() => { if (!user) router.push("/auth"); else setNewOfferOpen(true); }}
-        >
-          {copy?.publish} ＋
-        </button>
-      </div>
+            <div className="hero-actions">
+              <button className="gold-btn large" onClick={() => scrollTo && scrollTo("explore")}>
+                {copy?.explore} →
+              </button>
+              <button
+                className="light-btn large nav-btn"
+                onClick={() => { if (!user) router.push("/auth"); else setNewOfferOpen(true); }}
+              >
+                {copy?.publish} ＋
+              </button>
+            </div>
 
-      <div className="dream-pill">{copy?.dream}</div>
+            <div className="dream-pill">{copy?.dream}</div>
 
-      <div className="trust-row">
-        <span>◈ <b>Seguro</b><small>Verificado</small></span>
-        <span>◌ <b>Comunidade</b><small>Confiável</small></span>
-        <span>◇ <b>Sustentável</b><small>Consciente</small></span>
-        <span>⌂ <b>Local</b><small>Algarve</small></span>
-      </div>
-    </div>
-  </div>
-</section>
+            <div className="trust-row">
+              <span>◈ <b>Seguro</b><small>Verificado</small></span>
+              <span>◌ <b>Comunidade</b><small>Confiável</small></span>
+              <span>◇ <b>Sustentável</b><small>Consciente</small></span>
+              <span>⌂ <b>Local</b><small>Algarve</small></span>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* --- SEARCH PANEL --- */}
       <section className="search-panel" id="explore">
@@ -245,7 +246,7 @@ export default function HomeView(props) {
         {notice && <div className="soft-notice">{notice}</div>}
       </section>
 
-      {/* TRUST STRIP */}
+      {/* TRUST STRIP */} 
       <section className="trust-strip" id="trust">
         <div className="trust-lead">
           <div className="trust-icon">◎</div>
@@ -260,7 +261,7 @@ export default function HomeView(props) {
         <div className="metric"><b>4,9/5</b><span>meta de comunidade</span></div>
       </section>
 
-      {/* BENEFITS */}
+      {/* BENEFITS */} 
       <section className="benefits" id="how">
         <div><span>✓</span><b>Verificação de membros</b><small>Mais segurança para todos.</small></div>
         <div><span>↔</span><b>Sem dinheiro entre membros</b><small>Troca valor por valor.</small></div>
@@ -268,7 +269,7 @@ export default function HomeView(props) {
         <div><span>⌁</span><b>Privacidade</b><small>Os teus dados protegidos.</small></div>
       </section>
 
-      {/* PREMIUM */}
+      {/* PREMIUM */} 
       <section className="premium" id="premium">
         <div>
           <span className="premium-badge">troCASH PREMIUM</span>
@@ -281,7 +282,7 @@ export default function HomeView(props) {
         </div>
       </section>
 
-      {/* FOOTER */}
+      {/* FOOTER */} 
       <footer className="footer">
         <div>
           <Logo compact />
@@ -337,7 +338,6 @@ export default function HomeView(props) {
                   console.error('Sign out error', err);
                 } finally {
                   setAccountOpen(false);
-                  // Full reload to ensure RLS-backed data refreshes
                   window.location.reload();
                 }
               }}
@@ -428,7 +428,15 @@ export default function HomeView(props) {
                   {photos.length > 0 && (
                     <div className="photo-list" style={{ display: "flex", gap: 8, marginTop: 10, flexWrap: "wrap" }}>
                       {photos.map((p, i) => (
-                        <img className="photo-thumb" key={i} src={p.url} alt={p.name} style={{ width: 60, height: 60, objectFit: "cover", borderRadius: 6 }} />
+                        <div key={i} style={{ position: "relative", width: 60, height: 60, borderRadius: 6, overflow: "hidden" }}>
+                          <img className="photo-thumb" src={p.preview || p.url} alt={p.name || ("photo-" + i)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                          {removePhoto && (
+                            <button type="button" onClick={() => removePhoto(i)} style={{
+                              position: "absolute", top: 4, right: 4, background: "rgba(0,0,0,0.6)", color: "#fff",
+                              border: "none", borderRadius: 12, width: 20, height: 20, cursor: "pointer", lineHeight: "18px", padding: 0
+                            }}>×</button>
+                          )}
+                        </div>
                       ))}
                     </div>
                   )}
@@ -438,6 +446,20 @@ export default function HomeView(props) {
               <button className="gold-btn large" style={{ width: "100%", marginTop: 14 }} disabled={loading}>
                 {loading ? "A publicar…" : "Publicar oferta →"}
               </button>
+              <div style={{ marginTop: 12 }}>
+                {notice && (
+                  <div
+                    style={{
+                      padding: 10,
+                      borderRadius: 8,
+                      background: (String(notice).toLowerCase().includes("ok") || String(notice).toLowerCase().includes("added") || String(notice).toLowerCase().includes("publicad") || String(notice).toLowerCase().includes("publicado") || String(notice).toLowerCase().includes("sucesso")) ? "#d4edda" : "#f8d7da",
+                      color: (String(notice).toLowerCase().includes("ok") || String(notice).toLowerCase().includes("added") || String(notice).toLowerCase().includes("publicad") || String(notice).toLowerCase().includes("publicado") || String(notice).toLowerCase().includes("sucesso")) ? "#155724" : "#721c24",
+                    }}
+                  >
+                    {notice}
+                  </div>
+                )}
+              </div>
             </form>
           </aside>
         </div>

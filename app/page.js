@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { fetchActiveOffers, insertOffer, createExchangeRequest } from "@/lib/dal";
+import { uploadPhotosAndGetUrls } from "@/lib/storage";
 import { LANGUAGES, areas, CATEGORIES } from "@/lib/constants";
 import demoListings from "@/lib/data/demoListings";
 import HomeView from "./components/HomeView";
@@ -24,7 +25,7 @@ export default function Home() {
   const [languageOpen, setLanguageOpen] = useState(false);
   const [tab, setTab] = useState("home");
   const [searchTab, setSearchTab] = useState("Tenho");
-  
+
   // Панелі та модалки
   const [premiumOpen, setPremiumOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
@@ -47,24 +48,69 @@ export default function Home() {
     wish: "",
     notes: "",
   });
+  // photos: масив обʼєктів { file: File, preview: string, name: string }
   const [photos, setPhotos] = useState([]);
 
   // 1. Supabase Auth Listener
   useEffect(() => {
     let mounted = true;
-    supabase.auth.getSession().then(({ data }) => {
-      if (mounted) setUser(data.session?.user ?? null);
+
+    async function ensureProfile(user) {
+      if (!user) return;
+      try {
+        await supabase.from("profiles").upsert([{
+          id: user.id,
+          display_name: user.email ? user.email.split("@")[0] : user.id.slice(0, 8),
+          area: "Faro"
+        }]);
+      } catch (e) {
+        console.error("ensureProfile error", e);
+      }
+    }
+
+    supabase.auth.getSession().then(async ({ data }) => {
+      if (!mounted) return;
+      const u = data.session?.user ?? null;
+      setUser(u);
+      if (u) await ensureProfile(u);
     });
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (mounted) setUser(session?.user ?? null);
+
+    // Temporarily expose supabase client on window for debugging in dev only
+    try {
+      if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {
+        // eslint-disable-next-line no-undef
+        window.supabase = supabase;
+      }
+    } catch (e) { /* ignore in non-browser */ }
+
+    const { data: listener } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      if (!mounted) return;
+      const u = session?.user ?? null;
+      setUser(u);
+      if (u) await ensureProfile(u);
     });
+
     return () => {
       mounted = false;
-      listener.subscription.unsubscribe();
+      try { listener.subscription.unsubscribe(); } catch (e) { }
     };
   }, []);
 
-  // 2. Fetch Offers — refresh when auth state changes
+  async function fetchOffers() {
+    setLoading(true);
+    try {
+      const data = await fetchActiveOffers();
+      console.debug("fetchActiveOffers ->", data);
+      setOffers(data);
+    } catch (err) {
+      console.error("fetchActiveOffers error", err);
+      setNotice(err?.message || JSON.stringify(err));
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  // Refetch when auth changes (optional but recommended)
   useEffect(() => {
     if (!user) {
       setOffers([]);
@@ -73,22 +119,30 @@ export default function Home() {
     fetchOffers();
   }, [user]);
 
-  async function fetchOffers() {
-  setLoading(true);
-  try {
-    const data = await fetchActiveOffers();
-    setOffers(data);
-  } catch (err) {
-    console.error(err);
-  } finally {
-    setLoading(false);
-  }
-}
+  // Очищуємо ObjectURL старих превʼю при зміні photos / на unmount
+  useEffect(() => {
+    return () => {
+      photos.forEach(p => {
+        try { URL.revokeObjectURL(p.preview); } catch (e) { }
+      });
+    };
+  }, [photos]);
 
-  // Обробник допуску кількох фото
+  // Обробник допуску кількох фото — зберігаємо реальні File + preview
   const addPhotos = (e) => {
     const fs = Array.from(e.target.files || []);
-    setPhotos(fs.map(f => ({ name: f.name, url: URL.createObjectURL(f) })));
+    const items = fs.map(f => ({ file: f, preview: URL.createObjectURL(f), name: f.name }));
+    setPhotos(prev => [...prev, ...items]);
+  };
+
+  const removePhoto = (index) => {
+    setPhotos(prev => {
+      const p = prev[index];
+      if (p?.preview) {
+        try { URL.revokeObjectURL(p.preview); } catch (e) { }
+      }
+      return prev.filter((_, i) => i !== index);
+    });
   };
 
   // Публікація пропозиції в БД
@@ -104,16 +158,50 @@ export default function Home() {
     }
     setLoading(true);
     try {
-      await insertOffer(form, user.id);
 
+      // app/page.js (в тілі addOffer, перед збіркою files)
+      const sessionResp = await supabase.auth.getSession();
+      const sessionUser = sessionResp?.data?.session?.user ?? sessionResp?.session?.user ?? null; // handle possible shapes
+      if (!sessionUser) {
+        setNotice("Não autenticado — entra na tua conta.");
+        setLoading(false);
+        return;
+      }
+      if (sessionUser.id !== user.id) {
+        console.error("Session/user mismatch", sessionUser.id, user.id);
+        setNotice("Erro de sessão — por favor entra novamente.");
+        setLoading(false);
+        return;
+      }
+
+      // збираємо реальні File з стану
+      const files = photos.map(p => p.file).filter(Boolean);
+
+      // завантажуємо в storage і отримуємо public URLs
+
+      const s = await supabase.auth.getSession();
+      console.log("session", s);
+      console.log("access_token", s?.data?.session?.access_token);
+
+
+
+      const urls = files.length ? await uploadPhotosAndGetUrls(user.id, files) : [];
+      // формуємо payload: зберігаємо масив і перший URL для сумісності
+      const payload = { ...form, photo_urls: urls, image_url: urls[0] || null };
+      // вставляємо офер
+      await insertOffer(payload, user);
+
+      // відміняємо тимчасові ObjectURL
+      photos.forEach(p => { try { URL.revokeObjectURL(p.preview); } catch (e) { } });
       setForm({ title: "", description: "", area: "Faro", kind: "Objeto", wish: "", notes: "" });
       setPhotos([]);
       setNotice("Oferta publicada com sucesso.");
       setNewOfferOpen(false);
       await fetchOffers();
       setTab("home");
-      } catch (err) {
-        setNotice(err.message);
+    } catch (err) {
+      console.error("addOffer error", err);
+      setNotice(err?.message || JSON.stringify(err));
     } finally {
       setLoading(false);
     }
@@ -148,7 +236,7 @@ export default function Home() {
   const visibleListings = useMemo(() => {
     const real = offers.map(o => ({
       ...o,
-      image: o.image_url || demoListings[(o.id || "").toString().length % demoListings.length].image,
+      image: o.image_url || (o.photo_urls && o.photo_urls[0]) || demoListings[(o.id || "").toString().length % demoListings.length].image,
     }));
     const all = [...real, ...demoListings];
 
@@ -214,6 +302,7 @@ export default function Home() {
       visibleListings={visibleListings}
       addPhotos={addPhotos}
       photos={photos}
+      removePhoto={removePhoto}
       form={form}
       setForm={setForm}
       addOffer={addOffer}
