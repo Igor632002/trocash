@@ -399,15 +399,6 @@ const copy = {
       LANGUAGES={LANGUAGES}
       lang={lang}
       setLang={setLang}
-      slogan2: "更多交換。更少花費。",
-      verificationTitle: "會員驗證",
-      verificationSub: "為所有人提供更多安全保障。",
-      noMoneyTitle: "成員間無現金交易",
-      noMoneySub: "以物易物，物物相值。",
-      supportTitle: "專屬支援",
-      supportSub: "需要時提供幫助。",
-      privacyTitle: "隱私",
-      privacySub: "您的資料受到保護。",
       setLanguageOpen={setLanguageOpen}
       user={user}
       router={router}
