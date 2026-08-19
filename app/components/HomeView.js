@@ -159,10 +159,10 @@ export default function HomeView(props) {
             <div className="dream-pill">{copy?.dream}</div>
 
             <div className="trust-row">
-              <span>◈ <b>Seguro</b><small>Verificado</small></span>
-              <span>◌ <b>Comunidade</b><small>Confiável</small></span>
-              <span>◇ <b>Sustentável</b><small>Consciente</small></span>
-              <span>⌂ <b>Local</b><small>Algarve</small></span>
+              <span>◈ <b>{copy?.trustBadge1Title}</b><small>{copy?.trustBadge1Sub}</small></span>
+              <span>◌ <b>{copy?.trustBadge2Title}</b><small>{copy?.trustBadge2Sub}</small></span>
+              <span>◇ <b>{copy?.trustBadge3Title}</b><small>{copy?.trustBadge3Sub}</small></span>
+              <span>⌂ <b>{copy?.trustBadge4Title}</b><small>{copy?.trustBadge4Sub}</small></span>
             </div>
           </div>
         </div>
@@ -176,8 +176,8 @@ export default function HomeView(props) {
         </div>
 
         <div className="search-tabs">
-          <button className={searchTab === "Tenho" ? "active" : ""} onClick={() => setSearchTab && setSearchTab("Tenho")}>Tenho</button>
-          <button className={searchTab === "Procuro" ? "active" : ""} onClick={() => setSearchTab && setSearchTab("Procuro")}>Procuro</button>
+          <button className={searchTab === "Tenho" ? "active" : ""} onClick={() => setSearchTab && setSearchTab("Tenho")}>{copy?.have || "Tenho"}</button>
+          <button className={searchTab === "Procuro" ? "active" : ""} onClick={() => setSearchTab && setSearchTab("Procuro")}>{copy?.want || "Procuro"}</button>
         </div>
 
         <label>
@@ -203,11 +203,11 @@ export default function HomeView(props) {
           </select>
         </label>
 
-        <button className="search-btn" aria-label="Pesquisar" onClick={() => setSearchOpen && setSearchOpen(true)}>⌕</button>
+        <button className="search-btn" aria-label={copy?.searchButton || "Pesquisar"} onClick={() => setSearchOpen && setSearchOpen(true)}>⌕</button>
 
         {searchOpen && (
           <div style={{ gridColumn: "1 / -1", marginTop: 14, padding: 14, borderRadius: 14, background: "#fff8e9", color: "#765824" }}>
-            Smart Matches: a pesquisar trocas compatíveis para <strong>{have || "o que tens"}</strong> → <strong>{want || "o que procuras"}</strong>.
+            {copy?.smartMatches?.replace("{have}", have || copy?.have || "Tenho").replace("{want}", want || copy?.want || "Procuro")}
           </div>
         )}
       </section>
@@ -220,7 +220,7 @@ export default function HomeView(props) {
             <h2>{copy?.matches} ✦</h2>
             <p>O sistema aproxima pessoas com desejos compatíveis.</p>
           </div>
-          <button className="text-btn" onClick={() => setCategory && setCategory("Todas")}>Ver todas →</button>
+          <button className="text-btn" onClick={() => setCategory && setCategory("Todas")}>{copy?.viewAll || "Ver todas →"}</button>
         </div>
 
         <div className="listing-grid cards">
@@ -228,7 +228,7 @@ export default function HomeView(props) {
             <article className="listing-card card" key={o.id || i}>
               <div className="listing-image" style={{ backgroundImage: `url(${o.image})` }}>
                 <span>{o.kind === "Serviço" ? "Serviço" : "Troca"}</span>
-                <button aria-label="Wishlist">♡</button>
+                <button aria-label={copy?.wishlistAria || "Wishlist"}>♡</button>
               </div>
               <div className="listing-body card-body">
                 <small>{o.area || "Algarve"} · {i + 2} km</small>
@@ -272,13 +272,13 @@ export default function HomeView(props) {
       {/* PREMIUM */} 
       <section className="premium" id="premium">
         <div>
-          <span className="premium-badge">troCASH PREMIUM</span>
-          <h2>Mais oportunidades. Menos esforço.</h2>
-          <p>Destaca as tuas ofertas, encontra correspondências mais depressa e navega sem distrações.</p>
+          <span className="premium-badge">{copy?.premium || copy?.footerTroCASH}</span>
+          <h2>{copy?.premiumHeading}</h2>
+          <p>{copy?.premiumSub}</p>
         </div>
         <div className="premium-price">
-          <b>€4,99</b><span>/ mês</span>
-          <button className="gold-btn" onClick={() => setPremiumOpen && setPremiumOpen(true)}>Quero Premium</button>
+          <b>{copy?.premiumPriceLabel?.split(" ")[0] || copy?.premiumPriceLabel}</b><span>{copy?.premiumPriceLabel?.replace(/^[^\s]+\s*/, "") || ""}</span>
+          <button className="gold-btn" onClick={() => setPremiumOpen && setPremiumOpen(true)}>{copy?.premiumButton}</button>
         </div>
       </section>
 
@@ -286,20 +286,20 @@ export default function HomeView(props) {
       <footer className="footer">
         <div>
           <Logo compact />
-          <p>Swap more. Keep your cash.</p>
-          <small>Realiza os teus sonhos a custo 0.</small>
-          <small>Exchange more. Spend less. Live more.</small>
+          <p>{copy?.footerLine1}</p>
+          <small>{copy?.footerLine2}</small>
+          <small>{copy?.footerLine3}</small>
         </div>
-        <div><b>troCASH</b><button>Sobre nós</button><button>Como funciona</button><button>Regras da comunidade</button></div>
-        <div><b>Suporte</b><button>Centro de ajuda</button><button>Segurança</button><button>Privacidade</button></div>
-        <div><b>Comunidade</b><button>Sustentabilidade</button><button>Dicas e artigos</button><button>Eventos locais</button></div>
+        <div><b>{copy?.footerTroCASH}</b><button>{copy?.footerAbout}</button><button>{copy?.footerHow}</button><button>{copy?.footerRules}</button></div>
+        <div><b>{copy?.footerSupportTitle}</b><button>{copy?.footerSupportHelp}</button><button>{copy?.footerSupportSecurity}</button><button>{copy?.footerSupportPrivacy}</button></div>
+        <div><b>{copy?.footerCommunityTitle}</b>{(copy?.footerCommunityItems || "").split("|").map((x,i)=>(<button key={i}>{x}</button>))}</div>
         <div className="footer-news">
-          <b>Recebe novidades</b>
-          <p>Ideias para trocar melhor, gastar menos e viver mais.</p>
-          <div><input placeholder="O teu email" /><button className="gold-btn">→</button></div>
+          <b>{copy?.footerNewsTitle}</b>
+          <p>{copy?.footerNewsSub}</p>
+          <div><input placeholder={copy?.footerNewsTitle || "Your email"} /><button className="gold-btn">→</button></div>
         </div>
       </footer>
-      <div className="copyright">© 2026 troCASH · Algarve, Portugal <span>Comunidade · Confiança · Liberdade</span></div>
+      <div className="copyright">© 2026 {copy?.footerTroCASH} · Algarve, Portugal <span>Comunidade · Confiança · Liberdade</span></div>
 
       {/* MODALS & DRAWERS */}
       {accountOpen && (
@@ -469,16 +469,13 @@ export default function HomeView(props) {
         <div className="modal-backdrop" onClick={() => setPremiumOpen(false)}>
           <div className="modal" onClick={e => e.stopPropagation()}>
             <button className="modal-close" onClick={() => setPremiumOpen(false)}>×</button>
-            <span className="premium-badge">troCASH PREMIUM</span>
-            <h2>Mais trocas. Menos gastos.</h2>
-            <p>O preço de €4,99/mês foi desenhado para ser simples e transparente. A ligação ao pagamento será ativada quando o checkout estiver ligado ao teu MB WAY.</p>
+            <span className="premium-badge">{copy?.premium || copy?.footerTroCASH}</span>
+            <h2>{copy?.premiumModalHeading}</h2>
+            <p>{copy?.premiumModalBody}</p>
             <ul>
-              <li>Ofertas destacadas</li>
-              <li>Correspondências prioritárias</li>
-              <li>Sem publicidade</li>
-              <li>Suporte prioritário</li>
+              {(copy?.premiumModalList || "").split("|").map((it, i) => (<li key={i}>{it}</li>))}
             </ul>
-            <button className="gold-btn large" onClick={() => setPremiumOpen(false)}>Continuar →</button>
+            <button className="gold-btn large" onClick={() => setPremiumOpen(false)}>{copy?.premiumButton || "Continuar →"}</button>
           </div>
         </div>
       )}
