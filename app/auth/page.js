@@ -75,6 +75,8 @@ export default function AuthPage() {
 
         <input
           type="email"
+          name="email"
+          autoComplete="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -84,6 +86,8 @@ export default function AuthPage() {
 
         <input
           type="password"
+          name="password"
+          autoComplete={isSignup ? "new-password" : "current-password"}
           placeholder="Palavra-passe"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -95,6 +99,8 @@ export default function AuthPage() {
           <>
             <input
               type="text"
+              name="displayName"
+              autoComplete="name"
               placeholder="Nome (opcional)"
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}

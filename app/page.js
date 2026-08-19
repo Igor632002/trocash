@@ -66,6 +66,36 @@ export default function Home() {
     }
   }
 
+  // Initialize auth state on mount and listen for changes
+  useEffect(() => {
+    let isMounted = true;
+
+    async function initAuth() {
+      try {
+        const s = await supabase.auth.getSession();
+        const sessUser = s?.data?.session?.user ?? s?.session?.user ?? null;
+        if (isMounted) setUser(sessUser);
+      } catch (e) {
+        console.error("supabase getSession init error", e);
+      }
+    }
+
+    initAuth();
+
+    const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
+      try {
+        const u = session?.user ?? null;
+        console.debug("onAuthStateChange", event, u);
+        if (isMounted) setUser(u);
+      } catch (e) { console.error(e); }
+    });
+
+    return () => {
+      isMounted = false;
+      try { listener?.subscription?.unsubscribe?.(); } catch (e) { }
+    };
+  }, []);
+
   // Refetch when auth changes (optional but recommended)
   useEffect(() => {
     if (!user) {
