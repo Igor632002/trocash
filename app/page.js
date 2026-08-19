@@ -283,6 +283,7 @@ const copy = {
     premiumPriceLabel: "€4.99 / month",
     premiumButton: "Get Premium",
     searchButton: "Search",
+    viewAll: "View all →",
     smartMatches: "Smart Matches: searching compatible swaps for {have} → {want}.",
     wishlistAria: "Wishlist",
     premiumModalHeading: "More swaps. Less spending.",
