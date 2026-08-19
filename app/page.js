@@ -399,6 +399,7 @@ const copy = {
       LANGUAGES={LANGUAGES}
       lang={lang}
       setLang={setLang}
+      languageOpen={languageOpen}
       setLanguageOpen={setLanguageOpen}
       user={user}
       router={router}
