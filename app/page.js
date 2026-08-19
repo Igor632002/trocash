@@ -256,9 +256,14 @@ const copy = {
     searchTitle: "O que você procura?", have: "Eu tenho", want: "Procuro", distance: "Até", matches: "Encontros para si", trust: "Confiança que se conquista", premium: "troCASH PREMIUM",
     trustLong: "A confiança nasce de regras claras, perfis verificados e boas experiências.",
     slogan2: "More swapping. Less spending.",
-    noMoney: "Sem dinheiro entre membros — Troca valor por valor.",
-    support: "Suporte dedicado — Ajuda quando precisares.",
-    privacy: "Privacidade — Os teus dados protegidos."
+    verificationTitle: "Verificação de membros",
+    verificationSub: "Mais segurança para todos.",
+    noMoneyTitle: "Sem dinheiro entre membros",
+    noMoneySub: "Troca valor por valor.",
+    supportTitle: "Suporte dedicado",
+    supportSub: "Ajuda quando precisares.",
+    privacyTitle: "Privacidade",
+    privacySub: "Os teus dados protegidos."
   },
   en: {
     navExplore: "Explore", navMine: "My Listings", navWish: "Wish List", navMessages: "Messages", navHow: "How it works", navAbout: "About",
@@ -266,9 +271,14 @@ const copy = {
     searchTitle: "What are you looking for?", have: "I have", want: "I want", distance: "Within", matches: "Matches for you", trust: "Trust is earned", premium: "troCASH PREMIUM",
     trustLong: "Trust grows from clear rules, verified profiles and good experiences.",
     slogan2: "More swapping. Less spending.",
-    noMoney: "No money between members — Trade value for value.",
-    support: "Dedicated support — Help when you need it.",
-    privacy: "Privacy — Your data protected."
+    verificationTitle: "Member verification",
+    verificationSub: "More safety for everyone.",
+    noMoneyTitle: "No money between members",
+    noMoneySub: "Trade value for value.",
+    supportTitle: "Dedicated support",
+    supportSub: "Help when you need it.",
+    privacyTitle: "Privacy",
+    privacySub: "Your data is protected."
   },
   ru: {
     navExplore: "Исследовать", navMine: "Мои объявления", navWish: "Желания", navMessages: "Сообщения", navHow: "Как это работает", navAbout: "О нас",
@@ -276,9 +286,14 @@ const copy = {
     searchTitle: "Что ты ищешь?", have: "У меня есть", want: "Мне нужно", distance: "До", matches: "Подобрано для тебя", trust: "Доверие создаётся", premium: "troCASH PREMIUM",
     trustLong: "Доверие возникает з понятных правил, проверенных профилей и хорошего опыта.",
     slogan2: "Больше обменов. Меньше трат.",
-    noMoney: "Без денег между участниками — Обменивай ценность на ценность.",
-    support: "Выделенная поддержка — Помощь, когда нужно.",
-    privacy: "Конфиденциальность — Ваши данные защищены."
+    verificationTitle: "Проверка участников",
+    verificationSub: "Больше безопасности для всех.",
+    noMoneyTitle: "Без денег между участниками",
+    noMoneySub: "Обменивай ценность на ценность.",
+    supportTitle: "Выделенная поддержка",
+    supportSub: "Помощь, когда нужно.",
+    privacyTitle: "Конфиденциальность",
+    privacySub: "Ваши данные защищены."
   },
   fr: {
     navExplore: "Explorer", navMine: "Mes Annonces", navWish: "Liste de souhaits", navMessages: "Messages", navHow: "Comment ça marche", navAbout: "À propos",
@@ -286,9 +301,14 @@ const copy = {
     searchTitle: "Que cherchez-vous ?", have: "J'ai", want: "Je veux", distance: "Dans", matches: "Correspondances pour vous", trust: "La confiance se mérite", premium: "troCASH PREMIUM",
     trustLong: "La confiance naît de règles claires, de profils vérifiés et de bonnes expériences.",
     slogan2: "Plus d'échanges. Moins de dépenses.",
-    noMoney: "Pas d'argent entre les membres — Échange valeur contre valeur.",
-    support: "Support dédié — Aide quand vous en avez besoin.",
-    privacy: "Confidentialité — Vos données sont protégées."
+    verificationTitle: "Vérification des membres",
+    verificationSub: "Plus de sécurité pour tout le monde.",
+    noMoneyTitle: "Pas d'argent entre les membres",
+    noMoneySub: "Échange valeur contre valeur.",
+    supportTitle: "Support dédié",
+    supportSub: "Aide quand vous en avez besoin.",
+    privacyTitle: "Confidentialité",
+    privacySub: "Vos données sont protégées."
   },
   it: {
     navExplore: "Esplora", navMine: "I miei annunci", navWish: "Lista dei desideri", navMessages: "Messaggi", navHow: "Come funziona", navAbout: "Informazioni",
@@ -296,9 +316,14 @@ const copy = {
     searchTitle: "Cosa stai cercando?", have: "Ho", want: "Cerco", distance: "Entro", matches: "Abbinamenti per te", trust: "La fiducia si guadagna", premium: "troCASH PREMIUM",
     trustLong: "La fiducia nasce da regole chiare, profili verificati e buone esperienze.",
     slogan2: "Più scambi. Meno spese.",
-    noMoney: "Niente soldi tra i membri — Scambia valore per valore.",
-    support: "Supporto dedicato — Aiuto quando ne hai bisogno.",
-    privacy: "Privacy — I tuoi dati sono protetti."
+    verificationTitle: "Verifica dei membri",
+    verificationSub: "Più sicurezza per tutti.",
+    noMoneyTitle: "Niente soldi tra i membri",
+    noMoneySub: "Scambia valore per valore.",
+    supportTitle: "Supporto dedicato",
+    supportSub: "Aiuto quando ne hai bisogno.",
+    privacyTitle: "Privacy",
+    privacySub: "I tuoi dati sono protetti."
   },
   uk: {
     navExplore: "Досліджувати", navMine: "Мої оголошення", navWish: "Список бажань", navMessages: "Повідомлення", navHow: "Як це працює", navAbout: "Про нас",
@@ -306,9 +331,14 @@ const copy = {
     searchTitle: "Що ти шукаєш?", have: "У мене є", want: "Мені потрібно", distance: "Поблизу", matches: "Підходить для вас", trust: "Довіра заробляється", premium: "troCASH PREMIUM",
     trustLong: "Довіра виникає з чітких правил, перевірених профілів і хорошого досвіду.",
     slogan2: "Більше обмінів. Менше витрат.",
-    noMoney: "Без грошей між учасниками — Обмінюй цінність на цінність.",
-    support: "Присвячена підтримка — Допомога коли потрібно.",
-    privacy: "Конфіденційність — Ваші дані захищені."
+    verificationTitle: "Перевірка учасників",
+    verificationSub: "Більше безпеки для всіх.",
+    noMoneyTitle: "Без грошей між учасниками",
+    noMoneySub: "Обмінюй цінність за цінність.",
+    supportTitle: "Присвячена підтримка",
+    supportSub: "Допомога коли потрібно.",
+    privacyTitle: "Конфіденційність",
+    privacySub: "Ваші дані захищені."
   },
   de: {
     navExplore: "Entdecken", navMine: "Meine Anzeigen", navWish: "Wunschliste", navMessages: "Nachrichten", navHow: "Wie es funktioniert", navAbout: "Über",
@@ -316,9 +346,14 @@ const copy = {
     searchTitle: "Wonach suchst du?", have: "Ich habe", want: "Ich möchte", distance: "Innerhalb", matches: "Vorschläge für dich", trust: "Vertrauen wird aufgebaut", premium: "troCASH PREMIUM",
     trustLong: "Vertrauen entsteht durch klare Regeln, verifizierte Profile und gute Erfahrungen.",
     slogan2: "Mehr tauschen. Weniger ausgeben.",
-    noMoney: "Kein Geld zwischen Mitgliedern — Tausch Wert gegen Wert.",
-    support: "Dedizierter Support — Hilfe, wenn du sie brauchst.",
-    privacy: "Privatsphäre — Deine Daten sind geschützt."
+    verificationTitle: "Mitglieder-Verifizierung",
+    verificationSub: "Mehr Sicherheit für alle.",
+    noMoneyTitle: "Kein Geld zwischen Mitgliedern",
+    noMoneySub: "Tausch Wert gegen Wert.",
+    supportTitle: "Dedizierter Support",
+    supportSub: "Hilfe, wenn du sie brauchst.",
+    privacyTitle: "Privatsphäre",
+    privacySub: "Deine Daten sind geschützt."
   },
   zh: {
     navExplore: "探索", navMine: "我的刊登", navWish: "愿望清单", navMessages: "消息", navHow: "如何运作", navAbout: "关于",
@@ -326,9 +361,14 @@ const copy = {
     searchTitle: "你在找什么？", have: "我有", want: "我想要", distance: "范围内", matches: "为你匹配", trust: "信任需要建立", premium: "troCASH PREMIUM",
     trustLong: "信任来自明确的规则、经过验证的资料和良好的体验。",
     slogan2: "更多交换。更少花费。",
-    noMoney: "成员之间无需金钱——以物易物，价值对价值。",
-    support: "专属支持——需要时提供帮助。",
-    privacy: "隐私 — 你的数据受到保护。"
+    verificationTitle: "會員驗證",
+    verificationSub: "為所有人提供更多安全保障。",
+    noMoneyTitle: "成員間無現金交易",
+    noMoneySub: "以物易物，物物相值。",
+    supportTitle: "專屬支援",
+    supportSub: "需要時提供幫助。",
+    privacyTitle: "隱私",
+    privacySub: "您的資料受到保護。"
   },
   es: {
     navExplore: "Explorar", navMine: "Mis Anuncios", navWish: "Lista de deseos", navMessages: "Mensajes", navHow: "Cómo funciona", navAbout: "Acerca de",
@@ -336,9 +376,14 @@ const copy = {
     searchTitle: "¿Qué buscas?", have: "Tengo", want: "Quiero", distance: "En", matches: "Coincidencias para ti", trust: "La confianza se gana", premium: "troCASH PREMIUM",
     trustLong: "La confianza nace de reglas claras, perfiles verificados y buenas experiencias.",
     slogan2: "Más intercambios. Menos gastos.",
-    noMoney: "Sin dinero entre miembros — Intercambia valor por valor.",
-    support: "Soporte dedicado — Ayuda cuando la necesites.",
-    privacy: "Privacidad — Tus datos protegidos."
+    verificationTitle: "Verificación de miembros",
+    verificationSub: "Más seguridad para todos.",
+    noMoneyTitle: "Sin dinero entre miembros",
+    noMoneySub: "Intercambia valor por valor.",
+    supportTitle: "Soporte dedicado",
+    supportSub: "Ayuda cuando la necesites.",
+    privacyTitle: "Privacidad",
+    privacySub: "Tus datos están protegidos."
   }
 }[lang] || {
   navExplore: "Explorar", navMine: "Meus Anúncios", navWish: "Wish List", navMessages: "Mensagens", navHow: "Como funciona", navAbout: "Sobre",
@@ -354,7 +399,15 @@ const copy = {
       LANGUAGES={LANGUAGES}
       lang={lang}
       setLang={setLang}
-      languageOpen={languageOpen}
+      slogan2: "更多交換。更少花費。",
+      verificationTitle: "會員驗證",
+      verificationSub: "為所有人提供更多安全保障。",
+      noMoneyTitle: "成員間無現金交易",
+      noMoneySub: "以物易物，物物相值。",
+      supportTitle: "專屬支援",
+      supportSub: "需要時提供幫助。",
+      privacyTitle: "隱私",
+      privacySub: "您的資料受到保護。",
       setLanguageOpen={setLanguageOpen}
       user={user}
       router={router}

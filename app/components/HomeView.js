@@ -261,12 +261,12 @@ export default function HomeView(props) {
         <div className="metric"><b>4,9/5</b><span>meta de comunidade</span></div>
       </section>
 
-      {/* BENEFITS */} 
+      {/* BENEFITS */}
       <section className="benefits" id="how">
-        <div><span>✓</span><b>Verificação de membros</b><small>Mais segurança para todos.</small></div>
-        <div><span>↔</span><b>Sem dinheiro entre membros</b><small>Troca valor por valor.</small></div>
-        <div><span>◎</span><b>Suporte dedicado</b><small>Ajuda quando precisares.</small></div>
-        <div><span>⌁</span><b>Privacidade</b><small>Os teus dados protegidos.</small></div>
+        <div><span>✓</span><b>{copy?.verificationTitle}</b><small>{copy?.verificationSub}</small></div>
+        <div><span>↔</span><b>{copy?.noMoneyTitle}</b><small>{copy?.noMoneySub}</small></div>
+        <div><span>◎</span><b>{copy?.supportTitle}</b><small>{copy?.supportSub}</small></div>
+        <div><span>⌁</span><b>{copy?.privacyTitle}</b><small>{copy?.privacySub}</small></div>
       </section>
 
       {/* PREMIUM */} 
