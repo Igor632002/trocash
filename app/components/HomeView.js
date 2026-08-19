@@ -252,8 +252,8 @@ export default function HomeView(props) {
           <div className="trust-icon">◎</div>
           <div>
             <h3>{copy?.trust}</h3>
-            <p>A confiança nasce de regras claras, perfis verificados e boas experiências.</p>
-            <small className="slogan-note">More swapping. Less spending.</small>
+            <p>{copy?.trustLong}</p>
+            <small className="slogan-note">{copy?.slogan2}</small>
           </div>
         </div>
         <div className="metric"><b>{offers.length || "—"}</b><span>ofertas reais</span></div>

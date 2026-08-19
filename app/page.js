@@ -249,27 +249,102 @@ export default function Home() {
   }, [offers, category, have, want]);
 
   // Переклади інтерфейсу
-  const copy = {
-    pt: {
-      navExplore: "Explorar", navMine: "Meus Anúncios", navWish: "Wish List", navMessages: "Mensagens", navHow: "Como funciona", navAbout: "Sobre",
-      hero1: "Swap more", hero2: "Keep your cash", heroSub: "Turn what you have into what you want — without spending", dream: "Realiza os teus sonhos a custo 0 ✦", explore: "Explorar ofertas", publish: "Publicar anúncio",
-      searchTitle: "O que você procura?", have: "Eu tenho", want: "Procuro", distance: "Até", matches: "Encontros para si", trust: "Confiança que se conquista", premium: "troCASH PREMIUM"
-    },
-    en: {
-      navExplore: "Explore", navMine: "My Listings", navWish: "Wish List", navMessages: "Messages", navHow: "How it works", navAbout: "About",
-      hero1: "Swap more", hero2: "Keep your cash", heroSub: "Turn what you have into what you want — without spending", dream: "Make your dreams happen at zero cost ✦", explore: "Explore offers", publish: "Post an offer",
-      searchTitle: "What are you looking for?", have: "I have", want: "I want", distance: "Within", matches: "Matches for you", trust: "Trust is earned", premium: "troCASH PREMIUM"
-    },
-    ru: {
-      navExplore: "Исследовать", navMine: "Мои объявления", navWish: "Желания", navMessages: "Сообщения", navHow: "Как это работает", navAbout: "О нас",
-      hero1: "Меняй больше", hero2: "Сохраняй свои деньги", heroSub: "Превращай то, что у тебя есть, в то, чего ты хочешь — без лишних расходов", dream: "Исполняй мечты с нулевой стоимостью ✦", explore: "Смотреть предложения", publish: "Создать объявление",
-      searchTitle: "Что ты ищешь?", have: "У меня есть", want: "Мне нужно", distance: "До", matches: "Подобрано для тебя", trust: "Доверие создаётся", premium: "troCASH PREMIUM"
-    }
-  }[lang] || {
+const copy = {
+  pt: {
     navExplore: "Explorar", navMine: "Meus Anúncios", navWish: "Wish List", navMessages: "Mensagens", navHow: "Como funciona", navAbout: "Sobre",
     hero1: "Swap more", hero2: "Keep your cash", heroSub: "Turn what you have into what you want — without spending", dream: "Realiza os teus sonhos a custo 0 ✦", explore: "Explorar ofertas", publish: "Publicar anúncio",
-    searchTitle: "O que você procura?", have: "Eu tenho", want: "Procuro", distance: "Até", matches: "Encontros para si", trust: "Confiança que se conquista", premium: "troCASH PREMIUM"
-  };
+    searchTitle: "O que você procura?", have: "Eu tenho", want: "Procuro", distance: "Até", matches: "Encontros para si", trust: "Confiança que se conquista", premium: "troCASH PREMIUM",
+    trustLong: "A confiança nasce de regras claras, perfis verificados e boas experiências.",
+    slogan2: "More swapping. Less spending.",
+    noMoney: "Sem dinheiro entre membros — Troca valor por valor.",
+    support: "Suporte dedicado — Ajuda quando precisares.",
+    privacy: "Privacidade — Os teus dados protegidos."
+  },
+  en: {
+    navExplore: "Explore", navMine: "My Listings", navWish: "Wish List", navMessages: "Messages", navHow: "How it works", navAbout: "About",
+    hero1: "Swap more", hero2: "Keep your cash", heroSub: "Turn what you have into what you want — without spending", dream: "Make your dreams happen at zero cost ✦", explore: "Explore offers", publish: "Post an offer",
+    searchTitle: "What are you looking for?", have: "I have", want: "I want", distance: "Within", matches: "Matches for you", trust: "Trust is earned", premium: "troCASH PREMIUM",
+    trustLong: "Trust grows from clear rules, verified profiles and good experiences.",
+    slogan2: "More swapping. Less spending.",
+    noMoney: "No money between members — Trade value for value.",
+    support: "Dedicated support — Help when you need it.",
+    privacy: "Privacy — Your data protected."
+  },
+  ru: {
+    navExplore: "Исследовать", navMine: "Мои объявления", navWish: "Желания", navMessages: "Сообщения", navHow: "Как это работает", navAbout: "О нас",
+    hero1: "Меняй больше", hero2: "Сохраняй свои деньги", heroSub: "Превращай то, что у тебя есть, в то, чего ты хочешь — без лишних расходов", dream: "Исполняй мечты с нулевой стоимостью ✦", explore: "Смотреть предложения", publish: "Создать объявление",
+    searchTitle: "Что ты ищешь?", have: "У меня есть", want: "Мне нужно", distance: "До", matches: "Подобрано для тебя", trust: "Доверие создаётся", premium: "troCASH PREMIUM",
+    trustLong: "Доверие возникает з понятных правил, проверенных профилей и хорошего опыта.",
+    slogan2: "Больше обменов. Меньше трат.",
+    noMoney: "Без денег между участниками — Обменивай ценность на ценность.",
+    support: "Выделенная поддержка — Помощь, когда нужно.",
+    privacy: "Конфиденциальность — Ваши данные защищены."
+  },
+  fr: {
+    navExplore: "Explorer", navMine: "Mes Annonces", navWish: "Liste de souhaits", navMessages: "Messages", navHow: "Comment ça marche", navAbout: "À propos",
+    hero1: "Échangez plus", hero2: "Gardez votre argent", heroSub: "Transformez ce que vous avez en ce que vous voulez — sans dépenser", dream: "Réalisez vos rêves à coût zéro ✦", explore: "Explorer les offres", publish: "Publier une annonce",
+    searchTitle: "Que cherchez-vous ?", have: "J'ai", want: "Je veux", distance: "Dans", matches: "Correspondances pour vous", trust: "La confiance se mérite", premium: "troCASH PREMIUM",
+    trustLong: "La confiance naît de règles claires, de profils vérifiés et de bonnes expériences.",
+    slogan2: "Plus d'échanges. Moins de dépenses.",
+    noMoney: "Pas d'argent entre les membres — Échange valeur contre valeur.",
+    support: "Support dédié — Aide quand vous en avez besoin.",
+    privacy: "Confidentialité — Vos données sont protégées."
+  },
+  it: {
+    navExplore: "Esplora", navMine: "I miei annunci", navWish: "Lista dei desideri", navMessages: "Messaggi", navHow: "Come funziona", navAbout: "Informazioni",
+    hero1: "Scambia di più", hero2: "Risparmia denaro", heroSub: "Trasforma ciò che hai in ciò che desideri — senza spendere", dream: "Realizza i tuoi sogni a costo zero ✦", explore: "Esplora le offerte", publish: "Pubblica un annuncio",
+    searchTitle: "Cosa stai cercando?", have: "Ho", want: "Cerco", distance: "Entro", matches: "Abbinamenti per te", trust: "La fiducia si guadagna", premium: "troCASH PREMIUM",
+    trustLong: "La fiducia nasce da regole chiare, profili verificati e buone esperienze.",
+    slogan2: "Più scambi. Meno spese.",
+    noMoney: "Niente soldi tra i membri — Scambia valore per valore.",
+    support: "Supporto dedicato — Aiuto quando ne hai bisogno.",
+    privacy: "Privacy — I tuoi dati sono protetti."
+  },
+  uk: {
+    navExplore: "Досліджувати", navMine: "Мої оголошення", navWish: "Список бажань", navMessages: "Повідомлення", navHow: "Як це працює", navAbout: "Про нас",
+    hero1: "Міняй більше", hero2: "Зберігай гроші", heroSub: "Перетвори те, що маєш, на те, що хочеш — без витрат", dream: "Здійснюй мрії без витрат ✦", explore: "Переглянути оголошення", publish: "Додати оголошення",
+    searchTitle: "Що ти шукаєш?", have: "У мене є", want: "Мені потрібно", distance: "Поблизу", matches: "Підходить для вас", trust: "Довіра заробляється", premium: "troCASH PREMIUM",
+    trustLong: "Довіра виникає з чітких правил, перевірених профілів і хорошого досвіду.",
+    slogan2: "Більше обмінів. Менше витрат.",
+    noMoney: "Без грошей між учасниками — Обмінюй цінність на цінність.",
+    support: "Присвячена підтримка — Допомога коли потрібно.",
+    privacy: "Конфіденційність — Ваші дані захищені."
+  },
+  de: {
+    navExplore: "Entdecken", navMine: "Meine Anzeigen", navWish: "Wunschliste", navMessages: "Nachrichten", navHow: "Wie es funktioniert", navAbout: "Über",
+    hero1: "Mehr tauschen", hero2: "Geld behalten", heroSub: "Verwandle, was du hast, in das, was du willst — ohne zu bezahlen", dream: "Erfülle deine Träume kostenfrei ✦", explore: "Angebote durchsuchen", publish: "Anzeige veröffentlichen",
+    searchTitle: "Wonach suchst du?", have: "Ich habe", want: "Ich möchte", distance: "Innerhalb", matches: "Vorschläge für dich", trust: "Vertrauen wird aufgebaut", premium: "troCASH PREMIUM",
+    trustLong: "Vertrauen entsteht durch klare Regeln, verifizierte Profile und gute Erfahrungen.",
+    slogan2: "Mehr tauschen. Weniger ausgeben.",
+    noMoney: "Kein Geld zwischen Mitgliedern — Tausch Wert gegen Wert.",
+    support: "Dedizierter Support — Hilfe, wenn du sie brauchst.",
+    privacy: "Privatsphäre — Deine Daten sind geschützt."
+  },
+  zh: {
+    navExplore: "探索", navMine: "我的刊登", navWish: "愿望清单", navMessages: "消息", navHow: "如何运作", navAbout: "关于",
+    hero1: "更多交换", hero2: "省下你的钱", heroSub: "把你拥有的变成你想要的——无需花钱", dream: "以零成本实现你的梦想 ✦", explore: "浏览商品", publish: "发布商品",
+    searchTitle: "你在找什么？", have: "我有", want: "我想要", distance: "范围内", matches: "为你匹配", trust: "信任需要建立", premium: "troCASH PREMIUM",
+    trustLong: "信任来自明确的规则、经过验证的资料和良好的体验。",
+    slogan2: "更多交换。更少花费。",
+    noMoney: "成员之间无需金钱——以物易物，价值对价值。",
+    support: "专属支持——需要时提供帮助。",
+    privacy: "隐私 — 你的数据受到保护。"
+  },
+  es: {
+    navExplore: "Explorar", navMine: "Mis Anuncios", navWish: "Lista de deseos", navMessages: "Mensajes", navHow: "Cómo funciona", navAbout: "Acerca de",
+    hero1: "Cambia más", hero2: "Ahorra tu dinero", heroSub: "Convierte lo que tienes en lo que quieres — sin gastar", dream: "Haz realidad tus sueños sin coste ✦", explore: "Explorar ofertas", publish: "Publicar anuncio",
+    searchTitle: "¿Qué buscas?", have: "Tengo", want: "Quiero", distance: "En", matches: "Coincidencias para ti", trust: "La confianza se gana", premium: "troCASH PREMIUM",
+    trustLong: "La confianza nace de reglas claras, perfiles verificados y buenas experiencias.",
+    slogan2: "Más intercambios. Menos gastos.",
+    noMoney: "Sin dinero entre miembros — Intercambia valor por valor.",
+    support: "Soporte dedicado — Ayuda cuando la necesites.",
+    privacy: "Privacidad — Tus datos protegidos."
+  }
+}[lang] || {
+  navExplore: "Explorar", navMine: "Meus Anúncios", navWish: "Wish List", navMessages: "Mensagens", navHow: "Como funciona", navAbout: "Sobre",
+  hero1: "Swap more", hero2: "Keep your cash", heroSub: "Turn what you have into what you want — without spending", dream: "Realiza os teus sonhos a custo 0 ✦", explore: "Explorar ofertas", publish: "Publicar anúncio",
+  searchTitle: "O que você procura?", have: "Eu tenho", want: "Procuro", distance: "Até", matches: "Encontros para si", trust: "Confiança que se conquista", premium: "troCASH PREMIUM"
+};
 
   const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
