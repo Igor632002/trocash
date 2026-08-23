@@ -78,6 +78,25 @@ export default function HomeView(props) {
     scrollTo,
   } = props
 
+  // const langToPath = (code) => {
+  //   const c = (code || "").toLowerCase();
+  //   if (c === "pt") return "https://trocash.pt/";
+  //   if (c === "gb" || c === "en") return "/en";
+  //   if (c === "ua" || c === "uk") return "/uk";
+  //   return "/";
+  // };
+
+
+const langToPath = (code) => {
+  const c = (code || "").toLowerCase();
+  const isLocal = typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
+  if (c === "pt") return isLocal ? "http://localhost:3000/" : "https://trocash.pt/";
+  if (c === "gb" || c === "en") return "/en";
+  if (c === "ua" || c === "uk") return "/uk";
+  return "/";
+};
+
+
   return (
     <main className="site-shell tc-page">
       <header className="topbar tc-nav">
@@ -105,7 +124,20 @@ export default function HomeView(props) {
                   <button
                     key={l.code}
                     className={"flag-btn " + (lang === l.code ? "active" : "")}
-                    onClick={() => { setLang && setLang(l.code); setLanguageOpen && setLanguageOpen(false); }}
+
+                    onClick={() => {
+                      const path = langToPath(l.code);
+                      setLang && setLang(l.code);
+                      setLanguageOpen && setLanguageOpen(false);
+                      if (typeof path === "string" && path.startsWith("http")) {
+                        window.location.href = path;
+                      } else if (router && router.push) {
+                        router.push(path);
+                      } else {
+                        window.location.href = path;
+                      }
+                    }}
+
                     title={l.label}
                   >
                     {l.flag}
@@ -130,7 +162,6 @@ export default function HomeView(props) {
           </button>
         </div>
       </header>
-
       {/* --- HERO --- */}
       <section id="top" className="hero">
         <div className="hero-image" aria-hidden="true" />
@@ -168,92 +199,92 @@ export default function HomeView(props) {
         </div>
       </section>
 
-     {/* --- SEARCH PANEL --- */}
-<section className={"search-panel " + (searchTab === "Tenho" ? "have" : "want")} id="explore">
-  <table>
-  <tbody>
-    <tr><td className="search-tabs">  
-    <button className={searchTab === "Procuro" ? "active" : ""} onClick={() => setSearchTab && setSearchTab("Procuro")}>{copy?.want || "Procuro"}</button>
-    <button className={searchTab === "Tenho" ? "active" : ""} onClick={() => setSearchTab && setSearchTab("Tenho")}>{copy?.have || "Tenho"}</button>    
-  </td></tr>
- <tr>
-  <td>
-    <div className="search-heading">
-      {searchTab === "Procuro" ? (
-        <>        
-          <b>{copy?.searchTitle}</b>
-          <span>{copy?.searchSub || "Encontra uma troca que faça sentido para ti"}</span>
-        </>
-      ) : (
-        <>        
-          <b>{copy?.searchOfferTitle}</b>
-          <span>{copy?.offerSub || "Veja os itens ou serviços que você oferece"}</span>
-        </>
-      )}
-    </div>
-  </td>
-</tr>
-  </tbody>
-</table>
-  {searchTab === "Tenho" ? (
-    <>  
-      <label>
-        {copy?.category || "Категорія:"}
-        <select value={category} onChange={e => setCategory && setCategory(e.target.value)}>
-          <option value="" disabled>{copy?.selectCategory || "Оберіть категорію"}</option>
-          {Object.keys(CATEGORIES).map(k => (
-              <option key={k} value={k}>
-                {copy?.categories?.[k] || k}
-              </option>
-            ))}
-        </select>
-      </label>
-      <label>
-        {copy?.want || "Я хочу"}
-        <input value={want} onChange={e => setWant && setWant(e.target.value)} placeholder={copy?.offerWishPlaceholder || "Ex.: sofá, câmara, outro serviço..."} />
-      </label>
-    
-    </>
-  ) : (
-    <> 
-      <label>
-        {copy?.category || "Категорія:"}
-        <select value={category} onChange={e => setCategory && setCategory(e.target.value)}>
-          <option value="" disabled>{copy?.selectCategory || "Оберіть категорію"}</option>          
-           {Object.keys(CATEGORIES).map(k => (
-              <option key={k} value={k}>
-                {copy?.categories?.[k] || k}
-              </option>
-            ))}
+      {/* --- SEARCH PANEL --- */}
+      <section className={"search-panel " + (searchTab === "Tenho" ? "have" : "want")} id="explore">
+        <table>
+          <tbody>
+            <tr><td className="search-tabs">
+              <button className={searchTab === "Procuro" ? "active" : ""} onClick={() => setSearchTab && setSearchTab("Procuro")}>{copy?.want || "Procuro"}</button>
+              <button className={searchTab === "Tenho" ? "active" : ""} onClick={() => setSearchTab && setSearchTab("Tenho")}>{copy?.have || "Tenho"}</button>
+            </td></tr>
+            <tr>
+              <td>
+                <div className="search-heading">
+                  {searchTab === "Procuro" ? (
+                    <>
+                      <b>{copy?.searchTitle}</b>
+                      <span>{copy?.searchSub || "Encontra uma troca que faça sentido para ti"}</span>
+                    </>
+                  ) : (
+                    <>
+                      <b>{copy?.searchOfferTitle}</b>
+                      <span>{copy?.offerSub || "Veja os itens ou serviços que você oferece"}</span>
+                    </>
+                  )}
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        {searchTab === "Tenho" ? (
+          <>
+            <label>
+              {copy?.category || "Категорія:"}
+              <select value={category} onChange={e => setCategory && setCategory(e.target.value)}>
+                <option value="" disabled>{copy?.selectCategory || "Оберіть категорію"}</option>
+                {Object.keys(CATEGORIES).map(k => (
+                  <option key={k} value={k}>
+                    {copy?.categories?.[k] || k}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              {copy?.want || "Я хочу"}
+              <input value={want} onChange={e => setWant && setWant(e.target.value)} placeholder={copy?.offerWishPlaceholder || "Ex.: sofá, câmara, outro serviço..."} />
+            </label>
 
-        </select>
-      </label>
-      <label>
-        {copy?.want || "Я хочу"}
-        <input value={want} onChange={e => setWant && setWant(e.target.value)} placeholder={copy?.offerWishPlaceholder || "Ex.: sofá, câmara, outro serviço..."} />
-      </label>
+          </>
+        ) : (
+          <>
+            <label>
+              {copy?.category || "Категорія:"}
+              <select value={category} onChange={e => setCategory && setCategory(e.target.value)}>
+                <option value="" disabled>{copy?.selectCategory || "Оберіть категорію"}</option>
+                {Object.keys(CATEGORIES).map(k => (
+                  <option key={k} value={k}>
+                    {copy?.categories?.[k] || k}
+                  </option>
+                ))}
 
-      <label>
-        {copy?.distance}
-        <select value={radius} onChange={e => setRadius && setRadius(e.target.value)}>
-          <option>5 km</option>
-          <option>10 km</option>
-          <option>25 km</option>
-          <option>50 km</option>
-          <option>Algarve</option>
-        </select>
-      </label>
-    </>
-  )}
+              </select>
+            </label>
+            <label>
+              {copy?.want || "Я хочу"}
+              <input value={want} onChange={e => setWant && setWant(e.target.value)} placeholder={copy?.offerWishPlaceholder || "Ex.: sofá, câmara, outro serviço..."} />
+            </label>
 
-  <button className="search-btn" aria-label={copy?.searchButton || "Pesquisar"} onClick={() => setSearchOpen && setSearchOpen(true)}>⌕</button>
+            <label>
+              {copy?.distance}
+              <select value={radius} onChange={e => setRadius && setRadius(e.target.value)}>
+                <option>5 km</option>
+                <option>10 km</option>
+                <option>25 km</option>
+                <option>50 km</option>
+                <option>Algarve</option>
+              </select>
+            </label>
+          </>
+        )}
 
-  {searchOpen && (
-    <div style={{ gridColumn: "1 / -1", marginTop: 14, padding: 14, borderRadius: 14, background: "#fff8e9", color: "#765824" }}>
-      {copy?.smartMatches?.replace("{have}", have || copy?.have || "Tenho").replace("{want}", want || copy?.want || "Procuro")}
-    </div>
-  )}
-</section>
+        <button className="search-btn" aria-label={copy?.searchButton || "Pesquisar"} onClick={() => setSearchOpen && setSearchOpen(true)}>⌕</button>
+
+        {searchOpen && (
+          <div style={{ gridColumn: "1 / -1", marginTop: 14, padding: 14, borderRadius: 14, background: "#fff8e9", color: "#765824" }}>
+            {copy?.smartMatches?.replace("{have}", have || copy?.have || "Tenho").replace("{want}", want || copy?.want || "Procuro")}
+          </div>
+        )}
+      </section>
       {/* --- MATCHES / CARDS --- */}
       <section className="content-section section" id="matches">
         <div className="section-head section-title">
@@ -288,7 +319,7 @@ export default function HomeView(props) {
         {notice && <div className="soft-notice">{notice}</div>}
       </section>
 
-      {/* TRUST STRIP */} 
+      {/* TRUST STRIP */}
       <section className="trust-strip" id="trust">
         <div className="trust-lead">
           <div className="trust-icon">◎</div>
@@ -311,7 +342,7 @@ export default function HomeView(props) {
         <div><span>⌁</span><b>{copy?.privacyTitle}</b><small>{copy?.privacySub}</small></div>
       </section>
 
-      {/* PREMIUM */} 
+      {/* PREMIUM */}
       <section className="premium" id="premium">
         <div>
           <span className="premium-badge">{copy?.premium || copy?.footerTroCASH}</span>
@@ -324,7 +355,7 @@ export default function HomeView(props) {
         </div>
       </section>
 
-      {/* FOOTER */} 
+      {/* FOOTER */}
       <footer className="footer">
         <div>
           <Logo compact />
@@ -334,7 +365,7 @@ export default function HomeView(props) {
         </div>
         <div><b>{copy?.footerTroCASH}</b><button>{copy?.footerAbout}</button><button>{copy?.footerHow}</button><button>{copy?.footerRules}</button></div>
         <div><b>{copy?.footerSupportTitle}</b><button>{copy?.footerSupportHelp}</button><button>{copy?.footerSupportSecurity}</button><button>{copy?.footerSupportPrivacy}</button></div>
-        <div><b>{copy?.footerCommunityTitle}</b>{(copy?.footerCommunityItems || "").split("|").map((x,i)=>(<button key={i}>{x}</button>))}</div>
+        <div><b>{copy?.footerCommunityTitle}</b>{(copy?.footerCommunityItems || "").split("|").map((x, i) => (<button key={i}>{x}</button>))}</div>
         <div className="footer-news">
           <b>{copy?.footerNewsTitle}</b>
           <p>{copy?.footerNewsSub}</p>
@@ -344,183 +375,191 @@ export default function HomeView(props) {
       <div className="copyright">© 2026 {copy?.footerTroCASH} · Algarve, Portugal <span>Comunidade · Confiança · Liberdade</span></div>
 
       {/* MODALS & DRAWERS */}
-      {accountOpen && (
-        <div className="panel modal-backdrop" onClick={() => setAccountOpen(false)}>
-          <aside className="drawer modal" onClick={(e) => e.stopPropagation()}>
-            <div className="drawer-head">
-              <h2>Meu perfil</h2>
-              <button className="close modal-close" onClick={() => setAccountOpen(false)}>×</button>
-            </div>
-            <div className="account-hero">
-              <div className="avatar">{(user?.email || "T")[0].toUpperCase()}</div>
-              <h3 style={{ margin: "12px 0 4px" }}>O teu espaço no troCASH</h3>
-              <small>{user?.email || "Perfil, ofertas, trocas e preferências."}</small>
-            </div>
-            <div className="account-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, margin: "16px 0" }}>
-              <div className="account-card" style={{ padding: 12, border: "1px solid #ddd", borderRadius: 8 }}>
-                <strong>{offers.filter(o => o.owner_id === user?.id).length}</strong>
-                <div>Ofertas publicadas</div>
+      {
+        accountOpen && (
+          <div className="panel modal-backdrop" onClick={() => setAccountOpen(false)}>
+            <aside className="drawer modal" onClick={(e) => e.stopPropagation()}>
+              <div className="drawer-head">
+                <h2>Meu perfil</h2>
+                <button className="close modal-close" onClick={() => setAccountOpen(false)}>×</button>
               </div>
-              <div className="account-card" style={{ padding: 12, border: "1px solid #ddd", borderRadius: 8 }}>
-                <strong>0</strong>
-                <div>Trocas concluídas</div>
+              <div className="account-hero">
+                <div className="avatar">{(user?.email || "T")[0].toUpperCase()}</div>
+                <h3 style={{ margin: "12px 0 4px" }}>O teu espaço no troCASH</h3>
+                <small>{user?.email || "Perfil, ofertas, trocas e preferências."}</small>
               </div>
-            </div>
-            <button className="nav-btn gold-btn" style={{ width: "100%", marginTop: 18 }} onClick={() => { setAccountOpen(false); setWishlistOpen(true); }}>
-              Abrir Wish List →
-            </button>
-
-            <button
-              className="nav-btn ghost-btn"
-              style={{ width: "100%", marginTop: 10 }}
-              onClick={async () => {
-                try {
-                  await supabase.auth.signOut();
-                } catch (err) {
-                  console.error('Sign out error', err);
-                } finally {
-                  setAccountOpen(false);
-                  window.location.reload();
-                }
-              }}
-            >
-              Sair
-            </button>
-          </aside>
-        </div>
-      )}
-
-      {wishlistOpen && (
-        <div className="panel modal-backdrop" onClick={() => setWishlistOpen(false)}>
-          <aside className="drawer modal" onClick={(e) => e.stopPropagation()}>
-            <div className="drawer-head">
-              <h2>Wish List</h2>
-              <button className="close modal-close" onClick={() => setWishlistOpen(false)}>×</button>
-            </div>
-            <p style={{ color: "#7b8494" }}>Guarda aquilo que queres encontrar através de uma troca.</p>
-            {["Bicicleta urbana", "Sofá pequeno", "Câmara fotográfica"].map((x, i) => (
-              <div className="wish-item" key={x} style={{ display: "flex", gap: 12, alignItems: "center", margin: "12px 0" }}>
-                <div className="wish-icon">♡</div>
-                <div>
-                  <strong>{x}</strong>
-                  <div className="meta">{i === 0 ? "Faro" : i === 1 ? "Loulé" : "Albufeira"} · Procurar troca</div>
+              <div className="account-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, margin: "16px 0" }}>
+                <div className="account-card" style={{ padding: 12, border: "1px solid #ddd", borderRadius: 8 }}>
+                  <strong>{offers.filter(o => o.owner_id === user?.id).length}</strong>
+                  <div>Ofertas publicadas</div>
+                </div>
+                <div className="account-card" style={{ padding: 12, border: "1px solid #ddd", borderRadius: 8 }}>
+                  <strong>0</strong>
+                  <div>Trocas concluídas</div>
                 </div>
               </div>
-            ))}
-            <button className="gold-btn" style={{ marginTop: 22, width: "100%" }} onClick={() => { setWishlistOpen(false); setNewOfferOpen(true); }}>
-              Adicionar desejo +
-            </button>
-          </aside>
-        </div>
-      )}
+              <button className="nav-btn gold-btn" style={{ width: "100%", marginTop: 18 }} onClick={() => { setAccountOpen(false); setWishlistOpen(true); }}>
+                Abrir Wish List →
+              </button>
 
-      {newOfferOpen && (
-        <div className="panel modal-backdrop" onClick={() => setNewOfferOpen(false)}>
-          <aside className="drawer modal" onClick={(e) => e.stopPropagation()}>
-            <div className="drawer-head">
-              <h2>Criar oferta</h2>
-              <button className="close modal-close" onClick={() => setNewOfferOpen(false)}>×</button>
-            </div>
-            <form className="offer-form" onSubmit={addOffer}>
-              <div className="field">
-                <label>Categoria</label>
-                <select value={category} onChange={e => setCategory && setCategory(e.target.value)}>
-                  {Object.keys(CATEGORIES).map(c => <option key={c}>{c}</option>)}
-                </select>
-              </div>
-              <div className="field">
-                <label>Título do anúncio</label>
-                <input
-                  placeholder="Ex.: calças, bicicleta, aulas..."
-                  value={form?.title || ""}
-                  onChange={e => setForm && setForm({ ...form, title: e.target.value })}
-                  required
-                />
-              </div>
-              <div className="field">
-                <label>Área</label>
-                <select value={form?.area} onChange={e => setForm && setForm({ ...form, area: e.target.value })}>
-                  {areas.map(a => <option key={a}>{a}</option>)}
-                </select>
-              </div>
-              <div className="field">
-                <label>O que procuras em troca?</label>
-                <input
-                  placeholder="Ex.: sofá, câmara, outro serviço..."
-                  value={form?.wish || ""}
-                  onChange={e => setForm && setForm({ ...form, wish: e.target.value })}
-                />
-              </div>
-              <div className="field">
-                <label>Descrição</label>
-                <textarea
-                  placeholder="Conta um pouco mais sobre a tua oferta..."
-                  value={form?.description || ""}
-                  onChange={e => setForm && setForm({ ...form, description: e.target.value })}
-                />
-              </div>
+              <button
+                className="nav-btn ghost-btn"
+                style={{ width: "100%", marginTop: 10 }}
+                onClick={async () => {
+                  try {
+                    await supabase.auth.signOut();
+                  } catch (err) {
+                    console.error('Sign out error', err);
+                  } finally {
+                    setAccountOpen(false);
+                    window.location.reload();
+                  }
+                }}
+              >
+                Sair
+              </button>
+            </aside>
+          </div>
+        )
+      }
 
-              <div className="field">
-                <label style={{ display: "block", fontSize: 13, fontWeight: 800, color: "#586174", marginBottom: 7 }}>Fotografias</label>
-                <div className="upload-box">
-                  <input id="offer-photo" type="file" accept="image/*" multiple onChange={addPhotos} hidden />
-                  <label htmlFor="offer-photo" className="upload-label gold-btn" style={{ display: "inline-block", cursor: "pointer", padding: "6px 12px" }}>
-                    ＋ Adicionar fotografias
-                  </label>
-                  {photos.length > 0 && (
-                    <div className="photo-list" style={{ display: "flex", gap: 8, marginTop: 10, flexWrap: "wrap" }}>
-                      {photos.map((p, i) => (
-                        <div key={i} style={{ position: "relative", width: 60, height: 60, borderRadius: 6, overflow: "hidden" }}>
-                          <img className="photo-thumb" src={p.preview || p.url} alt={p.name || ("photo-" + i)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                          {removePhoto && (
-                            <button type="button" onClick={() => removePhoto(i)} style={{
-                              position: "absolute", top: 4, right: 4, background: "rgba(0,0,0,0.6)", color: "#fff",
-                              border: "none", borderRadius: 12, width: 20, height: 20, cursor: "pointer", lineHeight: "18px", padding: 0
-                            }}>×</button>
-                          )}
-                        </div>
-                      ))}
+      {
+        wishlistOpen && (
+          <div className="panel modal-backdrop" onClick={() => setWishlistOpen(false)}>
+            <aside className="drawer modal" onClick={(e) => e.stopPropagation()}>
+              <div className="drawer-head">
+                <h2>Wish List</h2>
+                <button className="close modal-close" onClick={() => setWishlistOpen(false)}>×</button>
+              </div>
+              <p style={{ color: "#7b8494" }}>Guarda aquilo que queres encontrar através de uma troca.</p>
+              {["Bicicleta urbana", "Sofá pequeno", "Câmara fotográfica"].map((x, i) => (
+                <div className="wish-item" key={x} style={{ display: "flex", gap: 12, alignItems: "center", margin: "12px 0" }}>
+                  <div className="wish-icon">♡</div>
+                  <div>
+                    <strong>{x}</strong>
+                    <div className="meta">{i === 0 ? "Faro" : i === 1 ? "Loulé" : "Albufeira"} · Procurar troca</div>
+                  </div>
+                </div>
+              ))}
+              <button className="gold-btn" style={{ marginTop: 22, width: "100%" }} onClick={() => { setWishlistOpen(false); setNewOfferOpen(true); }}>
+                Adicionar desejo +
+              </button>
+            </aside>
+          </div>
+        )
+      }
+
+      {
+        newOfferOpen && (
+          <div className="panel modal-backdrop" onClick={() => setNewOfferOpen(false)}>
+            <aside className="drawer modal" onClick={(e) => e.stopPropagation()}>
+              <div className="drawer-head">
+                <h2>Criar oferta</h2>
+                <button className="close modal-close" onClick={() => setNewOfferOpen(false)}>×</button>
+              </div>
+              <form className="offer-form" onSubmit={addOffer}>
+                <div className="field">
+                  <label>Categoria</label>
+                  <select value={category} onChange={e => setCategory && setCategory(e.target.value)}>
+                    {Object.keys(CATEGORIES).map(c => <option key={c}>{c}</option>)}
+                  </select>
+                </div>
+                <div className="field">
+                  <label>Título do anúncio</label>
+                  <input
+                    placeholder="Ex.: calças, bicicleta, aulas..."
+                    value={form?.title || ""}
+                    onChange={e => setForm && setForm({ ...form, title: e.target.value })}
+                    required
+                  />
+                </div>
+                <div className="field">
+                  <label>Área</label>
+                  <select value={form?.area} onChange={e => setForm && setForm({ ...form, area: e.target.value })}>
+                    {areas.map(a => <option key={a}>{a}</option>)}
+                  </select>
+                </div>
+                <div className="field">
+                  <label>O que procuras em troca?</label>
+                  <input
+                    placeholder="Ex.: sofá, câmara, outro serviço..."
+                    value={form?.wish || ""}
+                    onChange={e => setForm && setForm({ ...form, wish: e.target.value })}
+                  />
+                </div>
+                <div className="field">
+                  <label>Descrição</label>
+                  <textarea
+                    placeholder="Conta um pouco mais sobre a tua oferta..."
+                    value={form?.description || ""}
+                    onChange={e => setForm && setForm({ ...form, description: e.target.value })}
+                  />
+                </div>
+
+                <div className="field">
+                  <label style={{ display: "block", fontSize: 13, fontWeight: 800, color: "#586174", marginBottom: 7 }}>Fotografias</label>
+                  <div className="upload-box">
+                    <input id="offer-photo" type="file" accept="image/*" multiple onChange={addPhotos} hidden />
+                    <label htmlFor="offer-photo" className="upload-label gold-btn" style={{ display: "inline-block", cursor: "pointer", padding: "6px 12px" }}>
+                      ＋ Adicionar fotografias
+                    </label>
+                    {photos.length > 0 && (
+                      <div className="photo-list" style={{ display: "flex", gap: 8, marginTop: 10, flexWrap: "wrap" }}>
+                        {photos.map((p, i) => (
+                          <div key={i} style={{ position: "relative", width: 60, height: 60, borderRadius: 6, overflow: "hidden" }}>
+                            <img className="photo-thumb" src={p.preview || p.url} alt={p.name || ("photo-" + i)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                            {removePhoto && (
+                              <button type="button" onClick={() => removePhoto(i)} style={{
+                                position: "absolute", top: 4, right: 4, background: "rgba(0,0,0,0.6)", color: "#fff",
+                                border: "none", borderRadius: 12, width: 20, height: 20, cursor: "pointer", lineHeight: "18px", padding: 0
+                              }}>×</button>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <button className="gold-btn large" style={{ width: "100%", marginTop: 14 }} disabled={loading}>
+                  {loading ? "A publicar…" : "Publicar oferta →"}
+                </button>
+                <div style={{ marginTop: 12 }}>
+                  {notice && (
+                    <div
+                      style={{
+                        padding: 10,
+                        borderRadius: 8,
+                        background: (String(notice).toLowerCase().includes("ok") || String(notice).toLowerCase().includes("added") || String(notice).toLowerCase().includes("publicad") || String(notice).toLowerCase().includes("publicado") || String(notice).toLowerCase().includes("sucesso")) ? "#d4edda" : "#f8d7da",
+                        color: (String(notice).toLowerCase().includes("ok") || String(notice).toLowerCase().includes("added") || String(notice).toLowerCase().includes("publicad") || String(notice).toLowerCase().includes("publicado") || String(notice).toLowerCase().includes("sucesso")) ? "#155724" : "#721c24",
+                      }}
+                    >
+                      {notice}
                     </div>
                   )}
                 </div>
-              </div>
-
-              <button className="gold-btn large" style={{ width: "100%", marginTop: 14 }} disabled={loading}>
-                {loading ? "A publicar…" : "Publicar oferta →"}
-              </button>
-              <div style={{ marginTop: 12 }}>
-                {notice && (
-                  <div
-                    style={{
-                      padding: 10,
-                      borderRadius: 8,
-                      background: (String(notice).toLowerCase().includes("ok") || String(notice).toLowerCase().includes("added") || String(notice).toLowerCase().includes("publicad") || String(notice).toLowerCase().includes("publicado") || String(notice).toLowerCase().includes("sucesso")) ? "#d4edda" : "#f8d7da",
-                      color: (String(notice).toLowerCase().includes("ok") || String(notice).toLowerCase().includes("added") || String(notice).toLowerCase().includes("publicad") || String(notice).toLowerCase().includes("publicado") || String(notice).toLowerCase().includes("sucesso")) ? "#155724" : "#721c24",
-                    }}
-                  >
-                    {notice}
-                  </div>
-                )}
-              </div>
-            </form>
-          </aside>
-        </div>
-      )}
-
-      {premiumOpen && (
-        <div className="modal-backdrop" onClick={() => setPremiumOpen(false)}>
-          <div className="modal" onClick={e => e.stopPropagation()}>
-            <button className="modal-close" onClick={() => setPremiumOpen(false)}>×</button>
-            <span className="premium-badge">{copy?.premium || copy?.footerTroCASH}</span>
-            <h2>{copy?.premiumModalHeading}</h2>
-            <p>{copy?.premiumModalBody}</p>
-            <ul>
-              {(copy?.premiumModalList || "").split("|").map((it, i) => (<li key={i}>{it}</li>))}
-            </ul>
-            <button className="gold-btn large" onClick={() => setPremiumOpen(false)}>{copy?.premiumButton || "Continuar →"}</button>
+              </form>
+            </aside>
           </div>
-        </div>
-      )}
-    </main>
+        )
+      }
+
+      {
+        premiumOpen && (
+          <div className="modal-backdrop" onClick={() => setPremiumOpen(false)}>
+            <div className="modal" onClick={e => e.stopPropagation()}>
+              <button className="modal-close" onClick={() => setPremiumOpen(false)}>×</button>
+              <span className="premium-badge">{copy?.premium || copy?.footerTroCASH}</span>
+              <h2>{copy?.premiumModalHeading}</h2>
+              <p>{copy?.premiumModalBody}</p>
+              <ul>
+                {(copy?.premiumModalList || "").split("|").map((it, i) => (<li key={i}>{it}</li>))}
+              </ul>
+              <button className="gold-btn large" onClick={() => setPremiumOpen(false)}>{copy?.premiumButton || "Continuar →"}</button>
+            </div>
+          </div>
+        )
+      }
+    </main >
   )
 }
