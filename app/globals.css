@@ -411,25 +411,43 @@ textarea {
   color: #777d8a;
 }
 
+/* Tabs container */
 .search-tabs {
-  display: flex;
-  gap: 4px;
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  justify-self: start;
 }
 
-/* Make search-tab buttons match the "Eu tenho" label size */
+/* Кожна кнопка з власним обведенням */
 .search-tabs button {
-padding: 10px 12px;
-border-radius: 12px;
-color: #646a79;
-font-size: 15px;
-font-weight: 800;
-line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: #f6f8fb;;
+  color: #646a79;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1;
+  border: 1.5px solid rgba(17,25,54,0.12); /* обведення навколо кожної кнопки */
+  box-shadow: 0 2px 0 rgba(0,0,0,0.03);
+  transition: transform .08s ease, box-shadow .12s ease, border-color .12s ease;
 }
 
-.search-tabs .active {
+/* Активна кнопка */
+.search-tabs button.active {
   background: #fff4df;
   color: #a66c10;
-  font-weight: 700;
+  border-color: rgba(166,108,16,0.25);
+  box-shadow: inset 0 -2px 0 rgba(166,108,16,0.06);
+}
+/* Hover / focus */
+.search-tabs button:hover { transform: translateY(-1px); }
+.search-tabs button:focus {
+  outline: 3px solid rgba(166,108,16,0.12);
+  outline-offset: 2px;
 }
 
 .search-panel label {
@@ -455,8 +473,7 @@ line-height: 1;
 }
 .search-panel > label:first-of-type,
 .search-panel > label:nth-of-type(2),
-.search-panel > label:nth-of-type(3),
-.search-tabs button {
+.search-panel > label:nth-of-type(3) {
 font-size: 15px;
 font-weight: 800;
 line-height: 1;
@@ -1046,8 +1063,19 @@ line-height: 1;
   .search-tabs {
     grid-column: 1 / -1;
   }
+/* 
+  .search-btn {    justify-self: end;  } 
 
-  .search-btn {    justify-self: end;  }
+.search-btn {
+  height: 48px;
+  width: 48px;
+  border-radius: 50%;
+  background: var(--navy);
+  color: #ffffff;
+  font-size: 24px;
+  justify-self: end;
+  grid-column: -1;
+}*/
 
   .listing-grid {    grid-template-columns: repeat(2, 1fr);  }
 
@@ -1353,12 +1381,11 @@ line-height: 1;
   .quick .nav-btn { padding: 9px 11px; }
 }
 
-button,input,textarea,select
+/* button,input,textarea,select
 {padding:10px;border-radius:8px;border:1px solid #ccc}
 button{cursor:pointer}
-textarea{min-height:90px}
-npm
-search-panel > label:first-of-type,
+textarea{min-height:90px} */
+.search-panel > label:first-of-type,
 .search-panel > label:nth-of-type(2),
 .search-panel > label:nth-of-type(3) {
 font-size: 15px;
@@ -1369,6 +1396,23 @@ font-weight: 800;
 font-size: 14px;
 min-height: 48px;
 }
+
+/* Force circular search button (overrides generic button/input rules) */
+.search-panel .search-btn {
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border-radius: 50% !important;
+  background: var(--navy);
+  color: #fff;
+  font-size: 20px;
+  display: inline-grid;
+  place-items: center;
+  justify-self: end;
+  grid-column: -1;
+  box-sizing: content-box;
+}
+
 
 /* Переконатися, що великий десктоп (<=1680px) зберігає розмір */
 @media (max-width:1680px) {

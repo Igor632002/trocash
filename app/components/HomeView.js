@@ -168,50 +168,92 @@ export default function HomeView(props) {
         </div>
       </section>
 
-      {/* --- SEARCH PANEL --- */}
-      <section className="search-panel" id="explore">
-        <div className="search-heading">
+     {/* --- SEARCH PANEL --- */}
+<section className={"search-panel " + (searchTab === "Tenho" ? "have" : "want")} id="explore">
+  <table>
+  <tbody>
+    <tr><td className="search-tabs">  
+    <button className={searchTab === "Procuro" ? "active" : ""} onClick={() => setSearchTab && setSearchTab("Procuro")}>{copy?.want || "Procuro"}</button>
+    <button className={searchTab === "Tenho" ? "active" : ""} onClick={() => setSearchTab && setSearchTab("Tenho")}>{copy?.have || "Tenho"}</button>    
+  </td></tr>
+ <tr>
+  <td>
+    <div className="search-heading">
+      {searchTab === "Procuro" ? (
+        <>        
           <b>{copy?.searchTitle}</b>
-          <span>Encontra uma troca que faça sentido para ti.</span>
-        </div>
+          <span>{copy?.searchSub || "Encontra uma troca que faça sentido para ti"}</span>
+        </>
+      ) : (
+        <>        
+          <b>{copy?.searchOfferTitle}</b>
+          <span>{copy?.offerSub || "Veja os itens ou serviços que você oferece"}</span>
+        </>
+      )}
+    </div>
+  </td>
+</tr>
+  </tbody>
+</table>
+  {searchTab === "Tenho" ? (
+    <>  
+      <label>
+        {copy?.category || "Категорія:"}
+        <select value={category} onChange={e => setCategory && setCategory(e.target.value)}>
+          <option value="" disabled>{copy?.selectCategory || "Оберіть категорію"}</option>
+          {Object.keys(CATEGORIES).map(k => (
+              <option key={k} value={k}>
+                {copy?.categories?.[k] || k}
+              </option>
+            ))}
+        </select>
+      </label>
+      <label>
+        {copy?.want || "Я хочу"}
+        <input value={want} onChange={e => setWant && setWant(e.target.value)} placeholder={copy?.offerWishPlaceholder || "Ex.: sofá, câmara, outro serviço..."} />
+      </label>
+    
+    </>
+  ) : (
+    <> 
+      <label>
+        {copy?.category || "Категорія:"}
+        <select value={category} onChange={e => setCategory && setCategory(e.target.value)}>
+          <option value="" disabled>{copy?.selectCategory || "Оберіть категорію"}</option>          
+           {Object.keys(CATEGORIES).map(k => (
+              <option key={k} value={k}>
+                {copy?.categories?.[k] || k}
+              </option>
+            ))}
 
-        <div className="search-tabs">
-          <button className={searchTab === "Tenho" ? "active" : ""} onClick={() => setSearchTab && setSearchTab("Tenho")}>{copy?.have || "Tenho"}</button>
-          <button className={searchTab === "Procuro" ? "active" : ""} onClick={() => setSearchTab && setSearchTab("Procuro")}>{copy?.want || "Procuro"}</button>
-        </div>
+        </select>
+      </label>
+      <label>
+        {copy?.want || "Я хочу"}
+        <input value={want} onChange={e => setWant && setWant(e.target.value)} placeholder={copy?.offerWishPlaceholder || "Ex.: sofá, câmara, outro serviço..."} />
+      </label>
 
-        <label>
-          {copy?.have}
-          <select value={category} onChange={e => setCategory && setCategory(e.target.value)}>
-            {Object.keys(CATEGORIES).map(c => <option key={c}>{c}</option>)}
-          </select>
-        </label>
+      <label>
+        {copy?.distance}
+        <select value={radius} onChange={e => setRadius && setRadius(e.target.value)}>
+          <option>5 km</option>
+          <option>10 km</option>
+          <option>25 km</option>
+          <option>50 km</option>
+          <option>Algarve</option>
+        </select>
+      </label>
+    </>
+  )}
 
-        <label>
-          {copy?.want}
-          <input value={want} onChange={e => setWant && setWant(e.target.value)} placeholder={placeholder} />
-        </label>
+  <button className="search-btn" aria-label={copy?.searchButton || "Pesquisar"} onClick={() => setSearchOpen && setSearchOpen(true)}>⌕</button>
 
-        <label>
-          {copy?.distance}
-          <select value={radius} onChange={e => setRadius && setRadius(e.target.value)}>
-            <option>5 km</option>
-            <option>10 km</option>
-            <option>25 km</option>
-            <option>50 km</option>
-            <option>Algarve</option>
-          </select>
-        </label>
-
-        <button className="search-btn" aria-label={copy?.searchButton || "Pesquisar"} onClick={() => setSearchOpen && setSearchOpen(true)}>⌕</button>
-
-        {searchOpen && (
-          <div style={{ gridColumn: "1 / -1", marginTop: 14, padding: 14, borderRadius: 14, background: "#fff8e9", color: "#765824" }}>
-            {copy?.smartMatches?.replace("{have}", have || copy?.have || "Tenho").replace("{want}", want || copy?.want || "Procuro")}
-          </div>
-        )}
-      </section>
-
+  {searchOpen && (
+    <div style={{ gridColumn: "1 / -1", marginTop: 14, padding: 14, borderRadius: 14, background: "#fff8e9", color: "#765824" }}>
+      {copy?.smartMatches?.replace("{have}", have || copy?.have || "Tenho").replace("{want}", want || copy?.want || "Procuro")}
+    </div>
+  )}
+</section>
       {/* --- MATCHES / CARDS --- */}
       <section className="content-section section" id="matches">
         <div className="section-head section-title">

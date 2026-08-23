@@ -8,8 +8,8 @@ import { getVisibleListings } from "@/lib/uiHelpers";
 import { fetchActiveOffers, createExchangeRequest, createOffer } from "@/lib/dal";
 import { supabase } from "@/lib/supabase";
 
-export default function Home() {
-  const [lang, setLang] = useState("pt");
+export default function Home({ initialLang = "pt" }) {
+  const [lang, setLang] = useState(initialLang);
   const [languageOpen, setLanguageOpen] = useState(false);
   const [user, setUser] = useState(null);
   const [offers, setOffers] = useState([]);
@@ -22,7 +22,7 @@ export default function Home() {
   const [have, setHave] = useState("");
   const [want, setWant] = useState("");
   const [radius, setRadius] = useState(50);
-  const [searchTab, setSearchTab] = useState("");
+  const [searchTab, setSearchTab] = useState("Procuro");
   const [searchOpen, setSearchOpen] = useState(false);
   const [premiumOpen, setPremiumOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
