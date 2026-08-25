@@ -1430,8 +1430,16 @@ min-height: 48px;
 .search-panel input, .search-panel select { font-size: 13px; }
 }
 @media (max-width:650px) {
-.search-panel > label:first-of-type,
-.search-panel > label:nth-of-type(2),
-.search-panel > label:nth-of-type(3) { font-size: 13px; }
-.search-panel input, .search-panel select { font-size: 12px; }
+  .search-panel > label:first-of-type,
+  .search-panel > label:nth-of-type(2),
+  .search-panel > label:nth-of-type(3) { font-size: 13px; }
+  .search-panel input, .search-panel select { font-size: 12px; }
+
+  .top-actions { margin-left: auto; gap: 8px; }
+  .top-actions .gold-btn { align-items: center; justify-content: center; padding: 10px 12px; min-width: 44px; }
+  /* Приховуємо публікаційну кнопку у верхньому барі на мобайлі */
+  .topbar .top-actions > .gold-btn { display: none !important; }
+  /* за потреби приховати менш важливі кнопки, щоб звільнити місце */
+  .top-actions .ghost-btn { display: none; }
+  .topbar { overflow: visible; }
 }
