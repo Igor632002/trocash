@@ -381,7 +381,22 @@ export default function HomeView(props) {
               <div className="account-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, margin: "16px 0" }}>
                 <div className="account-card" style={{ padding: 12, border: "1px solid #ddd", borderRadius: 8 }}>
                   <strong>{offers.filter(o => o.owner_id === user?.id).length}</strong>
-                  <div>{copy?.accountOffersLabel || "Ofertas publicadas"}</div>
+                  <div>
+                    <a
+                      href={user?.id ? `/offers?owner=${user.id}` : '#'}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setAccountOpen(false);
+                        if (user?.id) {
+                          if (router && router.push) router.push(`/offers?owner=${user.id}`);
+                          else window.location.href = `/offers?owner=${user.id}`;
+                        }
+                      }}
+                      style={{ color: '#1a73e8', textDecoration: 'underline' }}
+                    >
+                      {copy?.accountOffersLabel || "Ofertas publicadas"}
+                    </a>
+                  </div>
                 </div>
                 <div className="account-card" style={{ padding: 12, border: "1px solid #ddd", borderRadius: 8 }}>
                   <strong>0</strong>
@@ -412,15 +427,19 @@ export default function HomeView(props) {
           </div>
         )
       }
-
       {
         wishlistOpen && (
           <div className="panel modal-backdrop" onClick={() => setWishlistOpen(false)}>
             <aside className="drawer modal" onClick={(e) => e.stopPropagation()}>
               <div className="drawer-head">
                 <h2>{copy?.wishlistTitle || "Lista de Desejos"}</h2>
-                <button className="close modal-close" onClick={() => setWishlistOpen(false)}>×</button>
-              </div>
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <button className="close modal-close" onClick={() =>{setWishlistOpen(false);setAccountOpen(true);}}>←</button>
+                  <button className="close modal-close" onClick={() => setWishlistOpen(false)}>×</button>
+                </div>
+              </div>  
+         
+
               <p style={{ color: "#7b8494" }}>{copy?.wishlistDescription || "Guarda aquilo que queres encontrar através de uma troca."}</p>
               {["Bicicleta urbana", "Sofá pequeno", "Câmara fotográfica"].map((x, i) => (
                 <div className="wish-item" key={x} style={{ display: "flex", gap: 12, alignItems: "center", margin: "12px 0" }}>
@@ -432,7 +451,7 @@ export default function HomeView(props) {
                 </div>
               ))}
               <button className="gold-btn" style={{ marginTop: 22, width: "100%" }} onClick={() => { setWishlistOpen(false); setNewOfferOpen(true); }}>
-                Adicionar desejo +
+                {copy?.wishlistAddButton || "Adicionar desejo +"}
               </button>
             </aside>
           </div>
@@ -445,7 +464,16 @@ export default function HomeView(props) {
             <aside className="drawer modal" onClick={(e) => e.stopPropagation()}>
               <div className="drawer-head">
                 <h2>{copy?.newOfferTitle || "Criar oferta"}</h2>
-                <button className="close modal-close" onClick={() => setNewOfferOpen(false)}>×</button>
+                <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                  <button
+                    className="close modal-close"
+                    onClick={() => {
+                      setNewOfferOpen(false);
+                      setWishlistOpen(true);
+                    }}
+                  >←</button>
+                  <button className="close modal-close" onClick={() => setNewOfferOpen(false)}>×</button>
+                </div>
               </div>
               <form className="offer-form" onSubmit={addOffer}>
                 <div className="field">
