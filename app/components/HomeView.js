@@ -79,14 +79,14 @@ export default function HomeView(props) {
   } = props
 
 
-const langToPath = (code) => {
-  const c = (code || "").toLowerCase();
-  const isLocal = typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
-  if (c === "pt") return isLocal ? "http://localhost:3000/" : "https://trocash.pt/";
-  if (c === "gb" || c === "en") return "/en";
-  if (c === "ua" || c === "uk") return "/uk";
-  return "/";
-};
+  const langToPath = (code) => {
+    const c = (code || "").toLowerCase();
+    const isLocal = typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
+    if (c === "pt") return isLocal ? "http://localhost:3000/" : "https://trocash.pt/";
+    if (c === "gb" || c === "en") return "/en";
+    if (c === "ua" || c === "uk") return "/uk";
+    return "/";
+  };
 
 
   return (
@@ -138,9 +138,7 @@ const langToPath = (code) => {
               </div>
             )}
           </div>
-
-          <button className="nav-btn" onClick={() => setWishlistOpen(true)} aria-label="Wish List">♡</button>
-
+          <button className="nav-btn" onClick={() => setWishlistOpen(true)} aria-label={copy?.wishlistAria || "Lista de Desejos"}>♡</button>
           {user ? (
             <button className="avatar" onClick={() => setAccountOpen(true)}>
               {(user.email || "U")[0].toUpperCase()}
@@ -293,7 +291,7 @@ const langToPath = (code) => {
             <article className="listing-card card" key={o.id || i}>
               <div className="listing-image" style={{ backgroundImage: `url(${o.image})` }}>
                 <span>{o.kind === "Serviço" ? "Serviço" : "Troca"}</span>
-                <button aria-label={copy?.wishlistAria || "Wishlist"}>♡</button>
+                <button aria-label={copy?.wishlistAria || "Lista de Desejos"}>♡</button>
               </div>
               <div className="listing-body card-body">
                 <small>{o.area || "Algarve"} · {i + 2} km</small>
@@ -372,26 +370,26 @@ const langToPath = (code) => {
           <div className="panel modal-backdrop" onClick={() => setAccountOpen(false)}>
             <aside className="drawer modal" onClick={(e) => e.stopPropagation()}>
               <div className="drawer-head">
-                <h2>Meu perfil</h2>
+                <h2>{copy?.accountModalTitle || "Meu perfil"}</h2>
                 <button className="close modal-close" onClick={() => setAccountOpen(false)}>×</button>
               </div>
               <div className="account-hero">
                 <div className="avatar">{(user?.email || "T")[0].toUpperCase()}</div>
-                <h3 style={{ margin: "12px 0 4px" }}>O teu espaço no troCASH</h3>
-                <small>{user?.email || "Perfil, ofertas, trocas e preferências."}</small>
+                <h3 style={{ margin: "12px 0 4px" }}>{copy?.accountTitle || "O teu espaço no troCASH"}</h3>
+                <small>{user?.email || copy?.accountSubtitle || "Perfil, ofertas, trocas e preferências."}</small>
               </div>
               <div className="account-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, margin: "16px 0" }}>
                 <div className="account-card" style={{ padding: 12, border: "1px solid #ddd", borderRadius: 8 }}>
                   <strong>{offers.filter(o => o.owner_id === user?.id).length}</strong>
-                  <div>Ofertas publicadas</div>
+                  <div>{copy?.accountOffersLabel || "Ofertas publicadas"}</div>
                 </div>
                 <div className="account-card" style={{ padding: 12, border: "1px solid #ddd", borderRadius: 8 }}>
                   <strong>0</strong>
-                  <div>Trocas concluídas</div>
+                  <div>{copy?.accountExchangesLabel || "Trocas concluídas"}</div>
                 </div>
               </div>
               <button className="nav-btn gold-btn" style={{ width: "100%", marginTop: 18 }} onClick={() => { setAccountOpen(false); setWishlistOpen(true); }}>
-                Abrir Wish List →
+                {copy?.accountOpenWishlist || "Abrir Desejos →"}
               </button>
 
               <button
@@ -408,7 +406,7 @@ const langToPath = (code) => {
                   }
                 }}
               >
-                Sair
+                {copy?.signOut || "Sair"}
               </button>
             </aside>
           </div>
@@ -420,10 +418,10 @@ const langToPath = (code) => {
           <div className="panel modal-backdrop" onClick={() => setWishlistOpen(false)}>
             <aside className="drawer modal" onClick={(e) => e.stopPropagation()}>
               <div className="drawer-head">
-                <h2>Wish List</h2>
+                <h2>{copy?.wishlistTitle || "Lista de Desejos"}</h2>
                 <button className="close modal-close" onClick={() => setWishlistOpen(false)}>×</button>
               </div>
-              <p style={{ color: "#7b8494" }}>Guarda aquilo que queres encontrar através de uma troca.</p>
+              <p style={{ color: "#7b8494" }}>{copy?.wishlistDescription || "Guarda aquilo que queres encontrar através de uma troca."}</p>
               {["Bicicleta urbana", "Sofá pequeno", "Câmara fotográfica"].map((x, i) => (
                 <div className="wish-item" key={x} style={{ display: "flex", gap: 12, alignItems: "center", margin: "12px 0" }}>
                   <div className="wish-icon">♡</div>
@@ -446,54 +444,54 @@ const langToPath = (code) => {
           <div className="panel modal-backdrop" onClick={() => setNewOfferOpen(false)}>
             <aside className="drawer modal" onClick={(e) => e.stopPropagation()}>
               <div className="drawer-head">
-                <h2>Criar oferta</h2>
+                <h2>{copy?.newOfferTitle || "Criar oferta"}</h2>
                 <button className="close modal-close" onClick={() => setNewOfferOpen(false)}>×</button>
               </div>
               <form className="offer-form" onSubmit={addOffer}>
                 <div className="field">
-                  <label>Categoria</label>
+                  <label>{copy?.categoryLabel || "Categoria"}</label>
                   <select value={category} onChange={e => setCategory && setCategory(e.target.value)}>
                     {Object.keys(CATEGORIES).map(c => <option key={c}>{c}</option>)}
                   </select>
                 </div>
                 <div className="field">
-                  <label>Título do anúncio</label>
+                  <label>{copy?.offerTitleLabel || "Título do anúncio"}</label>
                   <input
-                    placeholder="Ex.: calças, bicicleta, aulas..."
+                    placeholder={copy?.offerTitlePlaceholder || "Ex.: calças, bicicleta, aulas..."}
                     value={form?.title || ""}
                     onChange={e => setForm && setForm({ ...form, title: e.target.value })}
                     required
                   />
                 </div>
                 <div className="field">
-                  <label>Área</label>
+                  <label>{copy?.areaLabel || "Área"}</label>
                   <select value={form?.area} onChange={e => setForm && setForm({ ...form, area: e.target.value })}>
                     {areas.map(a => <option key={a}>{a}</option>)}
                   </select>
                 </div>
                 <div className="field">
-                  <label>O que procuras em troca?</label>
+                  <label>{copy?.offerWishLabel || "O que procuras em troca?"}</label>
                   <input
-                    placeholder="Ex.: sofá, câmara, outro serviço..."
+                    placeholder={copy?.offerWishPlaceholder || "Ex.: sofá, câmara, outro serviço..."}
                     value={form?.wish || ""}
                     onChange={e => setForm && setForm({ ...form, wish: e.target.value })}
                   />
                 </div>
                 <div className="field">
-                  <label>Descrição</label>
+                  <label>{copy?.descriptionLabel || "Descrição"}</label>
                   <textarea
-                    placeholder="Conta um pouco mais sobre a tua oferta..."
+                    placeholder={copy?.offerDescriptionPlaceholder || "Conta um pouco mais sobre a tua oferta..."}
                     value={form?.description || ""}
                     onChange={e => setForm && setForm({ ...form, description: e.target.value })}
                   />
                 </div>
 
                 <div className="field">
-                  <label style={{ display: "block", fontSize: 13, fontWeight: 800, color: "#586174", marginBottom: 7 }}>Fotografias</label>
+                  <label style={{ display: "block", fontSize: 13, fontWeight: 800, color: "#586174", marginBottom: 7 }}>{copy?.photosLabel || "Fotografias"}</label>
                   <div className="upload-box">
                     <input id="offer-photo" type="file" accept="image/*" multiple onChange={addPhotos} hidden />
                     <label htmlFor="offer-photo" className="upload-label gold-btn" style={{ display: "inline-block", cursor: "pointer", padding: "6px 12px" }}>
-                      ＋ Adicionar fotografias
+                      ＋ {copy?.addPhotosLabel || "Adicionar fotografias"}
                     </label>
                     {photos.length > 0 && (
                       <div className="photo-list" style={{ display: "flex", gap: 8, marginTop: 10, flexWrap: "wrap" }}>
@@ -514,7 +512,7 @@ const langToPath = (code) => {
                 </div>
 
                 <button className="gold-btn large" style={{ width: "100%", marginTop: 14 }} disabled={loading}>
-                  {loading ? "A publicar…" : "Publicar oferta →"}
+                  {loading ? copy?.publishing || "A publicar…" : copy?.publishOfferButton || "Publicar oferta →"}
                 </button>
                 <div style={{ marginTop: 12 }}>
                   {notice && (
