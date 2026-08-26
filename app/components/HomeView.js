@@ -78,14 +78,6 @@ export default function HomeView(props) {
     scrollTo,
   } = props
 
-  // const langToPath = (code) => {
-  //   const c = (code || "").toLowerCase();
-  //   if (c === "pt") return "https://trocash.pt/";
-  //   if (c === "gb" || c === "en") return "/en";
-  //   if (c === "ua" || c === "uk") return "/uk";
-  //   return "/";
-  // };
-
 
 const langToPath = (code) => {
   const c = (code || "").toLowerCase();
