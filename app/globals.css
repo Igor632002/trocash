@@ -1420,6 +1420,40 @@ min-height: 48px;
   box-sizing: content-box;
 }
 
+.offer-edit-notice {
+margin-bottom: 12px;
+padding: 12px 16px;
+background: #d4edda;
+color: #155724;
+border-radius: 8px;
+font-size: 18px;
+font-weight: 700;
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 12px;
+max-width: 640px;
+width: 100%;
+box-sizing: border-box;
+}
+.offer-edit-notice > span {
+flex: 1;
+word-break: break-word;
+}
+.notice-close {
+background: transparent;
+border: none;
+color: #155724;
+font-size: 20px;
+cursor: pointer;
+line-height: 1;
+padding: 0 6px;
+}
+.offer-edit-form .gold-btn {
+width: 100%;
+max-width: 640px;
+box-sizing: border-box;
+}
 
 /* Переконатися, що великий десктоп (<=1680px) зберігає розмір */
 @media (max-width:1680px) {

@@ -1,5 +1,9 @@
 import React from "react";
 import { supabase } from "@/lib/supabase";
+import OfferActions from "./OfferActions.client";
+import demoListings from "@/lib/data/demoListings";
+import OwnerOffers from "./OwnerOffers.client";
+import OffersNav from "./OffersNav.client";
 
 function Logo({ compact = false }) {
   return (
@@ -29,15 +33,67 @@ function Logo({ compact = false }) {
     </div>
   );
 }
+export default async function OffersPage(props) {
+  const spRaw = props?.searchParams;
+  const sp = spRaw && typeof spRaw.then === "function" ? await spRaw : spRaw;
+  let owner = null;
 
-export default async function OffersPage({ searchParams }) {
-  const owner = searchParams?.owner || null;
+  if (typeof sp === "string") {
+    owner = new URLSearchParams(sp).get("owner") ?? null;
+  } else {
+    owner = sp?.owner ?? null;
+  }
+  // If owner query present, render client-side wrapper that validates browser session
+  if (owner) {
+    return (
+      <main className="site-shell tc-page">
+        <header className="topbar tc-nav">
+          <a className="logo-button" href="/">
+            <Logo />
+          </a>
+          {/* <nav className="desktop-nav">
+            <a href="/#explore">Explorar</a>
+            <a href="/auth">Meu perfil</a>
+            <a href="/#wishlist">Wish List</a>
+            <a href="/#trust">Mensagens</a>
+            <a href="/#how">Como funciona</a>
+            <a href="/#premium">Sobre</a>
+          </nav>     */}
+          {/* <nav className="desktop-nav">
+            <button onClick={() => { if (typeof window !== "undefined") window.location.hash = "explore"; }}>Explorar</button>
+            <button onClick={() => { if (typeof window !== "undefined") window.location.href = "/auth"; }}>Meu perfil</button>
+            <button onClick={() => { if (typeof window !== "undefined") window.location.hash = "wishlist"; }}>Wish List</button>
+            <button onClick={() => { if (typeof window !== "undefined") window.location.hash = "trust"; }}>Mensagens</button>
+            <button onClick={() => { if (typeof window !== "undefined") window.location.hash = "how"; }}>Como funciona</button>
+            <button onClick={() => { if (typeof window !== "undefined") window.location.hash = "premium"; }}>Sobre</button>
+          </nav> */}
+          <OffersNav />
+          <div className="top-actions nav-actions quick">
+            <a className="nav-btn" href="/offers">Ofertas</a>
+            <a className="nav-btn" href="/auth">Entrar</a>
+            <a className="gold-btn" href="/auth">＋ Publicar</a>
+          </div>
+        </header>
+
+        <OwnerOffers ownerId={owner} />
+
+        <footer className="footer">
+          <div>
+            <Logo compact />
+            <p>Troca de coisas e serviços no Algarve.</p>
+            <small>Comunidade · Confiança · Liberdade</small>
+          </div>
+          <div><b>Ajuda</b><a href="/">Sobre</a><a href="/">Como funciona</a></div>
+        </footer>
+        <div className="copyright">© 2026 troCASH · Algarve, Portugal</div>
+      </main>
+    );
+  }
 
   try {
     const q = owner
       ? supabase.from("offers").select("*").eq("owner_id", owner).order("created_at", { ascending: false })
-      : supabase.from("offers").select("*").order("created_at", { ascending: false });
-
+      : supabase.from("offers").select("*").neq("status", "hidden").order("created_at", { ascending: false });
     const { data: offers = [], error } = await q;
     if (error) throw error;
 
@@ -48,9 +104,9 @@ export default async function OffersPage({ searchParams }) {
             <Logo />
           </a>
           <nav className="desktop-nav">
-            <a href="/#explore">{`Explorar`}</a>
-            <a href="/auth">{`Meu perfil`}</a>
-            <a href="/#premium">{`Sobre`}</a>
+            <a href="/#explore">Explorar</a>
+            <a href="/auth">Meu perfil</a>
+            <a href="/#premium">Sobre</a>
           </nav>
           <div className="top-actions nav-actions quick">
             <a className="nav-btn" href="/offers">Ofertas</a>
@@ -67,14 +123,27 @@ export default async function OffersPage({ searchParams }) {
               <p>Não há ofertas a mostrar.</p>
             ) : (
               <ul style={{ listStyle: "none", padding: 0 }}>
-                {offers.map(o => (
-                  <li key={o.id} style={{ padding: 12, borderBottom: "1px solid #eee" }}>
-                    <a href={`/offers/${o.id}`} style={{ color: "#1a73e8", textDecoration: "none" }}>
-                      <strong>{o.title || `Oferta ${o.id}`}</strong>
-                    </a>
-                    <div style={{ color: "#666", marginTop: 6 }}>{o.area} · {o.wish}</div>
-                  </li>
-                ))}
+                {offers.map(o => {
+                  const img =
+                    o.image_url ||
+                    (o.photo_urls && o.photo_urls[0]) ||
+                    demoListings[(o.id || "").toString().length % demoListings.length].image;
+
+                  return (
+                    <li key={o.id} style={{ padding: 12, borderBottom: "1px solid #eee", display: "flex", gap: 12 }}>
+                      <div className="listing-image" style={{ width: 140, minWidth: 140, backgroundImage: `url(${img})`, backgroundSize: "cover", backgroundPosition: "center", borderRadius: 8 }} />
+                      <div style={{ flex: 1 }}>
+                        <a href={`/offers/${o.id}`} style={{ color: "#1a73e8", textDecoration: "none" }}>
+                          <strong>{o.title || `Oferta ${o.id}`}</strong>
+                        </a>
+                        <div style={{ color: "#666", marginTop: 6 }}>{o.area} · {o.wish}</div>
+                        <div style={{ marginTop: 8 }}>
+                          <OfferActions id={o.id} />
+                        </div>
+                      </div>
+                    </li>
+                  );
+                })}
               </ul>
             )}
           </div>
