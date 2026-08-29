@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 
-export default function OfferActions({ id }) {
+export default function OfferActions({ id, onDone }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -20,7 +20,10 @@ export default function OfferActions({ id }) {
         credentials: "include",
       });
       if (!res.ok) throw new Error(await res.text());
-      router.refresh();
+      // If parent provided a refresh handler (client-side lists), use it; otherwise
+      // fall back to Next's router.refresh to revalidate server data.
+      if (typeof onDone === "function") onDone();
+      else router.refresh();
     } catch (e) {
       alert("Помилка: " + e.message);
     } finally {

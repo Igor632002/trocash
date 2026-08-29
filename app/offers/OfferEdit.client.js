@@ -67,12 +67,10 @@ export default function OfferEditForm({ offer }) {
           Заголовок
           <input value={title} onChange={e => setTitle(e.target.value)} style={{ width: "100%", padding: 8, marginTop: 4 }} />
         </label>
-
         <label style={{ display: "block", marginBottom: 8 }}>
           Опис
           <textarea value={description} onChange={e => setDescription(e.target.value)} rows={6} style={{ width: "100%", padding: 8, marginTop: 4 }} />
         </label>
-
         <div>
           <button type="submit" disabled={loading} className="gold-btn">{loading ? "Зберегти..." : "Зберегти"}</button>
         </div>

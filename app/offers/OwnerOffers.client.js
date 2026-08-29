@@ -10,11 +10,10 @@ export default function OwnerOffers({ ownerId }) {
   const [user, setUser] = useState(null);
   const [offers, setOffers] = useState([]);
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
-    if (!ownerId) return;
     let mounted = true;
-    (async () => {
+    async function loadOffers() {
+      if (!ownerId) return;
       const { data } = await supabase.auth.getSession();
       const sessUser = data?.session?.user ?? null;
 
@@ -30,6 +29,7 @@ export default function OwnerOffers({ ownerId }) {
       }
 
       setUser(sessUser);
+      setLoading(true);
       const { data: rows = [], error } = await supabase
         .from("offers")
         .select("*")
@@ -41,7 +41,9 @@ export default function OwnerOffers({ ownerId }) {
         setOffers(rows || []);
         setLoading(false);
       }
-    })();
+    }
+
+    loadOffers();
     return () => { mounted = false; };
   }, [ownerId, router]);
 
@@ -64,16 +66,50 @@ export default function OwnerOffers({ ownerId }) {
               o.image_url ||
               (o.photo_urls && o.photo_urls[0]) ||
               demoListings[(o.id || "").toString().length % demoListings.length].image;
+
+            const isHidden = o.status && o.status !== "active";
+
             return (
               <li key={o.id} style={{ padding: 12, borderBottom: "1px solid #eee", display: "flex", gap: 12 }}>
-                <div className="listing-image" style={{ width: 140, minWidth: 140, backgroundImage: `url(${img})`, backgroundSize: "cover", backgroundPosition: "center", borderRadius: 8 }} />
+                <div
+                  className="listing-image"
+                  style={{
+                    width: 140,
+                    minWidth: 140,
+                    backgroundImage: `url(${img})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    borderRadius: 8,
+                    filter: isHidden ? "grayscale(40%) brightness(60%)" : undefined,
+                    opacity: isHidden ? 0.6 : 1,
+                  }}
+                />
                 <div style={{ flex: 1 }}>
                   <a href={`/offers/${o.id}`} style={{ color: "#1a73e8", textDecoration: "none" }}>
                     <strong>{o.title || `Oferta ${o.id}`}</strong>
                   </a>
+
+                  {isHidden && (
+                    <div style={{ color: "#b33", marginTop: 6, fontWeight: 600 }}>
+                      Прихований
+                    </div>
+                  )}
                   <div style={{ color: "#666", marginTop: 6 }}>{o.area} · {o.wish}</div>
                   <div style={{ marginTop: 8 }}>
-                    <OfferActions id={o.id} />
+                    <OfferActions id={o.id} onDone={() => {
+                      // reload the offers list after an action (delete/hide)
+                      (async () => {
+                        setLoading(true);
+                        const { data: rows = [], error } = await supabase
+                          .from("offers")
+                          .select("*")
+                          .eq("owner_id", ownerId)
+                          .order("created_at", { ascending: false });
+                        if (error) console.error(error);
+                        setOffers(rows || []);
+                        setLoading(false);
+                      })();
+                    }} />
                   </div>
                 </div>
               </li>
