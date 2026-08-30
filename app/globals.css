@@ -292,10 +292,11 @@ textarea {
 
 .hero h1,
 .hero-title {
-  font-size: clamp(48px, 6vw, 110px);
-  line-height: 0.94;
-  margin: 14px 0 20px;
-  letter-spacing: -3.5px;
+  /* reduced for better readability on small screens */
+  font-size: clamp(34px, 4.5vw, 72px);
+  line-height: 0.98;
+  margin: 12px 0 18px;
+  letter-spacing: -1.5px;
 }
 
 .hero h1 span,

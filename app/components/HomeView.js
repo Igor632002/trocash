@@ -158,7 +158,7 @@ export default function HomeView(props) {
         <div className="hero-overlay" />
         <div className="hero-inner">
           <div className="hero-content">
-            <div className="eyebrow">{copy?.hero1}</div>
+            {/* <div className="eyebrow">{copy?.hero1}</div> */}
             <h1 className="hero-title">
               <span>{copy?.hero1}</span>
               <strong>{copy?.hero2}</strong>
