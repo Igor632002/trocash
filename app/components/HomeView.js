@@ -3,35 +3,7 @@
 import React from "react"
 import { supabase } from "@/lib/supabase"
 import { CATEGORIES, areas } from "@/lib/constants"
-
-function Logo({ compact = false }) {
-  return (
-    <div className={`brand ${compact ? "brand-compact" : ""}`} aria-label="troCASH">
-      <svg className="brand-mark" viewBox="0 0 100 72" role="img" aria-hidden="true">
-        <defs>
-          <linearGradient id="goldLogo" x1="0" x2="1">
-            <stop offset="0" stopColor="#C58A20" />
-            <stop offset="0.5" stopColor="#F2D08A" />
-            <stop offset="1" stopColor="#B87810" />
-          </linearGradient>
-        </defs>
-        <circle cx="25" cy="12" r="5.5" fill="url(#goldLogo)" />
-        <circle cx="75" cy="12" r="5.5" fill="url(#goldLogo)" />
-        <path
-          d="M47 35 C36 18, 10 18, 10 36 C10 54, 36 54, 50 36 C64 18, 90 18, 90 36 C90 54, 64 54, 50 36 C36 18, 10 18, 10 36"
-          fill="none"
-          stroke="url(#goldLogo)"
-          strokeWidth="7"
-          strokeLinecap="round"
-        />
-      </svg>
-      <div className="brand-wordmark">
-        <span>tro</span><b>CASH</b>
-        <small>JUNTOS CRIAMOS VALOR.</small>
-      </div>
-    </div>
-  )
-}
+import Logo from "./Logo"
 
 export default function HomeView(props) {
   const {
@@ -78,6 +50,7 @@ export default function HomeView(props) {
     scrollTo,
   } = props
 
+  const [heroActive, setHeroActive] = React.useState(null);
 
   const langToPath = (code) => {
     const c = (code || "").toLowerCase();
@@ -89,19 +62,19 @@ export default function HomeView(props) {
   };
 
 
+
   return (
     <main className="site-shell tc-page">
       <header className="topbar tc-nav">
         <button className="logo-button" onClick={() => { scrollTo && scrollTo("top"); }}>
           <Logo />
         </button>
-
         <nav className="desktop-nav">
+          <button onClick={() => scrollTo && scrollTo("how")}>{copy?.navHow}</button>
           <button onClick={() => { scrollTo && scrollTo("explore"); }}>{copy?.navExplore}</button>
           <button onClick={() => { if (!user) router.push("/auth"); else setAccountOpen(true); }}>{copy?.navMine}</button>
           <button onClick={() => setWishlistOpen(true)}>{copy?.navWish}</button>
           <button onClick={() => scrollTo && scrollTo("trust")}>{copy?.navMessages}</button>
-          <button onClick={() => scrollTo && scrollTo("how")}>{copy?.navHow}</button>
           <button onClick={() => scrollTo && scrollTo("premium")}>{copy?.navAbout}</button>
         </nav>
 
@@ -129,7 +102,6 @@ export default function HomeView(props) {
                         window.location.href = path;
                       }
                     }}
-
                     title={l.label}
                   >
                     {l.flag}
@@ -165,25 +137,51 @@ export default function HomeView(props) {
             </h1>
             <p className="hero-sub">{copy?.heroSub}</p>
 
-            <div className="hero-actions">
-              <button className="gold-btn large" onClick={() => scrollTo && scrollTo("explore")}>
-                {copy?.explore} →
-              </button>
-              <button
-                className="light-btn large nav-btn"
-                onClick={() => { if (!user) router.push("/auth"); else setNewOfferOpen(true); }}
-              >
-                {copy?.publish} ＋
-              </button>
-            </div>
-
-            <div className="dream-pill">{copy?.dream}</div>
+            {/* <div className="dream-pill">{copy?.dream}</div> */}
 
             <div className="trust-row">
               <span>◈ <b>{copy?.trustBadge1Title}</b><small>{copy?.trustBadge1Sub}</small></span>
               <span>◌ <b>{copy?.trustBadge2Title}</b><small>{copy?.trustBadge2Sub}</small></span>
               <span>◇ <b>{copy?.trustBadge3Title}</b><small>{copy?.trustBadge3Sub}</small></span>
               <span>⌂ <b>{copy?.trustBadge4Title}</b><small>{copy?.trustBadge4Sub}</small></span>
+            </div>
+
+            <div style={{ margin: "40 0" }} className="hero-actions">
+              <button
+                className={heroActive === "explore" ? "gold-btn large btn-centered" : "gold-btn light-btn large nav-btn"}
+                onClick={() => { setHeroActive("explore"); scrollTo && scrollTo("explore"); }}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <circle cx="11" cy="11" r="7" />
+                  <line x1="16.5" y1="16.5" x2="21" y2="21" />
+                </svg>{'\u00A0\u00A0'}
+                {copy?.explore}
+              </button>
+
+              <button
+                className={heroActive === "publish" ? "gold-btn large btn-centered" : "gold-btn light-btn large nav-btn"}
+                onClick={() => { setHeroActive("publish"); if (!user) router.push("/auth"); else setNewOfferOpen(true); }}
+              >
+                ＋ {copy?.publish}
+              </button>
+
+              <button
+                className={heroActive === "auto" ? "gold-btn large btn-centered" : "gold-btn light-btn large nav-btn"}
+                onClick={() => { setHeroActive("auto"); setSearchOpen && setSearchOpen(true); }}
+                style={{ marginLeft: 8 }}
+              >
+                ✦ {copy?.autoMatches}
+              </button>
             </div>
           </div>
         </div>
@@ -367,11 +365,11 @@ export default function HomeView(props) {
       {/* MODALS & DRAWERS */}
       {
         accountOpen && (
-          <div className="panel modal-backdrop" onClick={() => setAccountOpen(false)}>
+          <div className="panel modal-backdrop" onClick={() => { setAccountOpen(false); setHeroActive(null); }}>
             <aside className="drawer modal" onClick={(e) => e.stopPropagation()}>
               <div className="drawer-head">
                 <h2>{copy?.accountModalTitle || "Meu perfil"}</h2>
-                <button className="close modal-close" onClick={() => setAccountOpen(false)}>×</button>
+                <button className="close modal-close" onClick={() => { setAccountOpen(false); setHeroActive(null); }}>×</button>
               </div>
               <div className="account-hero">
                 <div className="avatar">{(user?.email || "T")[0].toUpperCase()}</div>
@@ -385,13 +383,14 @@ export default function HomeView(props) {
                     <a
                       href={user?.id ? `/offers?owner=${user.id}` : '#'}
                       onClick={(e) => {
-                        e.preventDefault();
-                        setAccountOpen(false);
-                        if (user?.id) {
-                          if (router && router.push) router.push(`/offers?owner=${user.id}`);
-                          else window.location.href = `/offers?owner=${user.id}`;
-                        }
-                      }}
+                          e.preventDefault();
+                          setAccountOpen(false);
+                          setHeroActive(null);
+                          if (user?.id) {
+                            if (router && router.push) router.push(`/offers?owner=${user.id}`);
+                            else window.location.href = `/offers?owner=${user.id}`;
+                          }
+                        }}
                       style={{ color: '#1a73e8', textDecoration: 'underline' }}
                     >
                       {copy?.accountOffersLabel || "Ofertas publicadas"}
@@ -403,7 +402,7 @@ export default function HomeView(props) {
                   <div>{copy?.accountExchangesLabel || "Trocas concluídas"}</div>
                 </div>
               </div>
-              <button className="nav-btn gold-btn" style={{ width: "100%", marginTop: 18 }} onClick={() => { setAccountOpen(false); setWishlistOpen(true); }}>
+              <button className="nav-btn gold-btn" style={{ width: "100%", marginTop: 18 }} onClick={() => { setAccountOpen(false); setWishlistOpen(true); setHeroActive(null); }}>
                 {copy?.accountOpenWishlist || "Abrir Desejos →"}
               </button>
 
@@ -417,6 +416,7 @@ export default function HomeView(props) {
                     console.error('Sign out error', err);
                   } finally {
                     setAccountOpen(false);
+                    setHeroActive(null);
                     window.location.reload();
                   }
                 }}
@@ -429,16 +429,16 @@ export default function HomeView(props) {
       }
       {
         wishlistOpen && (
-          <div className="panel modal-backdrop" onClick={() => setWishlistOpen(false)}>
+          <div className="panel modal-backdrop" onClick={() => { setWishlistOpen(false); setHeroActive(null); }}>
             <aside className="drawer modal" onClick={(e) => e.stopPropagation()}>
               <div className="drawer-head">
                 <h2>{copy?.wishlistTitle || "Lista de Desejos"}</h2>
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
-                  <button className="close modal-close" onClick={() =>{setWishlistOpen(false);setAccountOpen(true);}}>←</button>
-                  <button className="close modal-close" onClick={() => setWishlistOpen(false)}>×</button>
+                  <button className="close modal-close" onClick={() => { setWishlistOpen(false); setAccountOpen(true); setHeroActive(null); }}>←</button>
+                  <button className="close modal-close" onClick={() => { setWishlistOpen(false); setHeroActive(null); }}>×</button>
                 </div>
-              </div>  
-         
+              </div>
+
 
               <p style={{ color: "#7b8494" }}>{copy?.wishlistDescription || "Guarda aquilo que queres encontrar através de uma troca."}</p>
               {["Bicicleta urbana", "Sofá pequeno", "Câmara fotográfica"].map((x, i) => (
@@ -450,7 +450,7 @@ export default function HomeView(props) {
                   </div>
                 </div>
               ))}
-              <button className="gold-btn" style={{ marginTop: 22, width: "100%" }} onClick={() => { setWishlistOpen(false); setNewOfferOpen(true); }}>
+              <button className="gold-btn" style={{ marginTop: 22, width: "100%" }} onClick={() => { setWishlistOpen(false); setNewOfferOpen(true); setHeroActive(null); }}>
                 {copy?.wishlistAddButton || "Adicionar desejo +"}
               </button>
             </aside>
@@ -460,7 +460,7 @@ export default function HomeView(props) {
 
       {
         newOfferOpen && (
-          <div className="panel modal-backdrop" onClick={() => setNewOfferOpen(false)}>
+          <div className="panel modal-backdrop" onClick={() => { setNewOfferOpen(false); setHeroActive(null); }}>
             <aside className="drawer modal" onClick={(e) => e.stopPropagation()}>
               <div className="drawer-head">
                 <h2>{copy?.newOfferTitle || "Criar oferta"}</h2>
@@ -470,9 +470,10 @@ export default function HomeView(props) {
                     onClick={() => {
                       setNewOfferOpen(false);
                       setWishlistOpen(true);
+                      setHeroActive(null);
                     }}
                   >←</button>
-                  <button className="close modal-close" onClick={() => setNewOfferOpen(false)}>×</button>
+                  <button className="close modal-close" onClick={() => { setNewOfferOpen(false); setHeroActive(null); }}>×</button>
                 </div>
               </div>
               <form className="offer-form" onSubmit={addOffer}>
