@@ -13,6 +13,7 @@
   --white: #ffffff;
   --line: rgba(17, 25, 54, 0.10);
   --shadow: 0 20px 60px rgba(26, 31, 53, 0.08);
+  --ink: #111936;
 }
 
 * {
@@ -365,8 +366,9 @@ textarea {
 .hero-actions {
   display: flex;
   gap: 12px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;      /* не дозволяємо переносити на великих екранах */
   margin-top: 18px;
+  overflow: hidden;       /* запобігає рваному лейауту при дуже довгих кнопках */
 }
 
 .gold-btn.large {
@@ -449,18 +451,35 @@ textarea {
 .search-panel {
   position: relative;
   margin: -40px auto 0;
-  z-index: 5;
-  width: min(1120px, calc(100% - 48px));
+  z-index: 5;  
+  width: 100%;
+  max-width: none;
+  margin-left: 0;
   background: rgba(255, 255, 255, 0.94);
   box-shadow: var(--shadow);
   border: 1px solid rgba(255, 255, 255, 0.8);
-  border-radius: 24px;
-  padding: 20px;
+  border-radius: 12px;
+  padding: 0px;
+}
+
+/* inner container to align content with hero/content width */
+.search-panel .panel-inner {
+  width: 100%;
+  max-width: none;
+  margin: 0 auto;
+  padding: 0 1vw;
+  /* matches .hero-content horizontal padding */
+  box-sizing: border-box;
   display: grid;
-  grid-template-columns: 1.15fr auto 1fr 1fr 0.8fr 54px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 12px;
   align-items: end;
 }
+
+.search-panel .panel-inner>* {
+  min-width: 0;
+}
+
 
 .search-heading {
   display: flex;
@@ -481,43 +500,64 @@ textarea {
   justify-self: start;
 }
 
-/* Кожна кнопка з власним обведенням */
-.search-tabs button {
+.search-tabs button, .btn-12ch {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 14px;
+  padding: 8px 12px;
+  width: 16ch;
+  max-width: 100%;
+  box-sizing: border-box;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   border-radius: 12px;
   background: #f6f8fb;
-  ;
   color: #646a79;
   font-size: 15px;
   font-weight: 800;
   line-height: 1;
-  border: 1.5px solid rgba(17, 25, 54, 0.12);
-  /* обведення навколо кожної кнопки */
-  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.03);
+  border: 1.5px solid rgba(17,25,54,0.12);
+  box-shadow: 0 2px 0 rgba(0,0,0,0.03);
+  transition: transform .08s ease, box-shadow .12s ease, border-color .12s ease;
+}
+.search-tabs button, .btn-12ch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  width: 16ch;
+  max-width: 100%;
+  box-sizing: border-box;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-radius: 12px;
+  background: #f6f8fb;
+  color: #646a79;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1;
+  border: 1.5px solid rgba(17,25,54,0.12);
+  box-shadow: 0 2px 0 rgba(0,0,0,0.03);
   transition: transform .08s ease, box-shadow .12s ease, border-color .12s ease;
 }
 
-/* Активна кнопка */
-.search-tabs button.active {
+.search-tabs button.active, .btn-12ch.active {
   background: #fff4df;
   color: #a66c10;
   border-color: rgba(166, 108, 16, 0.25);
   box-shadow: inset 0 -2px 0 rgba(166, 108, 16, 0.06);
 }
 
-/* Hover / focus */
-.search-tabs button:hover {
+.search-tabs button:hover, .btn-12ch:hover {
   transform: translateY(-1px);
 }
 
-.search-tabs button:focus {
+.search-tabs button:focus, .btn-12ch:focus {
   outline: 3px solid rgba(166, 108, 16, 0.12);
   outline-offset: 2px;
 }
-
 .search-panel label {
   font-size: 10px;
   font-weight: 800;
@@ -526,8 +566,7 @@ textarea {
   gap: 6px;
 }
 
-.search-panel input,
-.search-panel select {
+.search-panel input {
   width: 100%;
   padding: 12px;
 }
@@ -1280,7 +1319,6 @@ textarea {
     font-size: 12px;
   }
 
-  .search-panel,
   .content-section,
   .trust-strip,
   .benefits,
@@ -1291,8 +1329,26 @@ textarea {
   }
 
   .search-panel {
+    /* keep full-bleed on smaller widths but preserve vertical offset */
+    width: 100vw;
+    max-width: none;
+    margin-left: calc(50% - 50vw);
     margin-top: -28px;
+  }
+
+  .search-panel .panel-inner {
     grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  /* Make circular search button become a full-width action */
+  .search-panel .search-btn {
+    grid-column: 1 / -1;
+    justify-self: stretch;
+    width: 100%;
+    height: 48px;
+    border-radius: 12px;
+    /* not circular on mobile */
   }
 
   .search-panel>label:first-of-type,
@@ -1356,6 +1412,10 @@ textarea {
     gap: 10px;
     flex-direction: column;
   }
+
+  .search-panel input {
+    font-size: 13px;
+  }
 }
 
 /* Smaller tablets / phones */
@@ -1418,7 +1478,6 @@ textarea {
     font-size: 11px;
   }
 
-  .search-panel,
   .content-section,
   .trust-strip,
   .benefits,
@@ -1429,6 +1488,9 @@ textarea {
   }
 
   .search-panel {
+    width: 100vw;
+    max-width: none;
+    margin-left: calc(50% - 50vw);
     margin-top: -28px;
     grid-template-columns: 1fr;
   }
@@ -1699,10 +1761,6 @@ textarea {
   }
 }
 
-/* button,input,textarea,select
-{padding:10px;border-radius:8px;border:1px solid #ccc}
-button{cursor:pointer}
-textarea{min-height:90px} */
 .search-panel>label:first-of-type,
 .search-panel>label:nth-of-type(2),
 .search-panel>label:nth-of-type(3) {
@@ -1710,8 +1768,7 @@ textarea{min-height:90px} */
   font-weight: 800;
 }
 
-.search-panel input,
-.search-panel select {
+.search-panel input {
   font-size: 14px;
   min-height: 48px;
 }
@@ -1769,6 +1826,52 @@ textarea{min-height:90px} */
   max-width: 640px;
   box-sizing: border-box;
 }
+/* Контейнер label */
+.search-panel .filter-label {
+    display: flex;
+    flex-direction: column; /* Текст зверху, select знизу */
+    width: 100%; 
+    box-sizing: border-box;
+    font-size: 14px; /* Збільшений розмір тексту label */
+    font-weight: 600; /* Робить текст label трохи жирнішим для контрасту */
+}
+
+/* Сам випадаючий список */
+.search-panel .filter-label select,
+.search-panel .filter-label input {
+    display: block !important; /* Робимо його блочним елементом */
+    width: 100% !important; /* Примусово задаємо ширину */
+    max-width: 100% !important; /* Знімаємо можливі обмеження від інших стилів */
+    min-width: 100% !important; /* Гарантуємо, що він не звузиться */
+    box-sizing: border-box;
+    margin-top: 5px; /* Невеликий відступ від тексту */
+
+    font-size: 16px !important; /* Збільшений розмір тексту всередині select */
+    padding: 12px 14px !important; /* Збільшені відступи для гармонійного вигляду */
+}
+
+/* Контейнер label (підходить і для select, і для input) */
+.search-panel .filter-label {
+    display: flex;
+    flex-direction: column;
+    width: 100%; 
+    box-sizing: border-box;
+    font-size: 14px;
+    font-weight: 600;
+}
+/* Основний колір введеного тексту */
+.search-panel .filter-label input {
+    color: var(--navy) !important;
+}
+
+/* Колір та прозорість підказки (placeholder) */
+.search-panel .filter-label input::placeholder {
+    color: var(--navy) !important;
+    opacity: 0.6 !important; /* Поставте 1 !important, якщо хочете 100% темний колір */
+}
+
+.filter-label.narrow { display:inline-flex; flex-direction:column; width:120px; }
+.filter-label.narrow select { width:100% !important;  }
 
 /* Переконатися, що великий десктоп (<=1680px) зберігає розмір */
 @media (max-width:1680px) {
@@ -1778,25 +1881,9 @@ textarea{min-height:90px} */
   .search-panel>label:nth-of-type(3) {
     font-size: 15px;
   }
-
-  .search-panel input,
-  .search-panel select {
+  .search-panel input
+   {
     font-size: 14px;
-  }
-}
-
-/* Якщо потрібно трохи зменшити на планшетах/мобайлі */
-@media (max-width:900px) {
-
-  .search-panel>label:first-of-type,
-  .search-panel>label:nth-of-type(2),
-  .search-panel>label:nth-of-type(3) {
-    font-size: 14px;
-  }
-
-  .search-panel input,
-  .search-panel select {
-    font-size: 13px;
   }
 }
 
@@ -1840,4 +1927,28 @@ textarea{min-height:90px} */
   }
 }
 
-.btn-centered { display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+.btn-centered {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+@media (min-width: 900px) {
+  .search-panel .panel-inner select {
+    max-width: 20ch;
+    width: auto;
+    box-sizing: border-box;
+    padding-right: 12px; /* забезпечує місце під стрілку */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .btn-12ch {
+    width: auto;
+    display: inline-block;
+  }
+}

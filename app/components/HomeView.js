@@ -4,6 +4,7 @@ import React from "react"
 import { supabase } from "@/lib/supabase"
 import { CATEGORIES, areas } from "@/lib/constants"
 import Logo from "./Logo"
+import { SearchIcon } from "@/lib/icons"
 
 export default function HomeView(props) {
   const {
@@ -60,9 +61,6 @@ export default function HomeView(props) {
     if (c === "ua" || c === "uk") return "/uk";
     return "/";
   };
-
-
-
   return (
     <main className="site-shell tc-page">
       <header className="topbar tc-nav">
@@ -119,18 +117,23 @@ export default function HomeView(props) {
             <button className="ghost-btn" onClick={() => router.push("/auth")}>Entrar</button>
           )}
 
+
+
+
+
+
           <button className="gold-btn" onClick={() => { if (!user) router.push("/auth"); else setNewOfferOpen(true); }}>
             ＋ {copy?.publish}
           </button>
         </div>
       </header>
       {/* --- HERO --- */}
-      <section id="top" className="hero">
+      <section id="top"  className="hero">
         <div className="hero-image" aria-hidden="true" />
         <div className="hero-overlay" />
         <div className="hero-inner">
-          <div className="hero-content">
-            {/* <div className="eyebrow">{copy?.hero1}</div> */}
+          <div className="hero-content" >
+            <br></br>
             <h1 className="hero-title">
               <span>{copy?.hero1}</span>
               <strong>{copy?.hero2}</strong>
@@ -138,140 +141,193 @@ export default function HomeView(props) {
             <p className="hero-sub">{copy?.heroSub}</p>
 
             {/* <div className="dream-pill">{copy?.dream}</div> */}
-
+            <br></br>
             <div className="trust-row">
               <span>◈ <b>{copy?.trustBadge1Title}</b><small>{copy?.trustBadge1Sub}</small></span>
               <span>◌ <b>{copy?.trustBadge2Title}</b><small>{copy?.trustBadge2Sub}</small></span>
               <span>◇ <b>{copy?.trustBadge3Title}</b><small>{copy?.trustBadge3Sub}</small></span>
               <span>⌂ <b>{copy?.trustBadge4Title}</b><small>{copy?.trustBadge4Sub}</small></span>
             </div>
-
-            <div style={{ margin: "40 0" }} className="hero-actions">
+            {/* <div style={{ border: "1px solid blue", margin: "20px 0" }} className="hero-actions">
               <button
                 className={heroActive === "explore" ? "gold-btn large btn-centered" : "gold-btn light-btn large nav-btn"}
-                onClick={() => { setHeroActive("explore"); scrollTo && scrollTo("explore"); }}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                >
-                  <circle cx="11" cy="11" r="7" />
-                  <line x1="16.5" y1="16.5" x2="21" y2="21" />
-                </svg>{'\u00A0\u00A0'}
-                {copy?.explore}
+                onClick={() => { setHeroActive("explore"); scrollTo && scrollTo("explore"); }} >
+                <SearchIcon width={20} height={20} />{'\u00A0\u00A0'}
+                {copy?.latest_offers}
               </button>
 
+              <button className={searchTab === "Procuro" ? "active" : ""}
+                onClick={() => setSearchTab && setSearchTab("Procuro")}  >
+                {copy?.want || "Procuro"}
+              </button>
+              <button className={searchTab === "Tenho" ? "active" : ""}
+                onClick={() => setSearchTab && setSearchTab("Tenho")}>
+                {copy?.have || "Tenho"}
+              </button>
               <button
                 className={heroActive === "publish" ? "gold-btn large btn-centered" : "gold-btn light-btn large nav-btn"}
-                onClick={() => { setHeroActive("publish"); if (!user) router.push("/auth"); else setNewOfferOpen(true); }}
-              >
+                onClick={() => { setHeroActive("publish"); if (!user) router.push("/auth"); else setNewOfferOpen(true); }} >
                 ＋ {copy?.publish}
               </button>
 
               <button
                 className={heroActive === "auto" ? "gold-btn large btn-centered" : "gold-btn light-btn large nav-btn"}
                 onClick={() => { setHeroActive("auto"); setSearchOpen && setSearchOpen(true); }}
-                style={{ marginLeft: 8 }}
-              >
+                style={{ marginLeft: 8 }} >
                 ✦ {copy?.autoMatches}
               </button>
-            </div>
+           </div> */}
+
           </div>
+        </div>        
+      </section>
+      
+      {/* --- SEARCH PANEL --- */}
+      <section id="explore" style={{ border: "1px solid lightgray" }} className={`search-panel ${searchTab === "Tenho" ? "have" : "want"}`} >
+       <div className="hero-actions">
+          <button className={searchTab === "Procuro" ? "gold-btn large btn-centered" : "gold-btn light-btn large nav-btn"}
+            onClick={() => setSearchTab && setSearchTab("Procuro")} >
+            <SearchIcon width={20} height={20} />{'\u00A0\u00A0'}
+            {copy?.want || "Procuro"}
+          </button>
+          <button
+            className={searchTab === "Tenho" ? "gold-btn large btn-centered" : "gold-btn light-btn large nav-btn"}
+            onClick={() => setSearchTab && setSearchTab("Tenho")} >
+            {copy?.have || "Tenho"}
+          </button>
+        </div>
+        {/* 1. ЗАГОЛОВОК */}
+        <br></br>
+        <div className="search-heading">
+          <span style={{ marginLeft: "18px", fontSize: "16px", display: "inline-flex", gap: 8, alignItems: "baseline", whiteSpace: "nowrap" }}>
+            <b>{searchTab === "Procuro" ? copy?.searchTitle : copy?.searchOfferTitle}</b>
+            <span style={{ fontSize: "14px" }}>
+              {searchTab === "Procuro"
+                ? (copy?.searchSub || "Encontra uma troca que faça sentido para ti")
+                : (copy?.offerSub || "Veja os itens ou serviços que você oferece")}
+            </span>
+          </span>
+        </div>
+        <br></br>
+        <div className="panel-inner">
+          {/* 2. СПІЛЬНІ ФІЛЬТРИ (Категорія присутня в обох табах) */}
+          <label className="filter-label">
+            {copy?.category || "Категорія:"}
+            <select
+              value={category}
+              onChange={e => setCategory?.(e.target.value)}>
+
+              <option value="" disabled>{copy?.selectCategory || "Оберіть категорію"}</option>
+              {Object.keys(CATEGORIES).map(k => (
+                <option key={k} value={k}>
+                  {copy?.categories?.[k] || k}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          {/* 3. УНІКАЛЬНІ ФІЛЬТРИ (Я хочу / Відстань) */}
+          {/* Показуємо ці поля, коли вкладка НЕ "Tenho" (тобто "Procuro" або інша) */}
+          {searchTab !== "Tenho" && (
+            <>
+              <label className="filter-label">
+                {copy?.want || "Я хочу"}
+                <input
+                  value={want}
+                  onChange={e => setWant?.(e.target.value)}
+                  placeholder={copy?.offerWishPlaceholder || "Ex.: sofá, câmara, outro serviço..."}
+                />
+              </label>
+              <label className="filter-label">
+                {copy?.area || "Населений пункт:"}
+                <select value={radius} onChange={e => setRadius?.(e.target.value)}>
+                  <option value="">Оберіть населений пункт</option>
+                  {areas.map(a => (<option key={a} value={a}>{a}</option>))}
+                </select>
+              </label>
+              <label className="filter-label narrow">
+                {copy?.distance || "Відстань:"}
+                <select value={radius} style={{ width: 120 }} onChange={e => setRadius?.(e.target.value)}>
+                  <option value="5">5 km</option>
+                  <option value="10">10 km</option>
+                  <option value="25">25 km</option>
+                  <option value="50">50 km</option>
+                  <option value="Algarve">Algarve</option>
+                </select>
+              </label>
+              <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                {/* 4. КНОПКА ПОШУКУ */}
+                <button
+                  className={`btn-12ch large ${searchTab === "Procuro"
+                    ? "active gold-btn btn-centered"
+                    : "gold-btn light-btn nav-btn"
+                    }`}
+                  onClick={() => setSearchOpen?.(true)}  >
+                  <SearchIcon width={20} height={20} />{'\u00A0\u00A0'}
+                  {copy?.searchButton || "Pesquisar"}
+                </button>
+
+                {/* 5. КНОПКА АВТО ПОШУКУ  */}
+                <button
+                  className={`btn-12ch large ${searchTab === "Procuro"
+                    ? "active gold-btn btn-centered"
+                    : "gold-btn light-btn nav-btn"
+                    }`}
+
+                  onClick={() => {
+                    setHeroActive("auto"); setSearchOpen && setSearchOpen(true);
+                  }}   >
+                  ✦ {copy?.autoMatches}
+                </button>
+              </div>
+            </>
+          )}
+
+
+
+          {/* 6. ТЕКСТ ПІСЛЯ КНОПОК ЗБІГІВ */}
+          {searchOpen && (
+            <div
+              // Краще винести ці стилі в окремий клас, наприклад, className="smart-matches-alert"
+              style={{ gridColumn: "1 / -1", marginTop: 14, padding: 14, borderRadius: 14, background: "#fff8e9", color: "#765824" }}
+            >
+              {copy?.smartMatches
+                ?.replace("{have}", have || copy?.have || "Tenho")
+                .replace("{want}", want || copy?.want || "Procuro")}
+            </div>
+          )}
         </div>
       </section>
 
-      {/* --- SEARCH PANEL --- */}
-      <section className={"search-panel " + (searchTab === "Tenho" ? "have" : "want")} id="explore">
-        <table>
-          <tbody>
-            <tr><td className="search-tabs">
-              <button className={searchTab === "Procuro" ? "active" : ""} onClick={() => setSearchTab && setSearchTab("Procuro")}>{copy?.want || "Procuro"}</button>
-              <button className={searchTab === "Tenho" ? "active" : ""} onClick={() => setSearchTab && setSearchTab("Tenho")}>{copy?.have || "Tenho"}</button>
-            </td></tr>
-            <tr>
-              <td>
-                <div className="search-heading">
-                  {searchTab === "Procuro" ? (
-                    <>
-                      <b>{copy?.searchTitle}</b>
-                      <span>{copy?.searchSub || "Encontra uma troca que faça sentido para ti"}</span>
-                    </>
-                  ) : (
-                    <>
-                      <b>{copy?.searchOfferTitle}</b>
-                      <span>{copy?.offerSub || "Veja os itens ou serviços que você oferece"}</span>
-                    </>
-                  )}
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        {searchTab === "Tenho" ? (
-          <>
-            <label>
-              {copy?.category || "Категорія:"}
-              <select value={category} onChange={e => setCategory && setCategory(e.target.value)}>
-                <option value="" disabled>{copy?.selectCategory || "Оберіть категорію"}</option>
-                {Object.keys(CATEGORIES).map(k => (
-                  <option key={k} value={k}>
-                    {copy?.categories?.[k] || k}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label>
-              {copy?.want || "Я хочу"}
-              <input value={want} onChange={e => setWant && setWant(e.target.value)} placeholder={copy?.offerWishPlaceholder || "Ex.: sofá, câmara, outro serviço..."} />
-            </label>
-
-          </>
-        ) : (
-          <>
-            <label>
-              {copy?.category || "Категорія:"}
-              <select value={category} onChange={e => setCategory && setCategory(e.target.value)}>
-                <option value="" disabled>{copy?.selectCategory || "Оберіть категорію"}</option>
-                {Object.keys(CATEGORIES).map(k => (
-                  <option key={k} value={k}>
-                    {copy?.categories?.[k] || k}
-                  </option>
-                ))}
-
-              </select>
-            </label>
-            <label>
-              {copy?.want || "Я хочу"}
-              <input value={want} onChange={e => setWant && setWant(e.target.value)} placeholder={copy?.offerWishPlaceholder || "Ex.: sofá, câmara, outro serviço..."} />
-            </label>
-
-            <label>
-              {copy?.distance}
-              <select value={radius} onChange={e => setRadius && setRadius(e.target.value)}>
-                <option>5 km</option>
-                <option>10 km</option>
-                <option>25 km</option>
-                <option>50 km</option>
-                <option>Algarve</option>
-              </select>
-            </label>
-          </>
-        )}
-
-        <button className="search-btn" aria-label={copy?.searchButton || "Pesquisar"} onClick={() => setSearchOpen && setSearchOpen(true)}>⌕</button>
-
-        {searchOpen && (
-          <div style={{ gridColumn: "1 / -1", marginTop: 14, padding: 14, borderRadius: 14, background: "#fff8e9", color: "#765824" }}>
-            {copy?.smartMatches?.replace("{have}", have || copy?.have || "Tenho").replace("{want}", want || copy?.want || "Procuro")}
+      {/* --- Featured  / CARDS --- */}
+      <section className="content-section section" id="Featured">
+        <div className="section-head section-title">
+          <div>
+            <span className="eyebrow gold-label">Featured</span>
+            <h2>{copy?.matches} ✦</h2>
+            <p>O sistema aproxima pessoas com desejos compatíveis.</p>
           </div>
-        )}
+          <button className="text-btn" onClick={() => setCategory && setCategory("Todas")}>{copy?.viewAll || "Ver todas →"}</button>
+        </div>
+
+        <div className="listing-grid cards">
+          {visibleListings.map((o, i) => (
+            <article className="listing-card card" key={o.id || i}>
+              <div className="listing-image" style={{ backgroundImage: `url(${o.image})` }}>
+                <span>{o.kind === "Serviço" ? "Serviço" : "Troca"}</span>
+                <button aria-label={copy?.wishlistAria || "Lista de Desejos"}>♡</button>
+              </div>
+              <div className="listing-body card-body">
+                <small>{o.area || "Algarve"} · {i + 2} km</small>
+                <h3>{o.title}</h3>
+                <div className="swap-line meta">
+                  <span>Oferece</span> <b>{o.wish || "algo que procuras"}</b>
+                </div>
+                <button className="mini-btn gold-btn" onClick={() => proposeExchange && proposeExchange(o.id)}>Ver troca</button>
+              </div>
+            </article>
+          ))}
+        </div>
       </section>
       {/* --- MATCHES / CARDS --- */}
       <section className="content-section section" id="matches">
@@ -383,14 +439,14 @@ export default function HomeView(props) {
                     <a
                       href={user?.id ? `/offers?owner=${user.id}` : '#'}
                       onClick={(e) => {
-                          e.preventDefault();
-                          setAccountOpen(false);
-                          setHeroActive(null);
-                          if (user?.id) {
-                            if (router && router.push) router.push(`/offers?owner=${user.id}`);
-                            else window.location.href = `/offers?owner=${user.id}`;
-                          }
-                        }}
+                        e.preventDefault();
+                        setAccountOpen(false);
+                        setHeroActive(null);
+                        if (user?.id) {
+                          if (router && router.push) router.push(`/offers?owner=${user.id}`);
+                          else window.location.href = `/offers?owner=${user.id}`;
+                        }
+                      }}
                       style={{ color: '#1a73e8', textDecoration: 'underline' }}
                     >
                       {copy?.accountOffersLabel || "Ofertas publicadas"}
@@ -514,7 +570,6 @@ export default function HomeView(props) {
                     onChange={e => setForm && setForm({ ...form, description: e.target.value })}
                   />
                 </div>
-
                 <div className="field">
                   <label style={{ display: "block", fontSize: 13, fontWeight: 800, color: "#586174", marginBottom: 7 }}>{copy?.photosLabel || "Fotografias"}</label>
                   <div className="upload-box">
