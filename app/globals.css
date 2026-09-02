@@ -1952,3 +1952,28 @@ textarea {
     display: inline-block;
   }
 }
+
+/* Центрувати панелі і модальні вікна на всіх екранах */
+.panel {
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.drawer {
+  width: min(720px, 94vw);
+  height: auto;
+  max-height: 92vh;
+  border-radius: 22px;
+  margin: 0 auto;
+  overflow: auto;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.22);
+}
+
+/* Зберегти трохи ширший вигляд на широких екранах */
+@media (min-width: 1200px) {
+  .drawer {
+    width: min(900px, 70%);
+    max-width: 1100px;
+  }
+}

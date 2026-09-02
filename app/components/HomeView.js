@@ -75,7 +75,6 @@ export default function HomeView(props) {
           <button onClick={() => scrollTo && scrollTo("trust")}>{copy?.navMessages}</button>
           <button onClick={() => scrollTo && scrollTo("premium")}>{copy?.navAbout}</button>
         </nav>
-
         <div className="top-actions nav-actions quick">
           <div style={{ position: "relative" }}>
             <button className="nav-btn" onClick={() => setLanguageOpen && setLanguageOpen(v => !v)} aria-label="Idioma">
@@ -116,12 +115,6 @@ export default function HomeView(props) {
           ) : (
             <button className="ghost-btn" onClick={() => router.push("/auth")}>Entrar</button>
           )}
-
-
-
-
-
-
           <button className="gold-btn" onClick={() => { if (!user) router.push("/auth"); else setNewOfferOpen(true); }}>
             ＋ {copy?.publish}
           </button>
@@ -185,16 +178,33 @@ export default function HomeView(props) {
       {/* --- SEARCH PANEL --- */}
       <section id="explore" style={{ border: "1px solid lightgray" }} className={`search-panel ${searchTab === "Tenho" ? "have" : "want"}`} >
        <div className="hero-actions">
-          <button className={searchTab === "Procuro" ? "gold-btn large btn-centered" : "gold-btn light-btn large nav-btn"}
-            onClick={() => setSearchTab && setSearchTab("Procuro")} >
-            <SearchIcon width={20} height={20} />{'\u00A0\u00A0'}
-            {copy?.want || "Procuro"}
-          </button>
           <button
-            className={searchTab === "Tenho" ? "gold-btn large btn-centered" : "gold-btn light-btn large nav-btn"}
-            onClick={() => setSearchTab && setSearchTab("Tenho")} >
-            {copy?.have || "Tenho"}
-          </button>
+  className={(searchTab === "Procuro" && heroActive !== "publish") ? "gold-btn large btn-centered" : "gold-btn light-btn large nav-btn"}
+  onClick={() => { setSearchTab && setSearchTab("Procuro"); setHeroActive && setHeroActive(null); }}
+>
+  <SearchIcon width={20} height={20} />{'\u00A0\u00A0'}
+  {copy?.want || "Procuro"}
+</button>
+
+<button
+  className={(searchTab === "Tenho" && heroActive !== "publish") ? "gold-btn large btn-centered" : "gold-btn light-btn large nav-btn"}
+  onClick={() => { setSearchTab && setSearchTab("Tenho"); setHeroActive && setHeroActive(null); }}
+>
+  {copy?.have || "Tenho"}
+</button>
+
+<button
+  className={heroActive === "publish" ? "gold-btn large btn-centered" : "gold-btn light-btn large nav-btn"}
+  onClick={() => {
+    if (!user) router.push("/auth");
+    else {
+      setNewOfferOpen(true);
+      setHeroActive && setHeroActive("publish");
+    }
+  }}
+>
+  ＋ {copy?.publish}
+</button>
         </div>
         {/* 1. ЗАГОЛОВОК */}
         <br></br>
