@@ -2,7 +2,8 @@
 
 import React from "react"
 import { supabase } from "@/lib/supabase"
-import { CATEGORIES, areas } from "@/lib/constants"
+import { areas } from "@/lib/constants"
+import { fetchCategories } from "@/lib/dal"
 import Logo from "./Logo"
 import { SearchIcon } from "@/lib/icons"
 
@@ -52,6 +53,20 @@ export default function HomeView(props) {
   } = props
 
   const [heroActive, setHeroActive] = React.useState(null);
+  const [categoriesList, setCategoriesList] = React.useState([]);
+
+  React.useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const cats = await fetchCategories();
+        if (mounted) setCategoriesList(cats);
+      } catch (err) {
+        console.error('fetchCategories failed', err);
+      }
+    })();
+    return () => { mounted = false; };
+  }, []);
 
   const langToPath = (code) => {
     const c = (code || "").toLowerCase();
@@ -121,7 +136,7 @@ export default function HomeView(props) {
         </div>
       </header>
       {/* --- HERO --- */}
-      <section id="top"  className="hero">
+      <section id="top" className="hero">
         <div className="hero-image" aria-hidden="true" />
         <div className="hero-overlay" />
         <div className="hero-inner">
@@ -172,39 +187,38 @@ export default function HomeView(props) {
            </div> */}
 
           </div>
-        </div>        
+        </div>
       </section>
-      
+
       {/* --- SEARCH PANEL --- */}
       <section id="explore" style={{ border: "1px solid lightgray" }} className={`search-panel ${searchTab === "Tenho" ? "have" : "want"}`} >
-       <div className="hero-actions">
+        <div className="hero-actions">
           <button
-  className={(searchTab === "Procuro" && heroActive !== "publish") ? "gold-btn large btn-centered" : "gold-btn light-btn large nav-btn"}
-  onClick={() => { setSearchTab && setSearchTab("Procuro"); setHeroActive && setHeroActive(null); }}
->
-  <SearchIcon width={20} height={20} />{'\u00A0\u00A0'}
-  {copy?.want || "Procuro"}
-</button>
+            className={(searchTab === "Procuro" && heroActive !== "publish") ? "gold-btn large btn-centered" : "gold-btn light-btn large nav-btn"}
+            onClick={() => { setSearchTab && setSearchTab("Procuro"); setHeroActive && setHeroActive(null); }}
+          >
+            <SearchIcon width={20} height={20} />{'\u00A0\u00A0'}
+            {copy?.want || "Procuro"}
+          </button>
 
-<button
-  className={(searchTab === "Tenho" && heroActive !== "publish") ? "gold-btn large btn-centered" : "gold-btn light-btn large nav-btn"}
-  onClick={() => { setSearchTab && setSearchTab("Tenho"); setHeroActive && setHeroActive(null); }}
->
-  {copy?.have || "Tenho"}
-</button>
-
-<button
-  className={heroActive === "publish" ? "gold-btn large btn-centered" : "gold-btn light-btn large nav-btn"}
-  onClick={() => {
-    if (!user) router.push("/auth");
-    else {
-      setNewOfferOpen(true);
-      setHeroActive && setHeroActive("publish");
-    }
-  }}
->
-  ＋ {copy?.publish}
-</button>
+          <button
+            className={(searchTab === "Tenho" && heroActive !== "publish") ? "gold-btn large btn-centered" : "gold-btn light-btn large nav-btn"}
+            onClick={() => { setSearchTab && setSearchTab("Tenho"); setHeroActive && setHeroActive(null); }}
+          >
+            {copy?.have || "Tenho"}
+          </button>
+          <button
+            className={heroActive === "publish" ? "gold-btn large btn-centered" : "gold-btn light-btn large nav-btn"}
+            onClick={() => {
+              if (!user) router.push("/auth");
+              else {
+                setNewOfferOpen(true);
+                setHeroActive && setHeroActive("publish");
+              }
+            }}
+          >
+            ＋ {copy?.publish}
+          </button>
         </div>
         {/* 1. ЗАГОЛОВОК */}
         <br></br>
@@ -225,14 +239,17 @@ export default function HomeView(props) {
             {copy?.category || "Категорія:"}
             <select
               value={category}
-              onChange={e => setCategory?.(e.target.value)}>
-
+              onChange={e => setCategory?.(e.target.value)}
+            >
               <option value="" disabled>{copy?.selectCategory || "Оберіть категорію"}</option>
-              {Object.keys(CATEGORIES).map(k => (
-                <option key={k} value={k}>
-                  {copy?.categories?.[k] || k}
-                </option>
-              ))}
+              <option value="Todas">{copy?.categories?.Todas || "Todas"}</option>
+              {categoriesList
+                .filter(c => c.name !== "Todas" && c.name !== "Todos")
+                .map(c => (
+                  <option key={c.id} value={c.id}>
+                    {copy?.categories?.[c.name] || c.name}
+                  </option>
+                ))}
             </select>
           </label>
 
@@ -293,8 +310,6 @@ export default function HomeView(props) {
             </>
           )}
 
-
-
           {/* 6. ТЕКСТ ПІСЛЯ КНОПОК ЗБІГІВ */}
           {searchOpen && (
             <div
@@ -310,14 +325,14 @@ export default function HomeView(props) {
       </section>
 
       {/* --- Featured  / CARDS --- */}
-      <section className="content-section section" id="Featured">
+      <section className="content-section section" id="SelectedListings">
         <div className="section-head section-title">
           <div>
             <span className="eyebrow gold-label">Featured</span>
             <h2>{copy?.matches} ✦</h2>
             <p>O sistema aproxima pessoas com desejos compatíveis.</p>
           </div>
-          <button className="text-btn" onClick={() => setCategory && setCategory("Todas")}>{copy?.viewAll || "Ver todas →"}</button>
+          <button className="text-btn" onClick={() => setCategory && setCategory("")}>{copy?.viewAll || "Ver todas →"}</button>
         </div>
 
         <div className="listing-grid cards">
@@ -347,7 +362,7 @@ export default function HomeView(props) {
             <h2>{copy?.matches} ✦</h2>
             <p>O sistema aproxima pessoas com desejos compatíveis.</p>
           </div>
-          <button className="text-btn" onClick={() => setCategory && setCategory("Todas")}>{copy?.viewAll || "Ver todas →"}</button>
+          <button className="text-btn" onClick={() => setCategory && setCategory("")}>{copy?.viewAll || "Ver todas →"}</button>
         </div>
 
         <div className="listing-grid cards">
@@ -546,7 +561,13 @@ export default function HomeView(props) {
                 <div className="field">
                   <label>{copy?.categoryLabel || "Categoria"}</label>
                   <select value={category} onChange={e => setCategory && setCategory(e.target.value)}>
-                    {Object.keys(CATEGORIES).map(c => <option key={c}>{c}</option>)}
+                    {categoriesList
+                      .filter(c => c.name !== "Todas" && c.name !== "Todos")
+                      .map(c => (
+                        <option key={c.id} value={c.id}>
+                          {copy?.categories?.[c.name] || c.name}
+                        </option>
+                      ))}
                   </select>
                 </div>
                 <div className="field">

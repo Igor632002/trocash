@@ -18,7 +18,8 @@ export default function Home({ initialLang = "pt" }) {
   const [photos, setPhotos] = useState([]);
   const [form, setForm] = useState({ title: "", description: "", area: "", kind: "", wish: "", notes: "" });
   const [placeholder] = useState("");
-  const [category, setCategory] = useState("Todas");
+  //const [category, setCategory] = useState("Todas");
+  const [category, setCategory] = useState("");
   const [have, setHave] = useState("");
   const [want, setWant] = useState("");
   const [radius, setRadius] = useState(50);
@@ -81,7 +82,10 @@ export default function Home({ initialLang = "pt" }) {
             ? "Horas"
             : "Objeto";
 
-      const payloadForm = { ...form, kind: derivedKind, area: form.area || "Faro" };
+      const payloadForm = { ...form, 
+        kind: derivedKind,
+        area: form.area || "Faro", 
+        category_id: category === "Todas" ? null : category };
 
       await createOffer(payloadForm, files, user);
 
