@@ -272,7 +272,7 @@ export default function HomeView(props) {
                   {areas.map(a => (<option key={a} value={a}>{a}</option>))}
                 </select>
               </label>
-              <label className="filter-label narrow">
+              {/* <label className="filter-label narrow">
                 {copy?.distance || "Відстань:"}
                 <select value={radius} style={{ width: 120 }} onChange={e => setRadius?.(e.target.value)}>
                   <option value="5">5 km</option>
@@ -281,7 +281,7 @@ export default function HomeView(props) {
                   <option value="50">50 km</option>
                   <option value="Algarve">Algarve</option>
                 </select>
-              </label>
+              </label> */}
               <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
                 {/* 4. КНОПКА ПОШУКУ */}
                 <button
@@ -327,11 +327,11 @@ export default function HomeView(props) {
       {/* --- Featured  / CARDS --- */}
       <section className="content-section section" id="SelectedListings">
         <div className="section-head section-title">
-          <div>
-            <span className="eyebrow gold-label">Featured</span>
-            <h2>{copy?.matches} ✦</h2>
-            <p>O sistema aproxima pessoas com desejos compatíveis.</p>
-          </div>
+          
+            {/* <span className="eyebrow gold-label">Featured</span> */}
+            <h2>{copy?.matches}</h2>
+            {/* <h3>O sistema aproxima pessoas com desejos compatíveis.</h3> */}
+          
           <button className="text-btn" onClick={() => setCategory && setCategory("")}>{copy?.viewAll || "Ver todas →"}</button>
         </div>
 
