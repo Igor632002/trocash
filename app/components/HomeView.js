@@ -109,6 +109,7 @@ export default function HomeView(props) {
         copy={copy}
         visibleListings={visibleListings}
         setCategory={setCategory}
+        setRadius={setRadius}
         proposeExchange={proposeExchange}
       />
 

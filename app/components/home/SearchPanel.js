@@ -74,7 +74,7 @@ export default function SearchPanel({
           >
             <option value="" disabled>{copy?.selectCategory || "Оберіть категорію"}</option>
             <option value="Todas">{copy?.categories?.Todas || "Todas"}</option>
-            {categoriesList
+            { categoriesList
               .filter(c => c.name !== "Todas" && c.name !== "Todos")
               .map(c => (
                 <option key={c.id} value={c.id}>
@@ -99,7 +99,8 @@ export default function SearchPanel({
             <label className="filter-label">
               {copy?.locality  || "Área:"}
               <select value={radius} onChange={e => setRadius?.(e.target.value)}>
-                <option value="">{copy?.selectArea || "Selecione uma localidade"}</option>
+                <option value="" disabled >{copy?.selectArea || "Selecione uma localidade"}</option>
+                <option value="Todas">{copy?.categories?.Todas || "Todas"}</option>
                 {locationsList.map(l => (<option key={l.id} value={l.id}>{l.name}</option>))}
               </select>
             </label>
@@ -115,7 +116,7 @@ export default function SearchPanel({
             </label> */}
             <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
               {/* 4. КНОПКА ПОШУКУ */}
-              <button
+              {/* <button
                 className={`btn-12ch large ${searchTab === "Procuro"
                   ? "active gold-btn btn-centered"
                   : "gold-btn light-btn nav-btn"
@@ -123,10 +124,10 @@ export default function SearchPanel({
                 onClick={() => setSearchOpen?.(true)}  >
                 <SearchIcon width={20} height={20} />{'\u00A0\u00A0'}
                 {copy?.searchButton || "Pesquisar"}
-              </button>
+              </button> */}
 
               {/* 5. КНОПКА АВТО ПОШУКУ  */}
-              <button
+              {/* <button
                 className={`btn-12ch large ${searchTab === "Procuro"
                   ? "active gold-btn btn-centered"
                   : "gold-btn light-btn nav-btn"
@@ -136,7 +137,7 @@ export default function SearchPanel({
                   setHeroActive("auto"); setSearchOpen && setSearchOpen(true);
                 }}   >
                 ✦ {copy?.autoMatches}
-              </button>
+              </button> */}
             </div>
           </>
         )}

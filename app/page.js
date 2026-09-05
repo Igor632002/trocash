@@ -14,18 +14,19 @@ export default function Home({ initialLang = "pt" }) {
   const [lang, setLang] = useState(initialLang);
   const [languageOpen, setLanguageOpen] = useState(false);
   const [placeholder] = useState("");
-  //const [category, setCategory] = useState("Todas");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState("Todas");
+  //const [category, setCategory] = useState("");
   const [have, setHave] = useState("");
   const [want, setWant] = useState("");
-  const [radius, setRadius] = useState("");
+ // const [radius, setRadius] = useState("");
+ const [radius, setRadius] = useState("Todas");
   const [searchTab, setSearchTab] = useState("Procuro");
   const [searchOpen, setSearchOpen] = useState(false);
   const [premiumOpen, setPremiumOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
   const [wishlistOpen, setWishlistOpen] = useState(false);
   const [newOfferOpen, setNewOfferOpen] = useState(false);
-
+  
   const copy = uiCopy[lang] || uiCopy.pt;
   const router = useRouter();
 
