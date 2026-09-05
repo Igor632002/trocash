@@ -1149,10 +1149,6 @@ textarea {
     max-width: 680px;
   }
 
-  .gold-btn.large,
-  .light-btn.large {
-    padding: 12px 22px;
-  }
 
   .trust-row span {
     grid-template-columns: 32px auto;
@@ -1296,7 +1292,8 @@ textarea {
   }
 
   .gold-btn.large,
-  .light-btn.large {
+  .light-btn.large, .nav-btn {
+    font-size: 18px;  
     width: 100%;
     padding: 12px 14px;
   }

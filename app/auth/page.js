@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
+import { useLocations } from "@/lib/hooks/useLocations";
 
 export default function AuthPage() {
   const router = useRouter();
@@ -13,7 +14,7 @@ export default function AuthPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const areas = ["Faro","Albufeira","Portimão","Loulé","Lagos","Silves","Tavira","Olhão","Outro Algarve"];
+  const { locationsList } = useLocations();
 
   async function handleAuth(e) {
     e.preventDefault();
@@ -112,8 +113,8 @@ export default function AuthPage() {
               onChange={(e) => setArea(e.target.value)}
               style={{ padding: 10, borderRadius: 6, border: "1px solid #ddd" }}
             >
-              {areas.map((a) => (
-                <option key={a}>{a}</option>
+              {locationsList.map((l) => (
+                <option key={l.id} value={l.name}>{l.name}</option>
               ))}
             </select>
           </>
