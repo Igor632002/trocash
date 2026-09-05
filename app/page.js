@@ -18,7 +18,7 @@ export default function Home({ initialLang = "pt" }) {
   const [category, setCategory] = useState("");
   const [have, setHave] = useState("");
   const [want, setWant] = useState("");
-  const [radius, setRadius] = useState(50);
+  const [radius, setRadius] = useState("");
   const [searchTab, setSearchTab] = useState("Procuro");
   const [searchOpen, setSearchOpen] = useState(false);
   const [premiumOpen, setPremiumOpen] = useState(false);
@@ -45,7 +45,7 @@ export default function Home({ initialLang = "pt" }) {
   const { categoriesList } = useCategories();
   const { locationsList } = useLocations();
 
-  const visibleListings = getVisibleListings({ offers, category, have, want });
+  const visibleListings = getVisibleListings({ offers, category, have, want, locationId: radius });
 
   const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 

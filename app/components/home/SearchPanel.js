@@ -100,7 +100,7 @@ export default function SearchPanel({
               {copy?.locality  || "Área:"}
               <select value={radius} onChange={e => setRadius?.(e.target.value)}>
                 <option value="">{copy?.selectArea || "Selecione uma localidade"}</option>
-                {locationsList.map(l => (<option key={l.id} value={l.name}>{l.name}</option>))}
+                {locationsList.map(l => (<option key={l.id} value={l.id}>{l.name}</option>))}
               </select>
             </label>
             {/* <label className="filter-label narrow">
