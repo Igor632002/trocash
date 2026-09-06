@@ -16,24 +16,54 @@ export default function SearchPanel({
   have,
   want,
   setWant,
-  radius,
-  setRadius,
+  locationId,
+  setLocationId,
   searchOpen,
   setSearchOpen,
+  handleSearch,
 }) {
+  // --- computed Ukrainian search summary (INSERT HERE) ---
+  const selectedCategoryLabel = (() => {
+    if (!category || category === "" || category === "Todas") return copy?.offersListHeading || "Lista de ofertas";
+    const cat = categoriesList.find(c => String(c.id) === String(category));
+    const name = cat ? (copy?.categories?.[cat.name] || cat.name) : category;
+    return ` ${name} `;
+  })();
+
+  const selectedLocationLabel = (() => {
+    if (!locationId || locationId === "" || locationId === "Todas") return copy?.allLocations || "de todas as localidades";
+    const loc = locationsList.find(l => String(l.id) === String(locationId));
+    const name = loc ? loc.name : locationId;
+    return ` - ${name} `;
+  })();
+
+  const wantPart = want && String(want).trim() ? ` ${String(want).trim()}` : "";
+  const searchSummary = `${copy?.offersListHeading || "Lista de ofertas"}: ${selectedCategoryLabel} ${selectedLocationLabel}${wantPart}`;
+
   return (
-    <section id="explore" style={{ border: "1px solid lightgray" }} className={`search-panel ${searchTab === "Tenho" ? "have" : "want"}`} >
+    <section id="explore" style={{ border: "1px solid lightgray", marginLeft: "5px", padding: "10px" }} className={`search-panel ${searchTab === "Tenho" ? "have" : "want"}`} >
       <div className="hero-actions">
-        <button
+        <button style={{ marginLeft: "5px" }}
           className={(searchTab === "Procuro" && heroActive !== "publish") ? "gold-btn large btn-centered" : "gold-btn light-btn large nav-btn"}
           onClick={() => { setSearchTab && setSearchTab("Procuro"); setHeroActive && setHeroActive(null); }}
         >
           <SearchIcon width={20} height={20} />{'\u00A0\u00A0'}
-          {copy?.want || "Procuro"}
+          {copy?.search || "Procuro"}
+        </button>
+        {/* 5. КНОПКА АВТО ПОШУКУ  */}
+        <button
+          className={(searchTab === "auto" && heroActive !== "publish")
+            ? "gold-btn large btn-centered" :
+            "gold-btn light-btn large nav-btn"}
+          onClick={() => { setSearchTab("auto"); setSearchOpen && setSearchOpen(true); }
+          } >
+          ✦ {copy?.autoMatches}
         </button>
 
         <button
-          className={(searchTab === "Tenho" && heroActive !== "publish") ? "gold-btn large btn-centered" : "gold-btn light-btn large nav-btn"}
+          className={(searchTab === "Tenho" && heroActive !== "publish")
+            ? "gold-btn large btn-centered" :
+            "gold-btn light-btn large nav-btn"}
           onClick={() => { setSearchTab && setSearchTab("Tenho"); setHeroActive && setHeroActive(null); }}
         >
           {copy?.have || "Tenho"}
@@ -54,7 +84,7 @@ export default function SearchPanel({
       {/* 1. ЗАГОЛОВОК */}
       <br></br>
       <div className="search-heading">
-        <span style={{ marginLeft: "18px", fontSize: "16px", display: "inline-flex", gap: 8, alignItems: "baseline", whiteSpace: "nowrap" }}>
+        <span style={{ marginLeft: "18px", fontSize: "16px", display: "inline-flex", gap: "8px", alignItems: "baseline", whiteSpace: "nowrap" }}>
           <b>{searchTab === "Procuro" ? copy?.searchTitle : copy?.searchOfferTitle}</b>
           <span style={{ fontSize: "14px" }}>
             {searchTab === "Procuro"
@@ -72,9 +102,9 @@ export default function SearchPanel({
             value={category}
             onChange={e => setCategory?.(e.target.value)}
           >
-            <option value="" disabled>{copy?.selectCategory || "Оберіть категорію"}</option>
+            <option value="" disabled>{copy?.selectCategory || "Selecione a categoria"}</option>
             <option value="Todas">{copy?.categories?.Todas || "Todas"}</option>
-            { categoriesList
+            {categoriesList
               .filter(c => c.name !== "Todas" && c.name !== "Todos")
               .map(c => (
                 <option key={c.id} value={c.id}>
@@ -89,6 +119,14 @@ export default function SearchPanel({
         {searchTab !== "Tenho" && (
           <>
             <label className="filter-label">
+              {copy?.locality || "Área:"}
+              <select value={locationId} onChange={e => setLocationId?.(e.target.value)}>
+                <option value="" disabled >{copy?.selectArea || "Selecione uma localidade"}</option>
+                <option value="Todas">{copy?.categories?.Todas || "Todas"}</option>
+                {locationsList.map(l => (<option key={l.id} value={l.id}>{l.name}</option>))}
+              </select>
+            </label>
+            <label className="filter-label">
               {copy?.want || "Я хочу"}
               <input
                 value={want}
@@ -96,17 +134,10 @@ export default function SearchPanel({
                 placeholder={copy?.offerWishPlaceholder || "Ex.: sofá, câmara, outro serviço..."}
               />
             </label>
-            <label className="filter-label">
-              {copy?.locality  || "Área:"}
-              <select value={radius} onChange={e => setRadius?.(e.target.value)}>
-                <option value="" disabled >{copy?.selectArea || "Selecione uma localidade"}</option>
-                <option value="Todas">{copy?.categories?.Todas || "Todas"}</option>
-                {locationsList.map(l => (<option key={l.id} value={l.id}>{l.name}</option>))}
-              </select>
-            </label>
+
             {/* <label className="filter-label narrow">
               {copy?.distance || "Distância:"}
-              <select value={radius} style={{ width: 120 }} onChange={e => setRadius?.(e.target.value)}>
+              <select value={locationId} style={{ width: 120 }} onChange={e => setLocationId?.(e.target.value)}>
                 <option value="5">5 km</option>
                 <option value="10">10 km</option>
                 <option value="25">25 km</option>
@@ -116,41 +147,22 @@ export default function SearchPanel({
             </label> */}
             <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
               {/* 4. КНОПКА ПОШУКУ */}
-              {/* <button
-                className={`btn-12ch large ${searchTab === "Procuro"
-                  ? "active gold-btn btn-centered"
-                  : "gold-btn light-btn nav-btn"
-                  }`}
-                onClick={() => setSearchOpen?.(true)}  >
-                <SearchIcon width={20} height={20} />{'\u00A0\u00A0'}
-                {copy?.searchButton || "Pesquisar"}
-              </button> */}
-
-              {/* 5. КНОПКА АВТО ПОШУКУ  */}
-              {/* <button
-                className={`btn-12ch large ${searchTab === "Procuro"
-                  ? "active gold-btn btn-centered"
-                  : "gold-btn light-btn nav-btn"
-                  }`}
-
-                onClick={() => {
-                  setHeroActive("auto"); setSearchOpen && setSearchOpen(true);
-                }}   >
-                ✦ {copy?.autoMatches}
-              </button> */}
+              <button className={`btn-12ch large 
+              ${searchTab === "Procuro" ? "active gold-btn btn-centered" : "gold-btn light-btn nav-btn"}`}
+                onClick={() => { handleSearch?.(); setSearchOpen?.(true); }} >
+                <SearchIcon width={20} height={20} /> {'\u00A0\u00A0'} {copy?.searchButton || "Pesquisar"}
+              </button>
             </div>
           </>
         )}
 
         {/* 6. ТЕКСТ ПІСЛЯ КНОПОК ЗБІГІВ */}
         {searchOpen && (
-          <div
-            // Краще винести ці стилі в окремий клас, наприклад, className="smart-matches-alert"
-            style={{ gridColumn: "1 / -1", marginTop: 14, padding: 14, borderRadius: 14, background: "#fff8e9", color: "#765824" }}
-          >
-            {copy?.smartMatches
-              ?.replace("{have}", have || copy?.have || "Tenho")
-              .replace("{want}", want || copy?.want || "Procuro")}
+          <div style={
+            { 
+              gridColumn: "1 / -1", marginTop: 5, marginBottom: 5, padding: 14, borderRadius: 14, background: "#fff8e9", color: "#765824" }
+            }>
+            {searchSummary}
           </div>
         )}
       </div>

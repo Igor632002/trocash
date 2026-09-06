@@ -1,12 +1,16 @@
 import ListingCard from "./ListingCard";
-export default function FeaturedListings({ copy, visibleListings = [], setCategory, setRadius, proposeExchange }) 
+export default function FeaturedListings({ copy, visibleListings = [], setCategory, setLocationId,  handleSearch, proposeExchange }) 
 {
   return (
     <section className="content-section section" id="SelectedListings">
       <div className="section-head section-title">
         <h2>{copy?.matches}</h2>
-        <button className="text-btn"
-          onClick={() => { setCategory && setCategory("Todas"); setRadius && setRadius("Todas"); }}>
+       <button className="text-btn"
+          onClick={() => {
+            setCategory && setCategory("Todas");
+            setLocationId && setLocationId("Todas");
+            handleSearch && handleSearch({ category: "Todas", locationId: "Todas", have: "", want: "" });
+          }}>
           {copy?.viewAll || "Ver todas →"}
         </button>
       </div>

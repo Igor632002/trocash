@@ -18,15 +18,23 @@ export default function Home({ initialLang = "pt" }) {
   //const [category, setCategory] = useState("");
   const [have, setHave] = useState("");
   const [want, setWant] = useState("");
- // const [radius, setRadius] = useState("");
- const [radius, setRadius] = useState("Todas");
+  const [locationId, setLocationId] = useState("Todas");
+  // Фактично застосовані фільтри 
+
+  const [searchFilters, setSearchFilters] = useState({
+    category: "Todas",
+    have: "",
+    want: "",
+    locationId: "Todas"
+  });
+
   const [searchTab, setSearchTab] = useState("Procuro");
   const [searchOpen, setSearchOpen] = useState(false);
   const [premiumOpen, setPremiumOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
   const [wishlistOpen, setWishlistOpen] = useState(false);
   const [newOfferOpen, setNewOfferOpen] = useState(false);
-  
+
   const copy = uiCopy[lang] || uiCopy.pt;
   const router = useRouter();
 
@@ -46,7 +54,19 @@ export default function Home({ initialLang = "pt" }) {
   const { categoriesList } = useCategories();
   const { locationsList } = useLocations();
 
-  const visibleListings = getVisibleListings({ offers, category, have, want, locationId: radius });
+  //const visibleListings = getVisibleListings({ offers, category, have, want, locationId });
+
+  // overrides avoid stale closure when called right after setState
+  const handleSearch = (overrides = {}) => {
+    setSearchFilters({
+      category,
+      have,
+      want,
+      locationId,
+      ...overrides
+    });
+  };
+  const visibleListings = getVisibleListings({ offers, ...searchFilters });
 
   const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
@@ -58,43 +78,61 @@ export default function Home({ initialLang = "pt" }) {
       setLang={setLang}
       languageOpen={languageOpen}
       setLanguageOpen={setLanguageOpen}
+
       user={user}
+
       offers={offers}
       loading={loading}
       notice={notice}
       placeholder={placeholder}
+
       category={category}
       setCategory={setCategory}
+
       have={have}
       setHave={setHave}
+
       want={want}
       setWant={setWant}
-      radius={radius}
-      setRadius={setRadius}
+
+      locationId={locationId}
+      setLocationId={setLocationId}
+
       searchTab={searchTab}
       setSearchTab={setSearchTab}
+
       searchOpen={searchOpen}
       setSearchOpen={setSearchOpen}
+      handleSearch={handleSearch}
       visibleListings={visibleListings}
+
       addPhotos={addPhotos}
       photos={photos}
       removePhoto={removePhoto}
+
       form={form}
       setForm={setForm}
       addOffer={addOffer}
       proposeExchange={proposeExchange}
+
       categoriesList={categoriesList}
       locationsList={locationsList}
+
       premiumOpen={premiumOpen}
       setPremiumOpen={setPremiumOpen}
+
       accountOpen={accountOpen}
       setAccountOpen={setAccountOpen}
+
       wishlistOpen={wishlistOpen}
       setWishlistOpen={setWishlistOpen}
+
       newOfferOpen={newOfferOpen}
       setNewOfferOpen={setNewOfferOpen}
+
       router={router}
       scrollTo={scrollTo}
     />
   );
+
 }

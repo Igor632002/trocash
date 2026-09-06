@@ -3,7 +3,7 @@ import ListingCard from "./ListingCard";
 // Smart Matches shows only the top 20 candidates to keep the grid focused
 const MAX_MATCHES = 20;
 
-export default function MatchesSection({ copy, visibleListings = [], setCategory, proposeExchange, loading, notice }) {
+export default function MatchesSection({ copy, visibleListings = [], setCategory, proposeExchange, loading, notice, handleSearch }) {
   const topMatches = visibleListings.slice(0, MAX_MATCHES);
 
   return (
@@ -14,7 +14,7 @@ export default function MatchesSection({ copy, visibleListings = [], setCategory
           <h2>{copy?.matches} ✦</h2>
           <p>O sistema aproxima pessoas com desejos compatíveis.</p>
         </div>
-        <button className="text-btn" onClick={() => setCategory && setCategory("")}>{copy?.viewAll || "Ver todas →"}</button>
+        <button className="text-btn" onClick={() => { setCategory && setCategory(""); handleSearch && handleSearch({ category: "", have: "", want: "" }); }}>{copy?.viewAll || "Ver todas →"}</button>
       </div>
 
       <div className="listing-grid cards">

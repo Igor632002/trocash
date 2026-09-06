@@ -20,6 +20,7 @@ export default function HomeView(props) {
     copy,
     LANGUAGES,
     lang,
+
     setLang,
     languageOpen,
     setLanguageOpen,
@@ -35,13 +36,17 @@ export default function HomeView(props) {
     setHave,
     want,
     setWant,
-    radius,
-    setRadius,
+    locationId,
+    setLocationId,
     searchTab,
     setSearchTab,
+
     searchOpen,
     setSearchOpen,
-    visibleListings = [],
+    handleSearch,
+    visibleListings,
+    //visibleListings = [],
+
     addPhotos,
     photos = [],
     removePhoto,
@@ -99,17 +104,19 @@ export default function HomeView(props) {
         have={have}
         want={want}
         setWant={setWant}
-        radius={radius}
-        setRadius={setRadius}
+        locationId={locationId}
+        setLocationId={setLocationId}
         searchOpen={searchOpen}
         setSearchOpen={setSearchOpen}
+        handleSearch={handleSearch}
       />
 
       <FeaturedListings
         copy={copy}
         visibleListings={visibleListings}
         setCategory={setCategory}
-        setRadius={setRadius}
+        setLocationId={setLocationId}
+        handleSearch={handleSearch}
         proposeExchange={proposeExchange}
       />
 
@@ -117,6 +124,7 @@ export default function HomeView(props) {
         copy={copy}
         visibleListings={visibleListings}
         setCategory={setCategory}
+        handleSearch={handleSearch}
         proposeExchange={proposeExchange}
         loading={loading}
         notice={notice}
