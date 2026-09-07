@@ -13,8 +13,11 @@ function getTokenFromReq(req) {
 }
 
 export async function POST(req, context) {
-  let id = context?.params?.id;
-  let action = context?.params?.action;
+  const params = context?.params && typeof context.params.then === "function"
+    ? await context.params
+    : context?.params;
+  const id = params?.id;
+  const action = params?.action;
 
   // Fallback: if Next didn't populate params for some reason (dev server, proxy, etc.),
   // try to extract `id` and `action` from the request URL path.

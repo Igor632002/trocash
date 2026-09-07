@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { fetchOfferById } from "@/lib/dal/offers";
+import InterestedButton from "@/app/offers/InterestedButton.client";
 
 export default async function OfferPage({ params }) {
     const { id } = await params;
@@ -37,31 +38,32 @@ export default async function OfferPage({ params }) {
                     <p><strong>Proprietário:</strong> {offer.profiles?.display_name || 'Anónimo'}</p>
                 </div> */}
 
-<div className="card-body">
-  <h1>{offer.title}</h1>
+                <div className="card-body">
+                    <h1>{offer.title}</h1>
 
-  <p className="meta">
-    {offer.category?.name} · {offer.location?.name || offer.profiles?.area || offer.area}
-  </p>
+                    <p className="meta">
+                        {offer.category?.name} · {offer.location?.name || offer.profiles?.area || offer.area}
+                    </p>
 
-  <p><strong>Опис:</strong> {offer.description || offer.details || '—'}</p>
-  <p><strong>Побажання:</strong> {offer.wish || '—'}</p>
-  {offer.notes && <p><strong>Примітки:</strong> {offer.notes}</p>}
+                    <p><strong>Опис:</strong> {offer.description || offer.details || '—'}</p>
+                    <p><strong>Побажання:</strong> {offer.wish || '—'}</p>
+                    {offer.notes && <p><strong>Примітки:</strong> {offer.notes}</p>}
 
-  <p><strong>Статус:</strong> {offer.status || '—'}</p>
-  {/* <p><strong>Email:</strong> {offer.profiles?.email || '—'}</p> */}
-  {/* <p><strong>Пропонує:</strong> {offer.wish || '—'}</p> */}
-  
-  <p><strong>Приватні дані власника:</strong> 
-  {offer.profiles?.display_name || 'Анонім'}</p>
+                    <p><strong>Статус:</strong> {offer.status || '—'}</p>
+                    {offer.profiles?.email && offer.profiles?.display_name && offer.profiles.display_name !== 'Анонім' ? (
+                        <>
+                            <p><strong>Email:</strong> <a href={`mailto:${offer.profiles.email}`}>{offer.profiles.email}</a></p>
+                            <InterestedButton offerId={offer.id} />
+                        </>
+                    ) : (
+                        <p><strong>Email:</strong> Приховано</p>
+                    )}
+                    <p><strong>Приватні дані власника:</strong>
+                        {offer.profiles?.display_name || 'Анонім'}</p>
 
-  <p><strong>Створено:</strong> {offer.created_at ? new Date(offer.created_at).toLocaleString('uk-UA') : '—'}</p>
-</div>
+                    <p><strong>Створено:</strong> {offer.created_at ? new Date(offer.created_at).toLocaleString('uk-UA') : '—'}</p>
 
-
-
-
-
+                </div>
             </article>
         </div>
 
