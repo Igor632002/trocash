@@ -1,3 +1,5 @@
+"use client";
+
 export default function ListingCard({ offer, index, copy, proposeExchange }) {
   return (
     <article className="listing-card card">
@@ -11,7 +13,21 @@ export default function ListingCard({ offer, index, copy, proposeExchange }) {
         <div className="swap-line meta">
           <span>Oferece</span> <b>{offer.wish || "algo que procuras"}</b>
         </div>
-        <button className="mini-btn gold-btn" onClick={() => proposeExchange && proposeExchange(offer.id)}>Ver troca</button>
+        <button
+          className="mini-btn gold-btn"
+          onClick={() => {
+            const url = `/offers/${offer.id}`;
+            try {
+              window.open(url, "_blank", "noopener,noreferrer");
+            } catch (e) {
+              // fallback for environments without window
+              console.warn("Could not open new window", e);
+            }
+            if (proposeExchange) proposeExchange(offer.id);
+          }}
+        >
+          {copy?.viewOffer || "Ver troca"}
+        </button>
       </div>
     </article>
   );

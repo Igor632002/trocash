@@ -120,7 +120,7 @@ export default function HomeView(props) {
         proposeExchange={proposeExchange}
       />
 
-      <MatchesSection
+      {/* <MatchesSection
         copy={copy}
         visibleListings={visibleListings}
         setCategory={setCategory}
@@ -128,7 +128,7 @@ export default function HomeView(props) {
         proposeExchange={proposeExchange}
         loading={loading}
         notice={notice}
-      />
+      /> */}
 
       <TrustStrip copy={copy} offers={offers} />
 
