@@ -16,8 +16,8 @@ export async function POST(req, context) {
   const params = context?.params && typeof context.params.then === "function"
     ? await context.params
     : context?.params;
-  const id = params?.id;
-  const action = params?.action;
+  let id = params?.id;
+  let action = params?.action;
 
   // Fallback: if Next didn't populate params for some reason (dev server, proxy, etc.),
   // try to extract `id` and `action` from the request URL path.
