@@ -11,7 +11,19 @@ export default function ListingCard({ offer, index, copy, proposeExchange }) {
         <small>{offer.area || "Algarve"} · {index + 2} km</small>
         <h3>{offer.title}</h3>
         <div className="swap-line meta">
-          <span>Oferece</span> <b>{offer.wish || "algo que procuras"}</b>
+          <span>{copy?.descriptionLabel || "Descrição"}</span>
+          <b>{
+            (() => {
+              const desc = offer.description || offer.details || "";
+              const preview = String(desc).split("\n")[0].trim();
+              return preview ? (preview.length > 100 ? preview.slice(0, 100).trim() + "…" : preview) : (copy?.offerDescriptionPlaceholder || offer.wish || "—");
+            })()
+          }</b>
+        </div>
+
+        <div className="swap-line meta">
+          <span>{copy?.wishLabelShort || copy?.offerWishLabel || "Procura"}</span>
+          <b>{offer.wish || copy?.offerWishPlaceholder || "—"}</b>
         </div>
         <button
           className="mini-btn gold-btn"
