@@ -32,7 +32,9 @@ export default function SiteHeader({
       <nav className="desktop-nav">
         <button onClick={() => scrollTo && scrollTo("how")}>{copy?.navHow}</button>
         <button onClick={() => { scrollTo && scrollTo("explore"); }}>{copy?.navExplore}</button>
-        <button onClick={() => { if (!user) router.push("/auth"); else setAccountOpen(true); }}>{copy?.navMine}</button>
+        <button onClick={() => { if (!user) router.push("/auth"); else setAccountOpen(true); }}>
+          {copy?.navMine}
+        </button>
         <button onClick={() => setWishlistOpen(true)}>{copy?.navWish}</button>
         <button onClick={() => scrollTo && scrollTo("trust")}>{copy?.navMessages}</button>
         <button onClick={() => scrollTo && scrollTo("premium")}>{copy?.navAbout}</button>
@@ -75,11 +77,13 @@ export default function SiteHeader({
             {(user.email || "U")[0].toUpperCase()}
           </button>
         ) : (
-          <button className="ghost-btn" onClick={() => router.push("/auth")}>Entrar</button>
+          <button className="ghost-btn" onClick={() => router.push("/auth")}>
+            {copy?.login}
+          </button>
         )}
-        <button className="gold-btn" onClick={() => { if (!user) router.push("/auth"); else setNewOfferOpen(true); }}>
+        {/* <button className="gold-btn" onClick={() => { if (!user) router.push("/auth"); else setNewOfferOpen(true); }}>
           ＋ {copy?.publish}
-        </button>
+        </button> */}
       </div>
     </header>
   );
