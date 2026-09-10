@@ -228,7 +228,8 @@ textarea {
   display: flex;
   align-items: center;
   gap: 9px;
-  margin-left: auto; /* завжди притискає кнопки до правого краю */
+  margin-left: auto;
+  /* завжди притискає кнопки до правого краю */
 }
 
 .top-actions select {
@@ -243,7 +244,7 @@ textarea {
 
 .hero {
   position: relative;
-  min-height: 420px;
+  min-height: 320px;
   display: flex;
   align-items: flex-start;
   /* was: center — ставимо flex-start */
@@ -258,7 +259,7 @@ textarea {
   top: 0;
   left: 0;
   right: 0;
-  height: 420px;
+  height: 320px;
   max-width: 2200px;
   margin: 0 auto;
   background-image: url('/hero-dream.jpg');
@@ -415,7 +416,7 @@ textarea {
 /* Responsive tweaks for small screens */
 @media (max-width: 480px) {
   .hero {
-    min-height: 360px;
+    min-height: 220px;
     padding-top: 6px;
   }
 
@@ -445,7 +446,7 @@ textarea {
   }
 
   .hero-image {
-    height: 360px;
+    height: 220px;
   }
 }
 
@@ -649,11 +650,12 @@ textarea {
 }
 
 .listing-image {
-   height: 185px;
-  background-size: contain;      /* було cover — тепер вписує все фото */
+  height: 185px;
+  background-size: contain;
+  /* було cover — тепер вписує все фото */
   background-position: center;
   background-repeat: no-repeat;
-  background-color: #ffffff; 
+  background-color: #ffffff;
   position: relative;
   border-radius: 22px;
   /* робить усі кути округлими */
@@ -1214,6 +1216,13 @@ textarea {
   /* bring hero closer to the top on tablet / small desktop */
   .hero {
     padding-top: 8px;
+    min-height: 260px;  
+  }
+
+  .hero-image {
+    background-position: center 52%;
+    transform: scale(1.01);
+    height: 260px;
   }
 
   .hero-content {
@@ -1275,11 +1284,13 @@ textarea {
 @media (max-width: 900px) {
   .hero {
     padding-top: 6px;
+    min-height: 240px;  
   }
 
   .hero-image {
     background-position: center 52%;
     transform: scale(1.01);
+    height: 240px;
   }
 
   .hero-content {
@@ -1431,6 +1442,7 @@ textarea {
   .search-panel input {
     font-size: 13px;
   }
+
 }
 
 /* Smaller tablets / phones */
@@ -1449,6 +1461,12 @@ textarea {
 
   .hero {
     padding-top: 6px;
+    min-height: 220px;
+  }
+
+  .hero-image {
+    height: 220px;
+    /* add — currently missing in this breakpoint */
   }
 
   .hero-content {

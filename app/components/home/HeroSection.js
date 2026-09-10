@@ -13,13 +13,13 @@ export default function HeroSection({ copy }) {
           <p className="hero-sub">{copy?.heroSub}</p>
 
           {/* <div className="dream-pill">{copy?.dream}</div> */}
-          <br></br>
+          {/* <br></br>
           <div className="trust-row">
             <span>◈ <b>{copy?.trustBadge1Title}</b><small>{copy?.trustBadge1Sub}</small></span>
             <span>◌ <b>{copy?.trustBadge2Title}</b><small>{copy?.trustBadge2Sub}</small></span>
             <span>◇ <b>{copy?.trustBadge3Title}</b><small>{copy?.trustBadge3Sub}</small></span>
             <span>⌂ <b>{copy?.trustBadge4Title}</b><small>{copy?.trustBadge4Sub}</small></span>
-          </div>
+          </div> */}
           {/* <div style={{ border: "1px solid blue", margin: "20px 0" }} className="hero-actions">
             <button
               className={heroActive === "explore" ? "gold-btn large btn-centered" : "gold-btn light-btn large nav-btn"}
