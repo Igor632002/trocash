@@ -45,6 +45,7 @@ export default function HomeView(props) {
     setSearchOpen,
     handleSearch,
     visibleListings,
+    isTopList,
     //visibleListings = [],
 
     addPhotos,
@@ -114,6 +115,7 @@ export default function HomeView(props) {
       <FeaturedListings
         copy={copy}
         visibleListings={visibleListings}
+        isTopList={isTopList}
         setCategory={setCategory}
         setLocationId={setLocationId}
         handleSearch={handleSearch}

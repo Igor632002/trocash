@@ -6,6 +6,7 @@ import HomeView from "./components/HomeView";
 import { copy as uiCopy, LANGUAGES } from "@/lib/uiResources";
 import { getVisibleListings } from "@/lib/uiHelpers";
 import { useAuth } from "@/lib/hooks/useAuth";
+import { fetchTopOffers } from "@/lib/dal/offers";
 import { useOffers } from "@/lib/hooks/useOffers";
 import { useCategories } from "@/lib/hooks/useCategories";
 import { useLocations } from "@/lib/hooks/useLocations";
@@ -41,6 +42,10 @@ export default function Home({ initialLang = "pt" }) {
   const { user } = useAuth();
   const {
     offers,
+    visibleListings,
+    setVisibleListings,
+    isTopList,
+    setIsTopList,
     loading,
     notice,
     photos,
@@ -54,19 +59,12 @@ export default function Home({ initialLang = "pt" }) {
   const { categoriesList } = useCategories();
   const { locationsList } = useLocations();
 
-  //const visibleListings = getVisibleListings({ offers, category, have, want, locationId });
-
-  // overrides avoid stale closure when called right after setState
   const handleSearch = (overrides = {}) => {
-    setSearchFilters({
-      category,
-      have,
-      want,
-      locationId,
-      ...overrides
-    });
+    const next = { category, have, want, locationId, ...overrides };
+    setSearchFilters(next);
+    setVisibleListings(getVisibleListings({ offers, ...next }));
+    setIsTopList(false);
   };
-  const visibleListings = getVisibleListings({ offers, ...searchFilters });
 
   const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
@@ -105,6 +103,7 @@ export default function Home({ initialLang = "pt" }) {
       setSearchOpen={setSearchOpen}
       handleSearch={handleSearch}
       visibleListings={visibleListings}
+      isTopList={isTopList}
 
       addPhotos={addPhotos}
       photos={photos}
