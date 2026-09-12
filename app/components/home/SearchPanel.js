@@ -84,9 +84,9 @@ export default function SearchPanel({
       {/* 1. ЗАГОЛОВОК */}
       <br></br>
       <div className="search-heading">
-        <span style={{ marginLeft: "18px", fontSize: "16px", display: "inline-flex", gap: "8px", alignItems: "baseline", whiteSpace: "nowrap" }}>
+        <span style={{ marginLeft: "18px", fontSize: "16px", display: "inline-flex", gap: "8px", alignItems: "baseline", flexWrap: "wrap" }}>
           <b>{searchTab === "Procuro" ? copy?.searchTitle : copy?.searchOfferTitle}</b>
-          <span style={{ fontSize: "14px" }}>
+          <span style={{ fontSize: "14px", whiteSpace: "normal" }}>
             {searchTab === "Procuro"
               ? (copy?.searchSub || "Encontra uma troca que faça sentido para ti")
               : (copy?.offerSub || "Veja os itens ou serviços que você oferece")}
@@ -96,12 +96,10 @@ export default function SearchPanel({
       <br></br>
       <div className="panel-inner">
         {/* 2. СПІЛЬНІ ФІЛЬТРИ (Категорія присутня в обох табах) */}
-        <label className="filter-label">
-          {copy?.category || "Categoria"}
+        <label className="filter-label">📂 {copy?.category || "Categoria"}
           <select
             value={category}
-            onChange={e => setCategory?.(e.target.value)}
-          >
+            onChange={e => setCategory?.(e.target.value)} >
             <option value="" disabled>{copy?.selectCategory || "Selecione a categoria"}</option>
             <option value="Todas">{copy?.categories?.Todas || "Todas"}</option>
             {categoriesList
@@ -118,16 +116,14 @@ export default function SearchPanel({
         {/* Показуємо ці поля, коли вкладка НЕ "Tenho" (тобто "Procuro" або інша) */}
         {searchTab !== "Tenho" && (
           <>
-            <label className="filter-label">
-              {copy?.locality || "Área:"}
+            <label className="filter-label">🔘 {copy?.locality || "Área:"}
               <select value={locationId} onChange={e => setLocationId?.(e.target.value)}>
                 <option value="" disabled >{copy?.selectArea || "Selecione uma localidade"}</option>
                 <option value="Todas">{copy?.categories?.Todas || "Todas"}</option>
                 {locationsList.map(l => (<option key={l.id} value={l.id}>{l.name}</option>))}
               </select>
             </label>
-            <label className="filter-label">
-              {copy?.want || "Я хочу"}
+            <label className="filter-label"> ✏️{copy?.keyWords  || " Palavra‑chave"}
               <input
                 value={want}
                 onChange={e => setWant?.(e.target.value)}
@@ -150,7 +146,7 @@ export default function SearchPanel({
               <button className={`btn-12ch large 
               ${searchTab === "Procuro" ? "active gold-btn btn-centered" : "gold-btn light-btn nav-btn"}`}
                 onClick={() => { handleSearch?.(); setSearchOpen?.(true); }} >
-                <SearchIcon width={20} height={20} /> {'\u00A0\u00A0'} {copy?.searchButton || "Pesquisar"}
+                <SearchIcon width={20} height={20} /> {'\u00A0\u00A0'}{copy?.searchButton || "Pesquisar"}
               </button>
             </div>
           </>
