@@ -10,9 +10,15 @@ export default function HeroSection({ copy }) {
             <span>{copy?.hero1}</span>
             <strong>{copy?.hero2}</strong>
           </h1>
-          <p className="hero-sub">{copy?.heroSub}</p>
+          <p className="hero-sub">{copy?.heroSub}</p>         
+        </div>
+      </div>
+    </section>
+  );
+}
 
-          {/* <div className="dream-pill">{copy?.dream}</div> */}
+
+{/* <div className="dream-pill">{copy?.dream}</div> */}
           {/* <br></br>
           <div className="trust-row">
             <span>◈ <b>{copy?.trustBadge1Title}</b><small>{copy?.trustBadge1Sub}</small></span>
@@ -49,9 +55,3 @@ export default function HeroSection({ copy }) {
               ✦ {copy?.autoMatches}
             </button>
          </div> */}
-
-        </div>
-      </div>
-    </section>
-  );
-}

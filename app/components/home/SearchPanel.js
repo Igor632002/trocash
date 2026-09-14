@@ -42,6 +42,7 @@ export default function SearchPanel({
 
   return (
     <section id="explore" style={{ border: "1px solid lightgray", marginLeft: "5px", padding: "10px" }} className={`search-panel ${searchTab === "Tenho" ? "have" : "want"}`} >
+   
       <div className="hero-actions">
         <button style={{ marginLeft: "5px" }}
           className={(searchTab === "Procuro" && heroActive !== "publish") ? "gold-btn large btn-centered" : "gold-btn light-btn large nav-btn"}
@@ -50,24 +51,27 @@ export default function SearchPanel({
           <SearchIcon width={20} height={20} />{'\u00A0\u00A0'}
           {copy?.search || "Procuro"}
         </button>
-        {/* 5. КНОПКА АВТО ПОШУКУ  */}
-        <button
-          className={(searchTab === "auto" && heroActive !== "publish")
-            ? "gold-btn large btn-centered" :
-            "gold-btn light-btn large nav-btn"}
-          onClick={() => { setSearchTab("auto"); setSearchOpen && setSearchOpen(true); }
-          } >
-          ✦ {copy?.autoMatches}
-        </button>
+         {user ? (
+  <>
+    <button
+      className={(searchTab === "auto" && heroActive !== "publish")
+        ? "gold-btn large btn-centered"
+        : "gold-btn light-btn large nav-btn"}
+      onClick={() => { setSearchTab("auto"); setSearchOpen && setSearchOpen(true); }}
+    >
+      ✦ {copy?.autoMatches}
+    </button>
 
-        <button
-          className={(searchTab === "Tenho" && heroActive !== "publish")
-            ? "gold-btn large btn-centered" :
-            "gold-btn light-btn large nav-btn"}
-          onClick={() => { setSearchTab && setSearchTab("Tenho"); setHeroActive && setHeroActive(null); }}
-        >
-          {copy?.have || "Tenho"}
-        </button>
+    <button
+      className={(searchTab === "Tenho" && heroActive !== "publish")
+        ? "gold-btn large btn-centered"
+        : "gold-btn light-btn large nav-btn"}
+      onClick={() => { setSearchTab && setSearchTab("Tenho"); setHeroActive && setHeroActive(null); }}
+    >
+      {copy?.have || "Tenho"}
+    </button>
+  </>
+) : null}
         <button
           className={heroActive === "publish" ? "gold-btn large btn-centered" : "gold-btn light-btn large nav-btn"}
           onClick={() => {
@@ -81,6 +85,7 @@ export default function SearchPanel({
           ＋ {copy?.publish}
         </button>
       </div>
+     
       {/* 1. ЗАГОЛОВОК */}
       <br></br>
       <div className="search-heading">

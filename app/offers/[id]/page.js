@@ -40,17 +40,23 @@ export default async function OfferPage({ params }) {
                     {offer.notes && <p><strong>Notas:</strong> {offer.notes}</p>}
 
                     <p><strong>Estado:</strong> {offer.status || '—'}</p>
-                    {offer.profiles?.email && offer.profiles?.display_name && offer.profiles.display_name !== 'Анонім' ? (
+                    {/* {offer.profiles?.email && offer.profiles?.display_name && offer.profiles.display_name !== 'Анонім' ? (
                         <>
                             <p><strong>Email:</strong> <a href={`mailto:${offer.profiles.email}`}>{offer.profiles.email}</a></p>
                             <InterestedButton offerId={offer.id} />
                         </>
                     ) : (
                         <p><strong>Email:</strong> Oculto</p>
+                    )} */}
+
+                    <p><strong>Email:</strong> Oculto</p>
+                    {offer.profiles?.display_name && offer.profiles.display_name !== "Анонім" && (
+                        <InterestedButton offerId={offer.id} />
                     )}
+
                     <p><strong>Dados privados do proprietário:</strong> {offer.profiles?.display_name || 'Anónimo'}</p>
                     <p><strong>Criado em:</strong> {offer.created_at ? new Date(offer.created_at).toLocaleString('pt-PT') : '—'}</p>
-                </div>       
+                </div>
             </article>
         </div>
     );
