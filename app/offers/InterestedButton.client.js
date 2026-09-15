@@ -22,7 +22,12 @@ export default function InterestedButton({ offerId, copy: copyProp, lang }) {
   const [sessionUser, setSessionUser] = useState(null);
   const [authModalOpen, setAuthModalOpen] = useState(false);
 
-  const locale = detectLocale(lang);
+  const [locale, setLocale] = useState("uk");
+
+  useEffect(() => {
+    setLocale(detectLocale(lang));
+  }, [lang]);
+
   const ui = UI_COPY[locale] || UI_COPY.uk || {};
   const ib = ui.interestedButton || UI_COPY.interestedButton || {};
   const copy = { ...ib, ...(copyProp || {}) };
