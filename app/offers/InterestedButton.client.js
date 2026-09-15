@@ -24,7 +24,7 @@ export default function InterestedButton({ offerId, copy: copyProp, lang }) {
 
   const locale = detectLocale(lang);
   const ui = UI_COPY[locale] || UI_COPY.uk || {};
-  const ib = ui.interestedButton || {};
+  const ib = ui.interestedButton || UI_COPY.interestedButton || {};
   const copy = { ...ib, ...(copyProp || {}) };
 
   useEffect(() => {
