@@ -1701,6 +1701,27 @@ textarea {
   .topbar {
     overflow: visible;
   }
+
+  /* Ensure account avatar and login remain visible on narrow screens */
+  .top-actions {
+    flex-shrink: 0;
+    min-width: 0; /* allow contents to shrink inside flex container */
+    overflow: visible;
+  }
+
+  .top-actions .avatar,
+  .top-actions .nav-btn,
+  .top-actions .light-btn {
+    display: inline-flex !important;
+    align-items: center;
+  }
+
+  /* If space is tight, allow horizontal scroll for the actions area */
+  .top-actions.quick {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px; /* small padding so scroll isn't cut off */
+  }
 }
 
 .btn-centered {
