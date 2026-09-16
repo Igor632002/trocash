@@ -414,6 +414,39 @@ textarea {
 }
 
 /* Responsive tweaks for small screens */
+
+/* Tablet breakpoint: reduce hero height on tablets */
+@media (max-width: 1024px) {
+  .hero {
+    min-height: 260px;
+    padding-top: 6px;
+  }
+
+  .hero-inner {
+    padding-top: 24px;
+  }
+
+  .hero h1,
+  .hero-title {
+    font-size: clamp(30px, 5vw, 56px);
+    margin: -14px 0 10px;
+  }
+
+  .hero-title span,
+  .hero-title strong {
+    font-size: 0.63em;
+  }
+
+  .hero-copy,
+  .hero-sub {
+    font-size: 17px;
+  }
+
+  .hero-image {
+    height: 260px;
+  }
+}
+
 @media (max-width: 480px) {
   .hero {
     min-height: 220px;

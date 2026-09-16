@@ -2,18 +2,11 @@ import { SearchIcon } from "@/lib/icons";
 
 export default function SearchPanel({
   copy,
-  searchTab,
-  setSearchTab,
-  heroActive,
-  setHeroActive,
-  user,
-  router,
-  setNewOfferOpen,
+  // keep props (some may be unused elsewhere)
   category,
   setCategory,
   categoriesList = [],
   locationsList = [],
-  have,
   want,
   setWant,
   locationId,
@@ -22,7 +15,6 @@ export default function SearchPanel({
   setSearchOpen,
   handleSearch,
 }) {
-  // --- computed Ukrainian search summary (INSERT HERE) ---
   const selectedCategoryLabel = (() => {
     if (!category || category === "" || category === "Todas") return copy?.offersListHeading || "Lista de ofertas";
     const cat = categoriesList.find(c => String(c.id) === String(category));
@@ -41,70 +33,16 @@ export default function SearchPanel({
   const searchSummary = `${copy?.offersListHeading || "Lista de ofertas"}: ${selectedCategoryLabel} ${selectedLocationLabel}${wantPart}`;
 
   return (
-    <section id="explore" style={{ border: "1px solid lightgray", marginLeft: "5px", padding: "10px" }} className={`search-panel ${searchTab === "Tenho" ? "have" : "want"}`} >
-   
-      <div className="hero-actions">
-        <button style={{ marginLeft: "5px" }}
-          className={(searchTab === "Procuro" && heroActive !== "publish") ? "gold-btn large btn-centered" : "gold-btn light-btn large nav-btn"}
-          onClick={() => { setSearchTab && setSearchTab("Procuro"); setHeroActive && setHeroActive(null); }}
-        >
-          <SearchIcon width={20} height={20} />{'\u00A0\u00A0'}
-          {copy?.search || "Procuro"}
-        </button>
-         {user ? (
-  <>
-    <button
-      className={(searchTab === "auto" && heroActive !== "publish")
-        ? "gold-btn large btn-centered"
-        : "gold-btn light-btn large nav-btn"}
-      onClick={() => { setSearchTab("auto"); setSearchOpen && setSearchOpen(true); }}
-    >
-      ✦ {copy?.autoMatches}
-    </button>
-
-    <button
-      className={(searchTab === "Tenho" && heroActive !== "publish")
-        ? "gold-btn large btn-centered"
-        : "gold-btn light-btn large nav-btn"}
-      onClick={() => { setSearchTab && setSearchTab("Tenho"); setHeroActive && setHeroActive(null); }}
-    >
-      {copy?.have || "Tenho"}
-    </button>
-  </>
-) : null}
-        <button
-          className={heroActive === "publish" ? "gold-btn large btn-centered" : "gold-btn light-btn large nav-btn"}
-          onClick={() => {
-            if (!user) router.push("/auth");
-            else {
-              setNewOfferOpen(true);
-              setHeroActive && setHeroActive("publish");
-            }
-          }}
-        >
-          ＋ {copy?.publish}
-        </button>
-      </div>
-     
-      {/* 1. ЗАГОЛОВОК */}
-      <br></br>
+    <section id="explore" style={{ border: "1px solid lightgray", marginLeft: "5px", padding: "10px" }} className="search-panel">
       <div className="search-heading">
         <span style={{ marginLeft: "18px", fontSize: "16px", display: "inline-flex", gap: "8px", alignItems: "baseline", flexWrap: "wrap" }}>
-          <b>{searchTab === "Procuro" ? copy?.searchTitle : copy?.searchOfferTitle}</b>
-          <span style={{ fontSize: "14px", whiteSpace: "normal" }}>
-            {searchTab === "Procuro"
-              ? (copy?.searchSub || "Encontra uma troca que faça sentido para ti")
-              : (copy?.offerSub || "Veja os itens ou serviços que você oferece")}
-          </span>
+          <b>{copy?.searchTitle || copy?.searchOfferTitle}</b>
         </span>
       </div>
-      <br></br>
+      <br />
       <div className="panel-inner">
-        {/* 2. СПІЛЬНІ ФІЛЬТРИ (Категорія присутня в обох табах) */}
         <label className="filter-label">📂 {copy?.category || "Categoria"}
-          <select
-            value={category}
-            onChange={e => setCategory?.(e.target.value)} >
+          <select value={category} onChange={e => setCategory?.(e.target.value)}>
             <option value="" disabled>{copy?.selectCategory || "Selecione a categoria"}</option>
             <option value="Todas">{copy?.categories?.Todas || "Todas"}</option>
             {categoriesList
@@ -117,26 +55,41 @@ export default function SearchPanel({
           </select>
         </label>
 
-        {/* 3. УНІКАЛЬНІ ФІЛЬТРИ (Я хочу / Відстань) */}
-        {/* Показуємо ці поля, коли вкладка НЕ "Tenho" (тобто "Procuro" або інша) */}
-        {searchTab !== "Tenho" && (
-          <>
-            <label className="filter-label">🔘 {copy?.locality || "Área:"}
-              <select value={locationId} onChange={e => setLocationId?.(e.target.value)}>
-                <option value="" disabled >{copy?.selectArea || "Selecione uma localidade"}</option>
-                <option value="Todas">{copy?.categories?.Todas || "Todas"}</option>
-                {locationsList.map(l => (<option key={l.id} value={l.id}>{l.name}</option>))}
-              </select>
-            </label>
-            <label className="filter-label"> ✏️{copy?.keyWords  || " Palavra‑chave"}
-              <input
-                value={want}
-                onChange={e => setWant?.(e.target.value)}
-                placeholder={copy?.offerWishPlaceholder || "Ex.: sofá, câmara, outro serviço..."}
-              />
-            </label>
+        <label className="filter-label">🔘 {copy?.locality || "Área:"}
+          <select value={locationId} onChange={e => setLocationId?.(e.target.value)}>
+            <option value="" disabled>{copy?.selectArea || "Selecione uma localidade"}</option>
+            <option value="Todas">{copy?.categories?.Todas || "Todas"}</option>
+            {locationsList.map(l => (<option key={l.id} value={l.id}>{l.name}</option>))}
+          </select>
+        </label>
 
-            {/* <label className="filter-label narrow">
+        <label className="filter-label"> ✏️{copy?.keyWords || " Palavra‑chave"}
+          <input
+            value={want}
+            onChange={e => setWant?.(e.target.value)}
+            placeholder={copy?.offerWishPlaceholder || "Ex.: sofá, câmara, outro serviço..."}
+          />
+        </label>
+
+        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+          <button
+            className="btn-12ch large gold-btn light-btn nav-btn"
+            onClick={() => { handleSearch?.(); setSearchOpen?.(true); }}
+          >
+            <SearchIcon width={20} height={20} /> {'\u00A0\u00A0'}{copy?.searchButton || "Pesquisar"}
+          </button>
+        </div>
+
+        {searchOpen && (
+          <div style={{ gridColumn: "1 / -1", marginTop: 5, marginBottom: 5, padding: 14, borderRadius: 14, background: "#fff8e9", color: "#765824" }}>
+            {searchSummary}
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+  {/* <label className="filter-label narrow">
               {copy?.distance || "Distância:"}
               <select value={locationId} style={{ width: 120 }} onChange={e => setLocationId?.(e.target.value)}>
                 <option value="5">5 km</option>
@@ -146,27 +99,3 @@ export default function SearchPanel({
                 <option value="Algarve">Algarve</option>
               </select>
             </label> */}
-            <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-              {/* 4. КНОПКА ПОШУКУ */}
-              <button className={`btn-12ch large 
-              ${searchTab === "Procuro" ? "active gold-btn btn-centered" : "gold-btn light-btn nav-btn"}`}
-                onClick={() => { handleSearch?.(); setSearchOpen?.(true); }} >
-                <SearchIcon width={20} height={20} /> {'\u00A0\u00A0'}{copy?.searchButton || "Pesquisar"}
-              </button>
-            </div>
-          </>
-        )}
-
-        {/* 6. ТЕКСТ ПІСЛЯ КНОПОК ЗБІГІВ */}
-        {searchOpen && (
-          <div style={
-            { 
-              gridColumn: "1 / -1", marginTop: 5, marginBottom: 5, padding: 14, borderRadius: 14, background: "#fff8e9", color: "#765824" }
-            }>
-            {searchSummary}
-          </div>
-        )}
-      </div>
-    </section>
-  );
-}
