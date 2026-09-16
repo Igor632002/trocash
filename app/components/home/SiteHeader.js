@@ -73,7 +73,7 @@ export default function SiteHeader({
         </div>
         <button className="nav-btn" onClick={() => setWishlistOpen(true)} aria-label={copy?.wishlistAria || "Lista de Desejos"}>♡</button>
         <button className="light-btn nav-btn" onClick={() => { if (!user) router.push("/auth"); else setNewOfferOpen(true); }}>
-          ＋ {copy?.publishOfferButton}
+          +&nbsp;{copy?.publishOfferButton}
         </button> 
 
         {user ? (

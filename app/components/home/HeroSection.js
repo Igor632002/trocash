@@ -7,10 +7,10 @@ export default function HeroSection({ copy }) {
         <div className="hero-content" >
           <br></br>
           <h1 className="hero-title">
-            <span>{copy?.hero1}</span>
+            {/* <span>{copy?.hero1}</span> */}
             <strong>{copy?.hero2}</strong>
           </h1>
-          <p className="hero-sub">{copy?.heroSub}</p>         
+          <p className="hero-sub"><i>{copy?.heroSub}</i></p>         
         </div>
       </div>
     </section>
