@@ -664,7 +664,7 @@ textarea {
 .listing-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 18px;
+  gap: 21px;
 }
 
 .listing-card {
@@ -830,7 +830,7 @@ textarea {
   margin: 26px auto 0;
   display: flex;
   justify-content: space-between;
-  gap: 18px;
+  gap: 21px;
   align-items: center;
   padding: 17px 24px;
   border-radius: 18px;
@@ -1164,7 +1164,7 @@ textarea {
 
 /* Large-desktop tweaks (up to 1680px) */
 @media (max-width: 1680px) {
-  /* .listing-grid { grid-template-columns: repeat(4, 1fr) 300px; gap: 18px; } */
+  /* .listing-grid { grid-template-columns: repeat(4, 1fr) 300px; gap: 21px; } */
   .hero {
     align-items: flex-start;
     padding-top: 10px;
