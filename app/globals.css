@@ -482,7 +482,7 @@ textarea {
 
 .search-panel {
   position: relative;
-  margin: -40px auto 0;
+  margin: -70px auto 0;
   z-index: 5;
   width: calc(100% - 16px);
   max-width: none;
