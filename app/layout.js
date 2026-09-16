@@ -18,6 +18,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="pt" data-scroll-behavior="smooth">
       <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="alternate" hrefLang="pt" href="https://trocash.pt/" />
         <link rel="alternate" hrefLang="en" href="https://trocash.pt/en" />
         <link rel="alternate" hrefLang="uk" href="https://trocash.pt/uk" />

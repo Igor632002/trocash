@@ -1749,6 +1749,16 @@ textarea {
     width: auto;
     display: inline-block;
   }
+
+  /* Force show auth/login buttons on very small screens */
+  .topbar .top-actions > .light-btn,
+  .topbar .top-actions > .nav-btn,
+  .topbar .top-actions > .avatar {
+    display: inline-flex !important;
+    align-items: center !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
 }
 
 /* Центрувати панелі і модальні вікна на всіх екранах */
