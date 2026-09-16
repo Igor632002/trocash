@@ -1750,6 +1750,29 @@ textarea {
     display: inline-block;
   }
 
+  /* Shrink logo and move header actions closer to the left on small phones */
+  .brand-mark {
+    width: 44px;
+    height: 36px;
+  }
+
+  .brand-wordmark {
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  /* Reduce topbar side padding so header items can sit closer together */
+  .topbar {
+    padding: 0 12px;
+  }
+
+  /* Move the actions area to the left (next to the brand) instead of right-aligned */
+  .top-actions {
+    margin-left: 12px !important;
+    margin-right: auto !important;
+    gap: 6px;
+  }
+
   /* Force show auth/login buttons on very small screens */
   .topbar .top-actions > .light-btn,
   .topbar .top-actions > .nav-btn,
