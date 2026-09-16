@@ -1773,6 +1773,23 @@ textarea {
     gap: 6px;
   }
 
+  /* Ensure desktop nav is hidden and actions sit immediately after brand */
+  .desktop-nav {
+    display: none !important;
+    order: 2;
+  }
+
+  .brand {
+    order: 0;
+    margin-right: 6px;
+  }
+
+  .top-actions {
+    order: 1;
+    margin-left: 6px !important;
+    margin-right: 0 !important;
+  }
+
   /* Force show auth/login buttons on very small screens */
   .topbar .top-actions > .light-btn,
   .topbar .top-actions > .nav-btn,
