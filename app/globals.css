@@ -65,6 +65,13 @@ select {
   outline: none;
 }
 
+/* Make selects fill their grid cell and widen on large screens */
+.responsive-select {
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
+}
+
 input:focus,
 textarea:focus,
 select:focus {
@@ -523,6 +530,23 @@ textarea {
 .search-heading span {
   font-size: 11px;
   color: #777d8a;
+}
+
+/* FeaturedListings: center section title and use DM Serif Display for style parity */
+.section-head.section-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-head.section-title .featured-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 28px;
+  line-height: 1;
+  margin: 0;
+  color: var(--navy);
+  text-align: center;
 }
 
 /* Tabs container */
@@ -1213,6 +1237,19 @@ textarea {
   .search-panel>label:nth-of-type(3),
   .search-tabs button {
     font-size: 15px;
+  }
+
+  /* Targeted override: make search controls wider for large-desktop up to 1680px */
+  .search-panel .panel-inner {
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  }
+
+  .search-panel .panel-inner select.responsive-select,
+  .search-panel .panel-inner select {
+    width: 100%;
+    max-width: none;
+    box-sizing: border-box;
+    min-width: 320px;
   }
 }
 

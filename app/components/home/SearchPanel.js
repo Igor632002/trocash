@@ -3,17 +3,18 @@ import { SearchIcon } from "@/lib/icons";
 export default function SearchPanel({
   copy,
   // keep props (some may be unused elsewhere)
-  category,
+  category = "",
   setCategory,
   categoriesList = [],
   locationsList = [],
   want,
   setWant,
-  locationId,
+  locationId = "",
   setLocationId,
   searchOpen,
   setSearchOpen,
   handleSearch,
+  visibleListings = [],
 }) {
   const selectedCategoryLabel = (() => {
     if (!category || category === "" || category === "Todas") return copy?.offersListHeading || "Lista de ofertas";
@@ -32,6 +33,8 @@ export default function SearchPanel({
   const wantPart = want && String(want).trim() ? ` ${String(want).trim()}` : "";
   const searchSummary = `${copy?.offersListHeading || "Lista de ofertas"}: ${selectedCategoryLabel} ${selectedLocationLabel}${wantPart}`;
 
+
+
   return (
     <section id="explore" style={{ border: "1px solid lightgray", marginLeft: "5px", padding: "10px" }} className="search-panel">
       <div className="search-heading">
@@ -41,8 +44,12 @@ export default function SearchPanel({
       </div>
       <br />
       <div className="panel-inner">
-        <label className="filter-label">📂 {copy?.category || "Categoria"}
-          <select value={category} onChange={e => setCategory?.(e.target.value)}>
+          <input
+            value={want}
+            onChange={e => setWant?.(e.target.value)}
+            placeholder={copy?.offerWishPlaceholder || "Ex.: sofá, câmara, outro serviço..."}
+          />
+          <select className="responsive-select" value={category ?? ""} onChange={e => setCategory?.(e.target.value)}>
             <option value="" disabled>{copy?.selectCategory || "Selecione a categoria"}</option>
             <option value="Todas">{copy?.categories?.Todas || "Todas"}</option>
             {categoriesList
@@ -53,24 +60,11 @@ export default function SearchPanel({
                 </option>
               ))}
           </select>
-        </label>
-
-        <label className="filter-label">🔘 {copy?.locality || "Área:"}
-          <select value={locationId} onChange={e => setLocationId?.(e.target.value)}>
+          <select className="responsive-select" value={locationId ?? ""} onChange={e => setLocationId?.(e.target.value)}>
             <option value="" disabled>{copy?.selectArea || "Selecione uma localidade"}</option>
             <option value="Todas">{copy?.categories?.Todas || "Todas"}</option>
             {locationsList.map(l => (<option key={l.id} value={l.id}>{l.name}</option>))}
-          </select>
-        </label>
-
-        <label className="filter-label"> ✏️{copy?.keyWords || " Palavra‑chave"}
-          <input
-            value={want}
-            onChange={e => setWant?.(e.target.value)}
-            placeholder={copy?.offerWishPlaceholder || "Ex.: sofá, câmara, outro serviço..."}
-          />
-        </label>
-
+          </select>    
         <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
           <button
             className="btn-12ch large gold-btn light-btn nav-btn"
@@ -81,15 +75,21 @@ export default function SearchPanel({
         </div>
 
         {searchOpen && (
-          <div style={{ gridColumn: "1 / -1", marginTop: 5, marginBottom: 5, padding: 14, borderRadius: 14, background: "#fff8e9", color: "#765824" }}>
-            {searchSummary}
+          <div style={{ gridColumn: "1 / -1", marginTop: 5, marginBottom: 5 }}>
+            {visibleListings && visibleListings.length === 0 ? (
+              <div style={{ padding: 14, borderRadius: 14, background: "#fff8e9", color: "#765824", textAlign: 'center' }}>
+                {copy?.noResults || "No results found"}
+              </div>
+            ) : (
+              <div style={{ padding: 14, borderRadius: 14, background: "#fff8e9", color: "#765824", textAlign: 'center' }}>{searchSummary}</div>
+            )}
           </div>
         )}
       </div>
     </section>
   );
 }
-  {/* <label className="filter-label narrow">
+{/* <label className="filter-label narrow">
               {copy?.distance || "Distância:"}
               <select value={locationId} style={{ width: 120 }} onChange={e => setLocationId?.(e.target.value)}>
                 <option value="5">5 km</option>

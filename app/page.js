@@ -15,11 +15,11 @@ export default function Home({ initialLang = "pt" }) {
   const [lang, setLang] = useState(initialLang);
   const [languageOpen, setLanguageOpen] = useState(false);
   const [placeholder] = useState("");
-  const [category, setCategory] = useState("Todas");
+  const [category, setCategory] = useState("");
   //const [category, setCategory] = useState("");
   const [have, setHave] = useState("");
   const [want, setWant] = useState("");
-  const [locationId, setLocationId] = useState("Todas");
+  const [locationId, setLocationId] = useState("");
   // Фактично застосовані фільтри 
 
   const [searchFilters, setSearchFilters] = useState({
@@ -61,6 +61,9 @@ export default function Home({ initialLang = "pt" }) {
 
   const handleSearch = (overrides = {}) => {
     const next = { category, have, want, locationId, ...overrides };
+    // treat empty (placeholder) as 'Todas' for applied filters
+    next.category = next.category || "Todas";
+    next.locationId = next.locationId || "Todas";
     setSearchFilters(next);
     setVisibleListings(getVisibleListings({ offers, ...next }));
     setIsTopList(false);

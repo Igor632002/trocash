@@ -101,6 +101,7 @@ export default function HomeView(props) {
         category={category}
         setCategory={setCategory}
         categoriesList={categoriesList}
+        visibleListings={visibleListings}
         locationsList={locationsList}
         have={have}
         want={want}
