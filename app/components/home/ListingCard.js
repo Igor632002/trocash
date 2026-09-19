@@ -36,8 +36,7 @@ export default function ListingCard({ offer, index, copy, proposeExchange }) {
               console.warn("Could not open new window", e);
             }
             if (proposeExchange) proposeExchange(offer.id);
-          }}
-        >
+          }}>
           {copy?.viewOffer || "Ver troca"}
         </button>
       </div>

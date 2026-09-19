@@ -4,6 +4,8 @@ import { supabase } from "@/lib/supabase";
 import OfferActions from "./OfferActions.client";
 import demoListings from "@/lib/data/demoListings";
 import { useRouter } from "next/navigation";
+import { copy as UI_COPY } from "@/lib/uiResources";
+const L = UI_COPY.pt;
 
 export default function OwnerOffers({ ownerId }) {
   const router = useRouter();
@@ -56,67 +58,77 @@ export default function OwnerOffers({ ownerId }) {
   );
 
   return (
-    <section style={{ padding: 20 }}>
-      {offers.length === 0 ? (
-        <p>Não há ofertas a mostrar.</p>
-      ) : (
-        <ul style={{ listStyle: "none", padding: 0 }}>
-          {offers.map(o => {
-            const img =
-              o.image_url ||
-              (o.photo_urls && o.photo_urls[0]) ||
-              demoListings[(o.id || "").toString().length % demoListings.length].image;
+    <>
+      <section className="content-section section" style={{ padding: 20 }}>
+        <div style={{ maxWidth: 900, margin: "0 auto" }}>
+          <h1 style={{ marginBottom: 8 }}>{L.ownerOffersHeading}</h1>
 
-            const isHidden = o.status && o.status !== "active";
+          <hr></hr>
+          <section style={{ padding: 20 }}>
+            {offers.length === 0 ? (
+              <p>{L.noResults}</p>
+            ) : (
 
-            return (
-              <li key={o.id} style={{ padding: 12, borderBottom: "1px solid #eee", display: "flex", gap: 12 }}>
-                <div
-                  className="listing-image"
-                  style={{
-                    width: 140,
-                    minWidth: 140,
-                    backgroundImage: `url(${img})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    borderRadius: 8,
-                    filter: isHidden ? "grayscale(40%) brightness(60%)" : undefined,
-                    opacity: isHidden ? 0.6 : 1,
-                  }}
-                />
-                <div style={{ flex: 1 }}>
-                  <a href={`/offers/${o.id}`} style={{ color: "#1a73e8", textDecoration: "none" }}>
-                    <strong>{o.title || `Oferta ${o.id}`}</strong>
-                  </a>
+              <ul style={{ listStyle: "none", padding: 0 }}>
+                {offers.map(o => {
+                  const img =
+                    o.image_url ||
+                    (o.photo_urls && o.photo_urls[0]) ||
+                    demoListings[(o.id || "").toString().length % demoListings.length].image;
 
-                  {isHidden && (
-                    <div style={{ color: "#b33", marginTop: 6, fontWeight: 600 }}>
-                      Прихований
-                    </div>
-                  )}
-                  <div style={{ color: "#666", marginTop: 6 }}>{o.area} · {o.wish}</div>
-                  <div style={{ marginTop: 8 }}>
-                    <OfferActions id={o.id} onDone={() => {
-                      // reload the offers list after an action (delete/hide)
-                      (async () => {
-                        setLoading(true);
-                        const { data: rows = [], error } = await supabase
-                          .from("offers")
-                          .select("*")
-                          .eq("owner_id", ownerId)
-                          .order("created_at", { ascending: false });
-                        if (error) console.error(error);
-                        setOffers(rows || []);
-                        setLoading(false);
-                      })();
-                    }} />
-                  </div>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
-      )}
-    </section>
+                  const isHidden = o.status && o.status !== "active";
+
+                  return (
+                    <li key={o.id} style={{ padding: 12, borderBottom: "1px solid #eee", display: "flex", gap: 12 }}>
+                      <div
+                        className="listing-image"
+                        style={{
+                          width: 140,
+                          minWidth: 140,
+                          backgroundImage: `url(${img})`,
+                          backgroundSize: "cover",
+                          backgroundPosition: "center",
+                          borderRadius: 8,
+                          filter: isHidden ? "grayscale(40%) brightness(60%)" : undefined,
+                          opacity: isHidden ? 0.6 : 1,
+                        }}
+                      />
+                      <div style={{ flex: 1 }}>
+                        <a href={`/offers/${o.id}`} style={{ color: "#1a73e8", textDecoration: "none" }}>
+                          <strong>{o.title || `Oferta ${o.id}`}</strong>
+                        </a>
+
+                        {isHidden && (
+                          <div style={{ color: "#b33", marginTop: 6, fontWeight: 600 }}>
+                            {L.hiddenLabel}
+                          </div>
+                        )}
+                        <div style={{ color: "#666", marginTop: 6 }}>{o.area} · {o.wish}</div>
+                        <div style={{ marginTop: 8 }}>
+                          <OfferActions id={o.id} onDone={() => {
+                            // reload the offers list after an action (delete/hide)
+                            (async () => {
+                              setLoading(true);
+                              const { data: rows = [], error } = await supabase
+                                .from("offers")
+                                .select("*")
+                                .eq("owner_id", ownerId)
+                                .order("created_at", { ascending: false });
+                              if (error) console.error(error);
+                              setOffers(rows || []);
+                              setLoading(false);
+                            })();
+                          }} />
+                        </div>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </section>
+        </div>
+      </section>
+    </>
   );
 }

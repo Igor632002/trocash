@@ -77,9 +77,17 @@ export async function POST(req, context) {
       if (updErr) return new Response(updErr.message, { status: 500 });
       return new Response("paused", { status: 200 });
     }
+    // restore / activate offer
+    if (action === "active") {
+      const { error: updErr } = await supabase
+        .from("offers")
+        .update({ status: "active" })
+        .eq("id", id);
+      if (updErr) return new Response(updErr.message, { status: 500 });
+      return new Response("active", { status: 200 });
+    }    
     return new Response("action not supported", { status: 400 });
   }
-
   catch (e) {
     return new Response(String(e), { status: 500 });
   }

@@ -1997,3 +1997,19 @@ textarea {
     }
 }
 
+.listing-card.card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.listing-body.card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+
+/* кнопка внизу: відсунути від вмісту */
+.listing-body.card-body > button {
+  margin-top: auto;
+}
