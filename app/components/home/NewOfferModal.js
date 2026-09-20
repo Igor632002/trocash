@@ -16,24 +16,33 @@ export default function NewOfferModal({
   removePhoto,
   loading,
   notice,
+  onBack,
+  onClose,
+  showBackButton,
+  backLabel,
+  closeLabel,
+  mode,
 }) {
   if (!newOfferOpen) return null;
 
+  const handleBack = onBack || (() => { setWishlistOpen?.(true); setNewOfferOpen?.(false); setHeroActive?.(null); });
+  const handleClose = onClose || (() => { setNewOfferOpen?.(false); setHeroActive?.(null); });
+  const handleBackdropClose = onClose || (() => { setNewOfferOpen?.(false); setHeroActive?.(null); });
+
   return (
-    <div className="panel modal-backdrop" onClick={() => { setNewOfferOpen(false); setHeroActive(null); }}>
+    <div className="panel modal-backdrop" onClick={handleBackdropClose}>
       <aside className="drawer modal" onClick={(e) => e.stopPropagation()}>
         <div className="drawer-head">
           <h2>{copy?.newOfferTitle || "Criar oferta"}</h2>
           <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-            <button
-              className="close modal-close"
-              onClick={() => {
-                setNewOfferOpen(false);
-                setWishlistOpen(true);
-                setHeroActive(null);
-              }}
-            >←</button>
-            <button className="close modal-close" onClick={() => { setNewOfferOpen(false); setHeroActive(null); }}>×</button>
+            {showBackButton !== false && (
+              <button className="close modal-close" onClick={handleBack}>
+                {backLabel || "←"}
+              </button>
+            )}
+            <button className="close modal-close" onClick={handleClose}>
+              {closeLabel || "×"}
+            </button>
           </div>
         </div>
         <form className="offer-form" onSubmit={addOffer}>

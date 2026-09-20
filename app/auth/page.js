@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { useLocations } from "@/lib/hooks/useLocations";
+import { writeAuthSessionCookie } from "@/lib/auth/cookie-client";
 
 export default function AuthPage() {
   const router = useRouter();
@@ -54,6 +55,8 @@ export default function AuthPage() {
           password,
         });
         if (signinErr) throw signinErr;
+        const { data: sessionData } = await supabase.auth.getSession();
+        writeAuthSessionCookie(sessionData?.session || null);
         // Redirect to home page after successful login
         router.push("/");
       }

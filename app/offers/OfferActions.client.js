@@ -34,7 +34,7 @@ export default function OfferActions({ id, onDone }) {
   }
 
   return (
-    <div className="offer-actions" style={{ marginTop: 8 }}>
+    <div className="offer-actions">
       <a className="nav-btn" href={`/offers/${id}/edit`}>{L.editButton}</a>
       <button className="nav-btn" onClick={() => doAction("hide")} disabled={loading}>{L.hideButton}</button>
       <button className="nav-btn" onClick={() => doAction("active")} disabled={loading}>{L.showButton}</button>

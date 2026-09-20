@@ -36,7 +36,7 @@ export default function SiteHeader({
           {copy?.navMine}
         </button>
         <button onClick={() => setWishlistOpen(true)}>{copy?.navWish}</button>
-        <button onClick={() => scrollTo && scrollTo("trust")}>{copy?.navMessages}</button>
+        <button onClick={() => router.push("/chat")}>{copy?.navMessages}</button>
         <button onClick={() => scrollTo && scrollTo("premium")}>{copy?.navAbout}</button>
       </nav>
       <div className="top-actions nav-actions quick">

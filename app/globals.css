@@ -254,6 +254,88 @@ textarea {
   /* завжди притискає кнопки до правого краю */
 }
 
+/* Offer list responsive layout: title above image, then description, then actions */
+.offer-item {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.offer-item .listing-image {
+  width: 140px;
+  min-width: 140px;
+  height: 100px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 8px;
+}
+
+.offer-item .offer-content {
+  flex: 1;
+}
+
+.offer-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* Keep actions horizontal inside the main listing-card so four buttons fit */
+.listing-card .offer-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.listing-card .offer-actions .nav-btn,
+.listing-card .offer-actions a.nav-btn {
+  padding: 8px 10px;
+  font-size: 13px;
+  border-radius: 16px;
+  white-space: nowrap;
+  flex: 1 1 0;
+  text-align: center;
+}
+
+@media (max-width: 720px) {
+  .offer-item {
+    flex-direction: column;
+  }
+
+  .offer-item .listing-image {
+    width: 100%;
+    min-width: 0;
+    height: 180px;
+  }
+
+  .offer-item {
+    flex-direction: column;
+  }
+
+  .offer-item .listing-image {
+    width: 100%;
+    min-width: 0;
+    height: 180px;
+  }
+
+  .offer-item .offer-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin-top: 8px;
+  }
+
+  .offer-item .offer-actions .nav-btn,
+  .offer-item .offer-actions a.nav-btn {
+    width: max-content;
+    padding: 8px 14px;
+    border-radius: 18px;
+  }
+}
+
 .top-actions select {
   padding: 9px 8px;
   border: 0;
@@ -702,7 +784,7 @@ textarea {
 
 .listing-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 21px;
 }
 
@@ -773,6 +855,8 @@ textarea {
   font-size: 16px;
   margin: 6px 0 10px;
 }
+
+/* card-title removed: title now placed inside .listing-body */
 
 .swap-line {
   display: flex;
@@ -1474,9 +1558,23 @@ textarea {
   padding: 18px;
 }
 
+
+/* Make card a column flex so body grows and actions can sit at the bottom */
+.listing-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
 .account-card strong {
   display: block;
   font-size: 24px;
+
+/* Ensure body fills available card space so actions can be pushed to bottom */
+.listing-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
 }
 
 .wish-item {
@@ -1485,6 +1583,11 @@ textarea {
   gap: 13px;
   padding: 14px 0;
   border-bottom: 1px solid #eee7db;
+}
+
+/* Push actions to the bottom of the card body */
+.listing-body .offer-actions {
+  margin-top: auto;
 }
 
 .wish-icon {

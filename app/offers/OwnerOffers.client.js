@@ -69,7 +69,7 @@ export default function OwnerOffers({ ownerId }) {
               <p>{L.noResults}</p>
             ) : (
 
-              <ul style={{ listStyle: "none", padding: 0 }}>
+              <ul className="listing-grid" style={{ listStyle: "none", padding: 0 }}>
                 {offers.map(o => {
                   const img =
                     o.image_url ||
@@ -79,48 +79,40 @@ export default function OwnerOffers({ ownerId }) {
                   const isHidden = o.status && o.status !== "active";
 
                   return (
-                    <li key={o.id} style={{ padding: 12, borderBottom: "1px solid #eee", display: "flex", gap: 12 }}>
-                      <div
-                        className="listing-image"
-                        style={{
-                          width: 140,
-                          minWidth: 140,
-                          backgroundImage: `url(${img})`,
-                          backgroundSize: "cover",
-                          backgroundPosition: "center",
-                          borderRadius: 8,
-                          filter: isHidden ? "grayscale(40%) brightness(60%)" : undefined,
-                          opacity: isHidden ? 0.6 : 1,
-                        }}
-                      />
-                      <div style={{ flex: 1 }}>
-                        <a href={`/offers/${o.id}`} style={{ color: "#1a73e8", textDecoration: "none" }}>
-                          <strong>{o.title || `Oferta ${o.id}`}</strong>
-                        </a>
+                    <li key={o.id} style={{ listStyle: 'none', padding: 0, marginBottom: 14 }}>
+                      <article className="listing-card card">
+                        <div
+                          className="listing-image"
+                          style={{
+                            backgroundImage: `url(${img})`,
+                            filter: isHidden ? "grayscale(40%) brightness(60%)" : undefined,
+                            opacity: isHidden ? 0.6 : 1,
+                          }}
+                        >
+                          {/* optional badge area kept empty to match main listing card */}
+                        </div>
 
-                        {isHidden && (
-                          <div style={{ color: "#b33", marginTop: 6, fontWeight: 600 }}>
-                            {L.hiddenLabel}
+                        <div className="listing-body card-body">
+                          <h3 style={{ margin: '6px 0 6px', color: '#1a73e8' }}>{o.title || `Oferta ${o.id}`}</h3>
+                          <small style={{ marginBottom: 6 }}>{o.area} · {o.wish}</small>
+                          <div className="swap-line meta">
+                            <span>{L.descriptionLabel || 'Descrição'}</span>
+                            <b>{(o.description || o.details || '').split('\n')[0] || o.wish || '—'}</b>
                           </div>
-                        )}
-                        <div style={{ color: "#666", marginTop: 6 }}>{o.area} · {o.wish}</div>
-                        <div style={{ marginTop: 8 }}>
-                          <OfferActions id={o.id} onDone={() => {
-                            // reload the offers list after an action (delete/hide)
-                            (async () => {
-                              setLoading(true);
-                              const { data: rows = [], error } = await supabase
-                                .from("offers")
-                                .select("*")
-                                .eq("owner_id", ownerId)
-                                .order("created_at", { ascending: false });
-                              if (error) console.error(error);
-                              setOffers(rows || []);
-                              setLoading(false);
-                            })();
+
+                          <OfferActions id={o.id} onDone={async () => {
+                            setLoading(true);
+                            const { data: rows = [], error } = await supabase
+                              .from("offers")
+                              .select("*")
+                              .eq("owner_id", ownerId)
+                              .order("created_at", { ascending: false });
+                            if (error) console.error(error);
+                            setOffers(rows || []);
+                            setLoading(false);
                           }} />
                         </div>
-                      </div>
+                      </article>
                     </li>
                   );
                 })}

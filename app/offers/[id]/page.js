@@ -17,6 +17,11 @@ export default async function OfferPage({ params }) {
         offer = await fetchOfferById(id);
     } catch (err) {
         console.error("fetchOfferById error", err);
+        try {
+            console.error("fetchOfferById full error:", JSON.stringify(err, Object.getOwnPropertyNames(err)));
+        } catch (e) {
+            console.error("could not stringify fetchOfferById error", e);
+        }
     }
 
     if (!offer) return notFound();

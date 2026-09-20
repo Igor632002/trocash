@@ -1,9 +1,12 @@
 import React from "react";
 import { supabase } from "@/lib/supabase";
+import { redirect } from "next/navigation";
 import OfferActions from "./OfferActions.client";
 import demoListings from "@/lib/data/demoListings";
 import OwnerOffers from "./OwnerOffers.client";
+import PublishButton from "./PublishButton.client";
 import OffersNav from "./OffersNav.client";
+import { getServerAuthSession } from "@/lib/auth/cookie-server";
 
 function Logo({ compact = false }) {
   return (
@@ -43,35 +46,43 @@ export default async function OffersPage(props) {
   } else {
     owner = sp?.owner ?? null;
   }
-  // If owner query present, render client-side wrapper that validates browser session
+  const session = await getServerAuthSession();
+
+  // If owner query present, render owner view (client component will handle auth)
   if (owner) {
+    if (!session?.id) {
+      return redirect('/auth');
+    }
+
+    if (session.id !== owner) {
+      return (
+        <main className="site-shell tc-page">
+          <header className="topbar tc-nav">
+            <a className="logo-button" href="/">
+              <Logo />
+            </a>
+            <OffersNav />
+            <div className="top-actions nav-actions quick">
+              <PublishButton />
+            </div>
+          </header>
+          <main style={{ padding: 20 }}>
+            <h1>Não autorizado</h1>
+          </main>
+        </main>
+      );
+    }
+
     return (
       <main className="site-shell tc-page">
         <header className="topbar tc-nav">
           <a className="logo-button" href="/">
             <Logo />
           </a>
-          {/* <nav className="desktop-nav">
-            <a href="/#explore">Explorar</a>
-            <a href="/auth">Meu perfil</a>
-            <a href="/#wishlist">Wish List</a>
-            <a href="/#trust">Mensagens</a>
-            <a href="/#how">Como funciona</a>
-            <a href="/#premium">Sobre</a>
-          </nav>     */}
-          {/* <nav className="desktop-nav">
-            <button onClick={() => { if (typeof window !== "undefined") window.location.hash = "explore"; }}>Explorar</button>
-            <button onClick={() => { if (typeof window !== "undefined") window.location.href = "/auth"; }}>Meu perfil</button>
-            <button onClick={() => { if (typeof window !== "undefined") window.location.hash = "wishlist"; }}>Wish List</button>
-            <button onClick={() => { if (typeof window !== "undefined") window.location.hash = "trust"; }}>Mensagens</button>
-            <button onClick={() => { if (typeof window !== "undefined") window.location.hash = "how"; }}>Como funciona</button>
-            <button onClick={() => { if (typeof window !== "undefined") window.location.hash = "premium"; }}>Sobre</button>
-          </nav> */}
           <OffersNav />
           <div className="top-actions nav-actions quick">
-            <a className="nav-btn" href="/offers">Ofertas</a>
-            <a className="nav-btn" href="/auth">Entrar</a>
-            <a className="gold-btn" href="/auth">＋ Publicar</a>
+            {/* <a className="nav-btn" href="/offers">Ofertas</a> */}
+            <PublishButton />
           </div>
         </header>
 
@@ -88,6 +99,11 @@ export default async function OffersPage(props) {
         <div className="copyright">© 2026 troCASH · Algarve, Portugal</div>
       </main>
     );
+  }
+
+  // If no owner query (public /offers), require server-side session and redirect unauthenticated users
+  if (!owner && !session?.id) {
+    return redirect('/auth');
   }
 
   try {
@@ -110,8 +126,7 @@ export default async function OffersPage(props) {
           </nav>
           <div className="top-actions nav-actions quick">
             <a className="nav-btn" href="/offers">Ofertas</a>
-            <a className="nav-btn" href="/auth">Entrar</a>
-            <a className="gold-btn" href="/auth">＋ Publicar</a>
+            <PublishButton />
           </div>
         </header>
 
@@ -119,9 +134,8 @@ export default async function OffersPage(props) {
           <div style={{ maxWidth: 900, margin: "0 auto" }}>
             <h1 style={{ marginBottom: 8 }}>{owner ? "Ofertas publicadas" : "Ofertas"}</h1>
 
-            {offers.length === 0 ? (
-              <p>Não há ofertas a mostrar.</p>
-            ) : (
+            {offers.length === 0 ? (<p>Não há ofertas a mostrar.</p>) : 
+            (
               <ul style={{ listStyle: "none", padding: 0 }}>
                 {offers.map(o => {
                   const img =

@@ -167,6 +167,9 @@ export default function HomeView(props) {
         setNewOfferOpen={setNewOfferOpen}
         setWishlistOpen={setWishlistOpen}
         setHeroActive={setHeroActive}
+        onBack={() => { setWishlistOpen(true); setNewOfferOpen(false); setHeroActive(null); }}
+        onClose={() => { setNewOfferOpen(false); setHeroActive(null); }}
+        showBackButton={true}
         addOffer={addOffer}
         category={category}
         setCategory={setCategory}
