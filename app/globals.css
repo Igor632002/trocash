@@ -138,6 +138,21 @@ textarea {
   font-weight: 700;
   flex: none;
   /* забороняє flex-стиснення, яке ламало форму кола */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1;
+  font-size: 13px;
+}
+
+/* Ensure avatar content stays centered on very small screens */
+@media (max-width: 420px) {
+  .avatar {
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+  }
 }
 
 /* ==========================================================================
