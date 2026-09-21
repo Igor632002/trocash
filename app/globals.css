@@ -297,7 +297,19 @@ textarea {
   border-radius: 16px;
   white-space: nowrap;
   flex: 1 1 0;
+  min-width: 0;
   text-align: center;
+}
+
+@media (max-width: 480px) {
+  .listing-card .offer-actions {
+    flex-wrap: wrap;
+  }
+
+  .listing-card .offer-actions .nav-btn,
+  .listing-card .offer-actions a.nav-btn {
+    flex: 1 1 calc(50% - 8px);
+  }
 }
 
 @media (max-width: 720px) {
@@ -1429,6 +1441,11 @@ textarea {
   .listing-grid {
     grid-template-columns: minmax(0, 1fr);
     gap: 14px;
+  }
+
+  /* menший бічний відступ, щоб картка займала більше ширини екрана */
+  .content-section.section {
+    padding: 10px !important;
   }
 
   /* відновити розміри картки/зображення як на десктопі */

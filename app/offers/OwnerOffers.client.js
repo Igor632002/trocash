@@ -64,7 +64,7 @@ export default function OwnerOffers({ ownerId }) {
           <h1 style={{ marginBottom: 8 }}>{L.ownerOffersHeading}</h1>
 
           <hr></hr>
-          <section style={{ padding: 20 }}>
+          <section>
             {offers.length === 0 ? (
               <p>{L.noResults}</p>
             ) : (
