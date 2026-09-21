@@ -45,26 +45,11 @@ export default function OffersNav({ copy }) {
     // On small screens the nav is teleported to <body> via a portal so it isn't
     // trapped inside the header's containing block (the header uses backdrop-filter,
     // which makes `position: fixed` descendants pin to the header instead of the viewport).
+    // Positioning/layout for this state lives in globals.css (.desktop-nav.bottom-fixed).
     if (isSmall) {
         if (!mounted) return null
         return createPortal(
-            <nav
-                className="desktop-nav always-show bottom-fixed"
-                style={{
-                    position: "fixed",
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    zIndex: 1000,
-                    display: "flex",
-                    justifyContent: "space-around",
-                    gap: 4,
-                    padding: "8px 10px",
-                    background: "#ffffff",
-                    borderTop: "1px solid rgba(17,25,54,0.1)",
-                    boxShadow: "0 -8px 24px rgba(20,25,40,0.12)",
-                }}
-            >
+            <nav className="desktop-nav always-show bottom-fixed">
                 {navButtons}
             </nav>,
             document.body
