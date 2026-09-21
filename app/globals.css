@@ -1835,15 +1835,11 @@ textarea {
   }
 
   .top-actions .gold-btn {
+    display: inline-flex !important;
     align-items: center;
     justify-content: center;
     padding: 10px 12px;
     min-width: 44px;
-  }
-
-  /* Приховуємо публікаційну кнопку у верхньому барі на мобайлі */
-  .topbar .top-actions>.gold-btn {
-    display: none !important;
   }
 
   /* за потреби приховати менш важливі кнопки, щоб звільнити місце */
@@ -1957,6 +1953,34 @@ textarea {
   }
 }
 
+/* Bottom-fixed offers nav for small screens */
+.desktop-nav.always-show.bottom-fixed {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 60;
+  justify-content: space-around;
+  padding: 8px 12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.96));
+  border-top: 1px solid rgba(17,25,54,0.06);
+  box-shadow: 0 -10px 30px rgba(20,25,40,0.06);
+}
+
+.desktop-nav.always-show.bottom-fixed button {
+  flex: 1 1 auto;
+  padding: 10px 8px;
+  margin: 0 6px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+/* Add spacing at the bottom of the page so content doesn't get hidden */
+body.has-bottom-offers-nav {
+  padding-bottom: 74px; /* enough for nav height + comfortable gap */
+}
+
+
 /* Центрувати панелі і модальні вікна на всіх екранах */
 .panel {
   justify-content: center;
@@ -1996,6 +2020,57 @@ textarea {
     margin: 0 0 25px;
     font-size: 32px;
     font-weight: 700;
+}
+
+/* Offer-specific override: keep the offers navigation visible on small screens
+   This targets the nav in `app/offers/OffersNav.client.js` which now includes
+   the `always-show` class. It won't affect the main header because that
+   component doesn't use the `always-show` class. */
+.desktop-nav.always-show {
+  display: flex !important;
+  gap: 6px;
+}
+
+@media (max-width: 1050px) {
+  .desktop-nav.always-show {
+    display: flex !important;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 650px) {
+  .desktop-nav.always-show {
+    display: flex !important;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    order: 1; /* keep it near the brand/actions as needed */
+    padding-bottom: 6px;
+  }
+  .desktop-nav.always-show button {
+    padding: 8px 10px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  /* Force bottom-fixed purely with CSS to ensure it appears even if JS didn't run */
+  .desktop-nav.always-show {
+    position: fixed !important;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 60;
+    justify-content: space-around;
+    background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.96));
+    border-top: 1px solid rgba(17,25,54,0.06);
+    box-shadow: 0 -10px 30px rgba(20,25,40,0.06);
+    padding: 8px 12px;
+  }
+
+  /* ensure page content is not covered */
+  .site-shell {
+    padding-bottom: 74px;
+  }
 }
 
 .chat-list {

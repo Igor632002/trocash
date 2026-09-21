@@ -6,6 +6,8 @@ import { useAuth } from "@/lib/hooks/useAuth";
 import { useOffers } from "@/lib/hooks/useOffers";
 import AccountModal from "@/app/components/home/AccountModal";
 
+
+
 export default function ProfilePageClient({ copy, sessionUser, returnTo = "/offers" }) {
   const router = useRouter();
   const { user, loading: authLoading } = useAuth();

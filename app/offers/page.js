@@ -119,11 +119,7 @@ export default async function OffersPage(props) {
           <a className="logo-button" href="/">
             <Logo />
           </a>
-          <nav className="desktop-nav">
-            <a href="/#explore">Explorar</a>
-            <a href="/auth">Meu perfil</a>
-            <a href="/#premium">Sobre</a>
-          </nav>
+          <OffersNav />
           <div className="top-actions nav-actions quick">
             <a className="nav-btn" href="/offers">Ofertas</a>
             <PublishButton />
