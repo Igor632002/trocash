@@ -80,6 +80,7 @@ export default function HomeView(props) {
         languageOpen={languageOpen}
         setLanguageOpen={setLanguageOpen}
         user={user}
+        hideGuestButtons={!user}
         router={router}
         scrollTo={scrollTo}
         setAccountOpen={setAccountOpen}

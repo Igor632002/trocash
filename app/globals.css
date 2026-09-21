@@ -149,9 +149,9 @@ textarea {
 /* Ensure avatar content stays centered on very small screens */
 @media (max-width: 420px) {
   .avatar {
-    width: 36px;
-    height: 36px;
-    font-size: 14px;
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
   }
 }
 
@@ -235,8 +235,8 @@ textarea {
 }
 
 .desktop-nav button {
-  padding: 11px 12px;
-  font-size: 13px;
+  padding: 14px 16px;
+  font-size: 16px;
   color: #38405b;
   border-radius: 12px;
 }
@@ -249,7 +249,7 @@ textarea {
 .top-actions {
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 12px;
   margin-left: auto;
   /* завжди притискає кнопки до правого краю */
 }

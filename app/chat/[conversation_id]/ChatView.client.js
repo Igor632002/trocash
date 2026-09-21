@@ -65,6 +65,25 @@ export default function ChatView({ conversationId }) {
         };
     }, [conversationId]);
 
+    async function markMessageAsRead(messageId) {
+
+        const { data, error } = await supabase.rpc(
+            "mark_message_as_read",
+            {
+                p_message_id: messageId
+            }
+        );
+
+        if (error) {
+            console.error(
+                "Mark message as read error:",
+                error
+            );
+            return false;
+        }
+
+        return true;
+    }
 
     async function loadChat() {
         setLoading(true);
@@ -72,12 +91,9 @@ export default function ChatView({ conversationId }) {
 
         try {
             // 1. Поточний користувач
-            const { data: userData, error: userError } =
-                await supabase.auth.getUser();
+            const { data: userData, error: userError } = await supabase.auth.getUser();
 
-            if (userError) {
-                throw userError;
-            }
+            if (userError) { throw userError; }
 
             const currentUser = userData?.user;
 
@@ -86,7 +102,11 @@ export default function ChatView({ conversationId }) {
                 return;
             }
 
+            const { data: debugUser, error: debugError } =
+                await supabase.rpc("debug_current_user");
+
             setUser(currentUser);
+
 
             // 2. Завантажуємо повідомлення
             const { data, error: messagesError } = await supabase
@@ -101,7 +121,26 @@ export default function ChatView({ conversationId }) {
                 throw messagesError;
             }
 
-            setMessages(data || []);
+            const loadedMessages = data || [];
+
+            // Позначаємо прочитаними повідомлення,
+            // які надіслав інший користувач
+            for (const message of loadedMessages) {
+                if (
+                    message.sender_id !== currentUser.id &&
+                    !message.is_read
+                ) {
+                    const marked = await markMessageAsRead(
+                        message.message_id
+                    );
+
+                    if (marked) {
+                        message.is_read = true;
+                    }
+                }
+            }
+
+            setMessages([...loadedMessages]);
 
             const unreadMessages = (data || []).filter(
                 (message) =>
@@ -297,28 +336,57 @@ async function markMessageAsRead(messageId) {
     if (!messageId) {
         return false;
     }
-
+    // First, try the RPC if it exists (some projects use an RPC to handle RLS)
     try {
-        const { error } = await supabase.rpc(
+        const rpcRes = await supabase.rpc(
             "mark_message_as_read",
             {
                 p_message_id: messageId
             }
         );
 
+        if (rpcRes && rpcRes.error) {
+            console.warn(
+                "mark_message_as_read RPC failed, will fallback to direct update:",
+                rpcRes.error
+            );
+        } else if (rpcRes && !rpcRes.error) {
+            // RPC succeeded
+            return true;
+        }
+    } catch (rpcErr) {
+        console.warn(
+            "mark_message_as_read RPC threw exception, will fallback to direct update:",
+            rpcErr
+        );
+    }
+
+    // Fallback: try updating the row directly. This will surface any permission
+    // or policy-related errors in the client logs.
+    try {
+        const { data, error } = await supabase
+            .from("messages")
+            .update({ is_read: true })
+            .eq("message_id", messageId);
+
         if (error) {
             console.error(
-                "Mark message as read error:",
+                "Direct mark as read error:",
                 error
             );
 
             return false;
         }
 
+        console.log(
+            "Marked message as read via direct update:",
+            data
+        );
+
         return true;
     } catch (err) {
         console.error(
-            "Mark message as read exception:",
+            "Direct mark as read exception:",
             err
         );
 

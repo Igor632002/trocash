@@ -18,6 +18,7 @@ export default function SiteHeader({
   languageOpen,
   setLanguageOpen,
   user,
+  hideGuestButtons = false,
   router,
   scrollTo,
   setAccountOpen,
@@ -32,11 +33,15 @@ export default function SiteHeader({
       <nav className="desktop-nav">
         <button onClick={() => scrollTo && scrollTo("how")}>{copy?.navHow}</button>
         <button onClick={() => { scrollTo && scrollTo("explore"); }}>{copy?.navExplore}</button>
-        <button onClick={() => { if (!user) router.push("/auth"); else setAccountOpen(true); }}>
-          {copy?.navMine}
-        </button>
-        <button onClick={() => setWishlistOpen(true)}>{copy?.navWish}</button>
-        <button onClick={() => router.push("/chat")}>{copy?.navMessages}</button>
+        {!hideGuestButtons && (
+          <>
+            <button onClick={() => { if (!user) router.push("/auth"); else setAccountOpen(true); }}>
+              {copy?.navMine}
+            </button>
+            <button onClick={() => setWishlistOpen(true)}>{copy?.navWish}</button>
+            <button onClick={() => router.push("/chat")}>{copy?.navMessages}</button>
+          </>
+        )}
         <button onClick={() => scrollTo && scrollTo("premium")}>{copy?.navAbout}</button>
       </nav>
       <div className="top-actions nav-actions quick">
@@ -71,10 +76,14 @@ export default function SiteHeader({
             </div>
           )}
         </div>
-        <button className="nav-btn" onClick={() => setWishlistOpen(true)} aria-label={copy?.wishlistAria || "Lista de Desejos"}>♡</button>
-        <button className="light-btn nav-btn" onClick={() => { if (!user) router.push("/auth"); else setNewOfferOpen(true); }}>
-          +&nbsp;{copy?.publishOfferButton}
-        </button> 
+        {!hideGuestButtons && (
+          <>
+            <button className="nav-btn" onClick={() => setWishlistOpen(true)} aria-label={copy?.wishlistAria || "Lista de Desejos"}>♡</button>
+            <button className="light-btn nav-btn" onClick={() => { if (!user) router.push("/auth"); else setNewOfferOpen(true); }}>
+              +&nbsp;{copy?.publishOfferButton}
+            </button>
+          </>
+        )}
 
         {user ? (
           <button className="avatar" onClick={() => setAccountOpen(true)}>
@@ -84,7 +93,7 @@ export default function SiteHeader({
           <button className="light-btn nav-btn" onClick={() => router.push("/auth")}>
             {copy?.login}
           </button>
-        )}    
+        )}
       </div>
     </header>
   );
