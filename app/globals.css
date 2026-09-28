@@ -851,6 +851,9 @@ textarea {
   border-radius: 22px;
   overflow: hidden;
   box-shadow: 0 12px 30px rgba(30, 35, 58, 0.05);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .listing-image {
@@ -901,6 +904,9 @@ textarea {
 
 .listing-body {
   padding: 15px;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
 }
 
 .listing-body small {
@@ -911,6 +917,10 @@ textarea {
 .listing-body h3 {
   font-size: 16px;
   margin: 6px 0 10px;
+}
+
+.listing-body.card-body > button {
+  margin-top: auto;
 }
 
 /* card-title removed: title now placed inside .listing-body */
@@ -1677,6 +1687,8 @@ textarea {
     background-position: top center;
 }
 
+}
+
 .panel {
   position: fixed;
   inset: 0;
@@ -1765,22 +1777,9 @@ textarea {
 }
 
 
-/* Make card a column flex so body grows and actions can sit at the bottom */
-.listing-card {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
 .account-card strong {
   display: block;
   font-size: 24px;
-
-/* Ensure body fills available card space so actions can be pushed to bottom */
-.listing-body {
-  display: flex;
-  flex-direction: column;
-  flex: 1 1 auto;
-}
 }
 
 .wish-item {
@@ -1791,7 +1790,6 @@ textarea {
   border-bottom: 1px solid #eee7db;
 }
 
-/* Push actions to the bottom of the card body */
 .listing-body .offer-actions {
   margin-top: auto;
 }
@@ -2411,19 +2409,3 @@ body.has-bottom-offers-nav {
     }
 }
 
-.listing-card.card {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.listing-body.card-body {
-  display: flex;
-  flex-direction: column;
-  flex: 1 1 auto;
-}
-
-/* кнопка внизу: відсунути від вмісту */
-.listing-body.card-body > button {
-  margin-top: auto;
-}
