@@ -1003,6 +1003,66 @@ textarea {
   color: #7c808c;
 }
 
+@media (max-width: 650px) {
+  .trust-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px 14px;
+    padding: 18px;
+  }
+
+  .trust-lead {
+    grid-column: 1 / -1;
+    align-items: flex-start;
+  }
+
+  .metric {
+    padding-left: 0;
+    border-left: 0;
+    border-top: 1px solid var(--line);
+    padding-top: 14px;
+    min-width: 0;
+  }
+
+  .metric b {
+    font-size: 22px;
+  }
+
+  .metric span {
+    font-size: 9px;
+  }
+}
+
+@media (max-width: 599px) {
+  .trust-strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px 10px;
+    padding: 16px;
+  }
+
+  .trust-lead {
+    grid-column: 1 / -1;
+  }
+
+  .metric {
+    padding-left: 0;
+    border-left: 0;
+    border-top: 1px solid var(--line);
+    padding-top: 12px;
+    min-width: 0;
+    text-align: center;
+  }
+
+  .metric b {
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  .metric span {
+    font-size: 8px;
+    line-height: 1.2;
+  }
+}
+
 /* Slogan Band */
 
 .slogan-band {
@@ -1487,24 +1547,6 @@ textarea {
     gap: 14px;
   }
 
-  .premium {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 18px;
-    padding: 24px 20px;
-  }
-
-  .premium-price {
-    width: 100%;
-    justify-content: flex-start;
-    align-items: flex-start;
-  }
-
-  .premium-price .gold-btn {
-    width: 100%;
-    flex-basis: auto;
-  }
-
   /* menший бічний відступ, щоб картка займала більше ширини екрана */
   .content-section.section {
     padding: 10px !important;
@@ -1520,35 +1562,6 @@ textarea {
     height: 185px;
     background-size: contain;
     background-position: top center;
-    background-repeat: no-repeat;
-    background-color: #ffffff;
-    border-radius: 16px;
-    overflow: hidden;
-  }
-
-  .listing-body {
-    padding: 15px;
-  }
-
-  .listing-body h3 {
-    font-size: 16px;
-    margin: 6px 0 10px;
-  }
-}
-.quick {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
-.nav-btn {
-  border: 1px solid var(--line);
-  background: #fff;
-  border-radius: 999px;
-  padding: 10px 14px;
-  color: var(--ink);
-  font-weight: 700;
-  cursor: pointer;
 }
 
 .panel {
