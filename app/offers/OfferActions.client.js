@@ -35,10 +35,15 @@ export default function OfferActions({ id, onDone }) {
 
   return (
     <div className="offer-actions">
-      <a className="nav-btn" href={`/offers/${id}/edit`}>{L.editButton}</a>
-      <button className="nav-btn" onClick={() => doAction("hide")} disabled={loading}>{L.hideButton}</button>
-      <button className="nav-btn" onClick={() => doAction("active")} disabled={loading}>{L.showButton}</button>
-      <button className="nav-btn" onClick={() => doAction("delete")} disabled={loading}>{L.deleteButton}</button>
+      <div className="offer-actions-row">
+        <a className="nav-btn" href={`/offers/${id}/edit`}>{L.editButton}</a>
+        <button className="nav-btn" onClick={() => doAction("done")} disabled={loading}>{L.doneButton}</button>
+        <button className="nav-btn" onClick={() => doAction("hide")} disabled={loading}>{L.hideButton}</button>
+      </div>
+      <div className="offer-actions-row">
+        <button className="nav-btn" onClick={() => doAction("active")} disabled={loading}>{L.showButton}</button>
+        <button className="nav-btn" onClick={() => doAction("delete")} disabled={loading}>{L.deleteButton}</button>
+      </div>
     </div>
   );
 }

@@ -1,6 +1,8 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
+import { fetchUserConversations } from "@/lib/dal/chat";
 
 export default function AccountModal({
   copy,
@@ -12,6 +14,72 @@ export default function AccountModal({
   setWishlistOpen,
   setHeroActive,
 }) {
+  const [chatStats, setChatStats] = useState({ totalChats: 0, unreadMessages: 0 });
+  const [completedExchanges, setCompletedExchanges] = useState(0);
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadChatStats() {
+      if (!user?.id) {
+        setChatStats({ totalChats: 0, unreadMessages: 0 });
+        return;
+      }
+
+      try {
+        const conversations = await fetchUserConversations(user.id);
+        if (!active) return;
+
+        setChatStats({
+          totalChats: conversations.length,
+          unreadMessages: conversations.reduce((total, conversation) => total + (conversation.unreadCount || 0), 0),
+        });
+      } catch (error) {
+        console.error("Failed to load chat stats", error);
+        if (active) {
+          setChatStats({ totalChats: 0, unreadMessages: 0 });
+        }
+      }
+    }
+
+    loadChatStats();
+
+    return () => {
+      active = false;
+    };
+  }, [user?.id]);
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadCompletedExchanges() {
+      if (!user?.id) {
+        setCompletedExchanges(0);
+        return;
+      }
+
+      try {
+        const { count, error } = await supabase
+          .from("offers")
+          .select("id", { count: "exact", head: true })
+          .eq("owner_id", user.id)
+          .eq("status", "done");
+
+        if (error) throw error;
+        if (active) setCompletedExchanges(count || 0);
+      } catch (error) {
+        console.error("Failed to load completed exchanges", error);
+        if (active) setCompletedExchanges(0);
+      }
+    }
+
+    loadCompletedExchanges();
+
+    return () => {
+      active = false;
+    };
+  }, [user?.id]);
+
   if (!accountOpen) return null;
 
   return (
@@ -29,6 +97,7 @@ export default function AccountModal({
         <div className="account-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, margin: "16px 0" }}>
           <div className="account-card" style={{ padding: 12, border: "1px solid #ddd", borderRadius: 8 }}>
             <strong>{offers.filter(o => o.owner_id === user?.id).length}</strong>
+            <div>{copy?.currentOffersLabel || "Ofertas atuais"}</div>
             <div>
               <a
                 href={user?.id ? `/offers?owner=${user.id}` : '#'}
@@ -48,7 +117,30 @@ export default function AccountModal({
             </div>
           </div>
           <div className="account-card" style={{ padding: 12, border: "1px solid #ddd", borderRadius: 8 }}>
-            <strong>0</strong>
+            <div style={{ marginTop: 8 }}>
+              <strong>{chatStats.totalChats}</strong>
+              <div>{copy?.accountChatCountLabel || "Total de chats"}</div>
+              <div style={{ marginTop: 6 }}>
+                {chatStats.unreadMessages} {copy?.accountNewMessagesLabel || "novas mensagens"}
+              </div>
+              <a
+                href="/chat"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setAccountOpen(false);
+                  setHeroActive(null);
+                  if (router && router.push) router.push("/chat");
+                  else window.location.href = "/chat";
+                }}
+                style={{ color: '#1a73e8', textDecoration: 'underline' }}
+              >
+                {copy?.accountChatLabel || "Chat"}
+              </a>
+            </div>
+          </div>
+
+          <div className="account-card" style={{ padding: 12, border: "1px solid #ddd", borderRadius: 8 }}>
+            <strong>{completedExchanges}</strong>
             <div>{copy?.accountExchangesLabel || "Trocas concluídas"}</div>
           </div>
         </div>

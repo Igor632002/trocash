@@ -281,8 +281,21 @@ textarea {
 
 .offer-actions {
   display: flex;
+  flex-direction: column;
   gap: 8px;
-  align-items: center;
+  align-items: stretch;
+}
+
+.offer-actions-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.offer-actions-row .nav-btn,
+.offer-actions-row a.nav-btn {
+  flex: 1 1 0;
+  min-width: 0;
 }
 
 /* Keep actions horizontal inside the main listing-card so four buttons fit */

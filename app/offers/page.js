@@ -109,7 +109,7 @@ export default async function OffersPage(props) {
   try {
     const q = owner
       ? supabase.from("offers").select("*").eq("owner_id", owner).order("created_at", { ascending: false })
-      : supabase.from("offers").select("*").neq("status", "pausednjhsre").order("created_at", { ascending: false });
+      : supabase.from("offers").select("*").eq("status", "active").order("created_at", { ascending: false });
     const { data: offers = [], error } = await q;
     if (error) throw error;
 

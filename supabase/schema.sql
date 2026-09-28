@@ -16,7 +16,7 @@ create table public.offers (
   wish text,
   notes text,
   created_at timestamptz default now(),
-  status text not null default 'active' check (status in ('active','paused','removed'))
+  status text not null default 'active' check (status in ('active','paused','removed','done'))
 );
 
 create table public.wishes (

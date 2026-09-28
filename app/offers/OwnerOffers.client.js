@@ -77,6 +77,11 @@ export default function OwnerOffers({ ownerId }) {
                     demoListings[(o.id || "").toString().length % demoListings.length].image;
 
                   const isHidden = o.status && o.status !== "active";
+                  const statusLabel = o.status === "paused"
+                    ? "Oculta"
+                    : o.status === "done"
+                      ? "Concluída"
+                      : null;
 
                   return (
                     <li key={o.id} style={{ listStyle: 'none', padding: 0, marginBottom: 14 }}>
@@ -94,6 +99,11 @@ export default function OwnerOffers({ ownerId }) {
 
                         <div className="listing-body card-body">
                           <h3 style={{ margin: '6px 0 6px', color: '#1a73e8' }}>{o.title || `Oferta ${o.id}`}</h3>
+                          {statusLabel && (
+                            <div style={{ marginTop: -2, marginBottom: 6, fontSize: 13, color: '#8a6d3b', textTransform: 'lowercase' }}>
+                              {statusLabel}
+                            </div>
+                          )}
                           <small style={{ marginBottom: 6 }}>{o.area} · {o.wish}</small>
                           <div className="swap-line meta">
                             <span>{L.descriptionLabel || 'Descrição'}</span>

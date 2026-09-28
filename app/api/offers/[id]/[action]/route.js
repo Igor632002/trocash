@@ -77,6 +77,11 @@ export async function POST(req, context) {
       if (updErr) return new Response(updErr.message, { status: 500 });
       return new Response("paused", { status: 200 });
     }
+    if (action === "done") {
+      const { error: updErr } = await supabase.from("offers").update({ status: "done" }).eq("id", id);
+      if (updErr) return new Response(updErr.message, { status: 500 });
+      return new Response("done", { status: 200 });
+    }
     // restore / activate offer
     if (action === "active") {
       const { error: updErr } = await supabase
