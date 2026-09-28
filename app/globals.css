@@ -1063,6 +1063,98 @@ textarea {
   }
 }
 
+/* Premium teaser */
+
+.premium {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  background: linear-gradient(115deg, #fffdf8, #f8ecd3);
+  border: 1px solid rgba(200, 141, 37, 0.25);
+  border-radius: 28px;
+  padding: 28px 34px;
+}
+
+.premium h2 {
+  font: 400 31px 'DM Serif Display', serif;
+  margin: 8px 0;
+}
+
+.premium p {
+  margin: 0;
+  color: #747988;
+  max-width: 680px;
+  font-size: 13px;
+}
+
+.premium-badge {
+  display: inline-block;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid rgba(200, 141, 37, 0.35);
+  color: #a56c11;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 1.4px;
+}
+
+.premium-price {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.premium-price b {
+  display: inline-block;
+  font-size: 32px;
+  transform: translateY(-4px);
+}
+
+.premium-price span {
+  display: inline-block;
+  font-size: 11px;
+  color: #777777;
+  transform: translateY(-4px);
+}
+
+.premium-price .gold-btn {
+  flex-basis: 100%;
+}
+
+@media (max-width: 650px) {
+  .premium {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 24px 20px;
+  }
+
+  .premium-price {
+    width: 100%;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+
+  .premium-price b {
+    font-size: 28px;
+    transform: translateY(-2px);
+  }
+
+  .premium-price span {
+    font-size: 10px;
+    transform: translateY(-2px);
+  }
+
+  .premium-price .gold-btn {
+    width: 100%;
+    flex-basis: auto;
+  }
+}
+
 /* Slogan Band */
 
 .slogan-band {
@@ -1142,6 +1234,16 @@ textarea {
   font-size: 10px;
   color: #80838d;
   margin-top: 3px;
+}
+
+@media (max-width: 900px) {
+  .benefits {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .benefits > div {
+    min-width: 0;
+  }
 }
 
 /* ==========================================================================
@@ -1350,6 +1452,17 @@ textarea {
   font-size: 10px;
   color: #858995;
   border-top: 1px solid var(--line);
+}
+
+@media (max-width: 900px) {
+  .footer {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  .footer-news {
+    grid-column: 1 / -1;
+  }
 }
 
 /* Modals */
