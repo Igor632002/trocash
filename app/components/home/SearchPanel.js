@@ -65,12 +65,11 @@ export default function SearchPanel({
             <option value="Todas">{copy?.categories?.Todas || "Todas"}</option>
             {locationsList.map(l => (<option key={l.id} value={l.id}>{l.name}</option>))}
           </select>    
-        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-          <button
-            className="btn-12ch large gold-btn light-btn nav-btn"
-            onClick={() => { handleSearch?.(); setSearchOpen?.(true); }}
-          >
-            <SearchIcon width={20} height={20} /> {'\u00A0\u00A0'}{copy?.searchButton || "Pesquisar"}
+        <div className="search-actions" style={{ display: "flex", gap: 8, alignItems: "center" }}>
+          <button  className="btn-12ch large gold-btn light-btn nav-btn"
+            onClick={() => { handleSearch?.(); setSearchOpen?.(true); }} >
+
+              <SearchIcon width={20} height={20} /> {'\u00A0\u00A0'}{copy?.searchButton || "Pesquisar"}
           </button>
         </div>
 
