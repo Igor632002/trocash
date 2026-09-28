@@ -1487,6 +1487,24 @@ textarea {
     gap: 14px;
   }
 
+  .premium {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 24px 20px;
+  }
+
+  .premium-price {
+    width: 100%;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+
+  .premium-price .gold-btn {
+    width: 100%;
+    flex-basis: auto;
+  }
+
   /* menший бічний відступ, щоб картка займала більше ширини екрана */
   .content-section.section {
     padding: 10px !important;
