@@ -12,6 +12,7 @@ export default function AccountModal({
   accountOpen,
   setAccountOpen,
   setWishlistOpen,
+  setWishlistReturnTo,
   setHeroActive,
 }) {
   const [chatStats, setChatStats] = useState({ totalChats: 0, unreadMessages: 0 });
@@ -144,7 +145,7 @@ export default function AccountModal({
             <div>{copy?.accountExchangesLabel || "Trocas concluídas"}</div>
           </div>
         </div>
-        <button className="nav-btn gold-btn" style={{ width: "100%", marginTop: 18 }} onClick={() => { setAccountOpen(false); setWishlistOpen(true); setHeroActive(null); }}>
+        <button className="nav-btn gold-btn" style={{ width: "100%", marginTop: 18 }} onClick={() => { setAccountOpen(false); setWishlistReturnTo?.("account"); setWishlistOpen(true); setHeroActive(null); }}>
           {copy?.accountOpenWishlist || "Abrir Desejos →"}
         </button>
 

@@ -34,6 +34,8 @@ export default function Home({ initialLang = "pt" }) {
   const [premiumOpen, setPremiumOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
   const [wishlistOpen, setWishlistOpen] = useState(false);
+  const [wishlistReturnTo, setWishlistReturnTo] = useState(null);
+  const [newWishOpen, setNewWishOpen] = useState(false);
   const [newOfferOpen, setNewOfferOpen] = useState(false);
 
   const copy = uiCopy[lang] || uiCopy.pt;
@@ -128,6 +130,11 @@ export default function Home({ initialLang = "pt" }) {
 
       wishlistOpen={wishlistOpen}
       setWishlistOpen={setWishlistOpen}
+      wishlistReturnTo={wishlistReturnTo}
+      setWishlistReturnTo={setWishlistReturnTo}
+
+      newWishOpen={newWishOpen}
+      setNewWishOpen={setNewWishOpen}
 
       newOfferOpen={newOfferOpen}
       setNewOfferOpen={setNewOfferOpen}

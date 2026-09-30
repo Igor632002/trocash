@@ -12,6 +12,7 @@ import PremiumTeaser from "./home/PremiumTeaser"
 import SiteFooter from "./home/SiteFooter"
 import AccountModal from "./home/AccountModal"
 import WishlistModal from "./home/WishlistModal"
+import NewWishModal from "./home/NewWishModal"
 import NewOfferModal from "./home/NewOfferModal"
 import PremiumModal from "./home/PremiumModal"
 
@@ -61,6 +62,10 @@ export default function HomeView(props) {
     setAccountOpen,
     wishlistOpen,
     setWishlistOpen,
+    wishlistReturnTo,
+    setWishlistReturnTo,
+    newWishOpen,
+    setNewWishOpen,
     newOfferOpen,
     setNewOfferOpen,
     scrollTo,
@@ -85,6 +90,7 @@ export default function HomeView(props) {
         scrollTo={scrollTo}
         setAccountOpen={setAccountOpen}
         setWishlistOpen={setWishlistOpen}
+        setWishlistReturnTo={setWishlistReturnTo}
         setNewOfferOpen={setNewOfferOpen}
       />
 
@@ -150,15 +156,29 @@ export default function HomeView(props) {
         accountOpen={accountOpen}
         setAccountOpen={setAccountOpen}
         setWishlistOpen={setWishlistOpen}
+        setWishlistReturnTo={setWishlistReturnTo}
         setHeroActive={setHeroActive}
       />
 
       <WishlistModal
         copy={copy}
+        user={user}
         wishlistOpen={wishlistOpen}
         setWishlistOpen={setWishlistOpen}
         setAccountOpen={setAccountOpen}
+        wishlistReturnTo={wishlistReturnTo}
+        setWishlistReturnTo={setWishlistReturnTo}
+        setNewWishOpen={setNewWishOpen}
         setNewOfferOpen={setNewOfferOpen}
+        setHeroActive={setHeroActive}
+      />
+
+      <NewWishModal
+        copy={copy}
+        user={user}
+        newWishOpen={newWishOpen}
+        setNewWishOpen={setNewWishOpen}
+        setWishlistOpen={setWishlistOpen}
         setHeroActive={setHeroActive}
       />
 

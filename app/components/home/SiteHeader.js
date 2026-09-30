@@ -23,6 +23,7 @@ export default function SiteHeader({
   scrollTo,
   setAccountOpen,
   setWishlistOpen,
+  setWishlistReturnTo,
   setNewOfferOpen,
 }) {
   return (
@@ -35,10 +36,10 @@ export default function SiteHeader({
         <button onClick={() => { scrollTo && scrollTo("explore"); }}>{copy?.navExplore}</button>
         {!hideGuestButtons && (
           <>
-            <button onClick={() => { if (!user) router.push("/auth"); else setAccountOpen(true); }}>
+            <button onClick={() => { if (!user) router.push("/auth"); else router.push(`/offers?owner=${user.id}`); }}>
               {copy?.navMine}
             </button>
-            <button onClick={() => setWishlistOpen(true)}>{copy?.navWish}</button>
+            <button onClick={() => { setWishlistReturnTo?.(null); setWishlistOpen(true); }}>{copy?.navWish}</button>
             <button onClick={() => router.push("/chat")}>{copy?.navMessages}</button>
           </>
         )}
@@ -55,7 +56,6 @@ export default function SiteHeader({
                 <button
                   key={l.code}
                   className={"flag-btn " + (lang === l.code ? "active" : "")}
-
                   onClick={() => {
                     const path = langToPath(l.code);
                     setLang && setLang(l.code);
@@ -78,7 +78,7 @@ export default function SiteHeader({
         </div>
         {!hideGuestButtons && (
           <>
-            <button className="nav-btn" onClick={() => setWishlistOpen(true)} aria-label={copy?.wishlistAria || "Lista de Desejos"}>♡</button>
+            <button className="nav-btn" onClick={() => { setWishlistReturnTo?.(null); setWishlistOpen(true); }} aria-label={copy?.wishlistAria || "Lista de Desejos"}>♡</button>
             <button className="light-btn nav-btn" onClick={() => { if (!user) router.push("/auth"); else setNewOfferOpen(true); }}>
               +&nbsp;{copy?.publishOfferButton}
             </button>
