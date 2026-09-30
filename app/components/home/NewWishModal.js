@@ -43,12 +43,12 @@ export default function NewWishModal({
     event.preventDefault();
 
     if (!user?.id) {
-      setError("Потрібно увійти, щоб створити побажання.");
+      setError(copy?.wishCreateAuthRequired || "É preciso iniciar sessão para criar um desejo.");
       return;
     }
 
     if (!form.title.trim()) {
-      setError("Вкажи назву побажання.");
+      setError(copy?.wishCreateTitleRequired || "Indique o título do desejo.");
       return;
     }
 
@@ -71,7 +71,7 @@ export default function NewWishModal({
       setHeroActive(null);
     } catch (err) {
       console.error("Failed to create wish", err);
-      setError(err?.message || "Не вдалося створити побажання.");
+      setError(err?.message || copy?.wishCreateFailed || "Não foi possível criar o desejo.");
     } finally {
       setLoading(false);
     }
@@ -81,7 +81,7 @@ export default function NewWishModal({
     <div className="panel modal-backdrop" onClick={() => { setNewWishOpen(false); setHeroActive(null); }}>
       <aside className="drawer modal" onClick={(event) => event.stopPropagation()}>
         <div className="drawer-head">
-          <h2>{copy?.newWishTitle || "Створити побажання"}</h2>
+          <h2>{copy?.newWishTitle || "Criar desejo"}</h2>
           <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
             <button className="close modal-close" onClick={() => { setNewWishOpen(false); setWishlistOpen(true); setHeroActive(null); }}>
               ←
@@ -93,7 +93,7 @@ export default function NewWishModal({
         </div>
 
         <p style={{ color: "#7b8494" }}>
-          {copy?.newWishDescription || "Опиши, що саме хочеш знайти через обмін."}
+          {copy?.newWishDescription || "Descreva o que quer encontrar através de uma troca."}
         </p>
 
         {error && (
@@ -104,44 +104,48 @@ export default function NewWishModal({
 
         <form onSubmit={handleSubmit} style={{ display: "grid", gap: 10, marginTop: 12 }}>
           <div className="field">
-            <label>{copy?.wishTitleLabel || "Назва побажання"}</label>
+            <label style={{ display: "block", marginBottom: 6 }}>{copy?.wishTitleLabel || "Título do desejo"}</label>
             <input
+              style={{ width: "100%" }}
               value={form.title}
               onChange={(event) => setForm((current) => ({ ...current, title: event.target.value }))}
-              placeholder={copy?.wishTitlePlaceholder || "Напр.: велосипед, килим, ноутбук..."}
+              placeholder={copy?.wishTitlePlaceholder || "Ex.: bicicleta, tapete, portátil..."}
               required
             />
           </div>
 
           <div className="field">
-            <label>{copy?.descriptionLabel || "Опис"}</label>
+            <label style={{ display: "block", marginBottom: 6 }}>{copy?.descriptionLabel || "Descrição"}</label>
             <textarea
+              style={{ width: "100%" }}
               value={form.description}
               onChange={(event) => setForm((current) => ({ ...current, description: event.target.value }))}
-              placeholder={copy?.wishDescriptionPlaceholder || "Що саме шукаєш і в якому стані..."}
+              placeholder={copy?.wishDescriptionPlaceholder || "O que procura exatamente e em que estado..."}
             />
           </div>
 
           <div className="field">
-            <label>{copy?.wishExamplesLabel || "Приклади посилань"}</label>
+            <label style={{ display: "block", marginBottom: 6 }}>{copy?.wishExamplesLabel || "Exemplos de ligações"}</label>
             <textarea
+              style={{ width: "100%" }}
               value={form.exampleUrlsText}
               onChange={(event) => setForm((current) => ({ ...current, exampleUrlsText: event.target.value }))}
-              placeholder={copy?.wishExamplesPlaceholder || "Один URL на рядок або через кому"}
+              placeholder={copy?.wishExamplesPlaceholder || "Um URL por linha ou separado por vírgulas"}
             />
           </div>
 
           <div className="field">
-            <label>{copy?.notesLabel || "Примітки"}</label>
+            <label style={{ display: "block", marginBottom: 6 }}>{copy?.notesLabel || "Notas"}</label>
             <textarea
+              style={{ width: "100%" }}
               value={form.notes}
               onChange={(event) => setForm((current) => ({ ...current, notes: event.target.value }))}
-              placeholder={copy?.wishNotesPlaceholder || "Додаткові побажання, бюджет, умови..."}
+              placeholder={copy?.wishNotesPlaceholder || "Preferências adicionais, orçamento, condições..."}
             />
           </div>
 
           <button className="gold-btn large" style={{ width: "100%", marginTop: 8 }} disabled={loading}>
-            {loading ? (copy?.saving || "A guardar…") : (copy?.createWishButton || "Створити побажання")}
+            {loading ? (copy?.saving || "A guardar…") : (copy?.createWishButton || "Criar desejo")}
           </button>
         </form>
       </aside>
