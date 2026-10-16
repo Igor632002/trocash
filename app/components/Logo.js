@@ -21,6 +21,7 @@ export default function Logo({ compact = false }) {
           strokeLinecap="round"
         />
       </svg>
+      
       <div className="brand-wordmark">
         <span>tro</span>
         <b>CASH</b>

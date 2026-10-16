@@ -2422,3 +2422,8 @@ body.has-bottom-offers-nav {
     }
 }
 
+.brand-logo {
+  height: 60px; /* Або інша необхідна висота */
+  width: auto;
+  object-fit: contain;
+}
