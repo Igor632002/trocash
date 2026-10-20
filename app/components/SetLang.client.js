@@ -6,7 +6,8 @@ export default function SetLang() {
   useEffect(() => {
     try {
       const path = window.location.pathname || '/'
-      const first = path.split('/')[1]
+      const segments = path.split('/')
+      const first = segments[1] === 'exchange' ? segments[2] : segments[1]
       let lang = 'pt'
       if (first === 'en') lang = 'en'
       else if (first === 'uk') lang = 'uk'

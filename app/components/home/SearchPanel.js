@@ -36,10 +36,10 @@ export default function SearchPanel({
 
 
   return (
-    <section id="explore" style={{ border: "1px solid lightgray", marginLeft: "5px", padding: "10px" }} className="search-panel">
+    <section id="explore" style={{ marginLeft: "5px", padding: "10px" }} className="search-panel">
       <div className="search-heading">
         <span style={{ marginLeft: "18px", fontSize: "16px", display: "inline-flex", gap: "8px", alignItems: "baseline", flexWrap: "wrap" }}>
-          <b>{copy?.searchTitle || copy?.searchOfferTitle}</b>
+          <b className="search-label">{copy?.searchTitle || copy?.searchOfferTitle}</b>
         </span>
       </div>
       <br />
@@ -66,7 +66,7 @@ export default function SearchPanel({
             {locationsList.map(l => (<option key={l.id} value={l.id}>{l.name}</option>))}
           </select>    
         <div className="search-actions" style={{ display: "flex", gap: 8, alignItems: "center" }}>
-          <button  className="btn-12ch large gold-btn light-btn nav-btn"
+          <button  className="btn-12ch large gold-btn light-btn nav-btn search-button"
             onClick={() => { handleSearch?.(); setSearchOpen?.(true); }} >
 
               <SearchIcon width={20} height={20} /> {'\u00A0\u00A0'}{copy?.searchButton || "Pesquisar"}

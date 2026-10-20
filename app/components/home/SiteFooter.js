@@ -3,7 +3,7 @@ import Logo from "../Logo";
 export default function SiteFooter({ copy }) {
   return (
     <>
-      <footer className="footer">
+      <footer className="footer home-footer site-footer--teal">
         <div>
           <Logo compact />
           <p>{copy?.footerLine1}</p>
@@ -19,7 +19,7 @@ export default function SiteFooter({ copy }) {
           <div><input placeholder={copy?.footerNewsTitle || "Your email"} /><button className="gold-btn">→</button></div>
         </div>
       </footer>
-      <div className="copyright">© 2026 {copy?.footerTroCASH} · Algarve, Portugal <span>Comunidade · Confiança · Liberdade</span></div>
+      <div className="copyright home-copyright site-footer--teal">© 2026 {copy?.footerTroCASH} · Algarve, Portugal <span>Comunidade · Confiança · Liberdade</span></div>
     </>
   );
 }

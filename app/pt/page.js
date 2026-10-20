@@ -1,5 +1,5 @@
-import Home from '../page'
+import HomeLanding from "@/components/HomeLanding";
 
 export default function PTPage() {
-  return <Home />
+  return <HomeLanding initialLang="pt" />;
 }

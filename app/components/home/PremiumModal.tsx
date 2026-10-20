@@ -1,4 +1,16 @@
-export default function PremiumModal({ copy, premiumOpen, setPremiumOpen }) {
+import type { Dispatch, SetStateAction } from "react";
+
+type PremiumModalProps = {
+  copy: Record<string, string>;
+  premiumOpen: boolean;
+  setPremiumOpen: Dispatch<SetStateAction<boolean>>;
+};
+
+export default function PremiumModal({
+  copy,
+  premiumOpen,
+  setPremiumOpen,
+}: PremiumModalProps) {
   if (!premiumOpen) return null;
 
   return (

@@ -1,14 +1,12 @@
-import Logo from "../Logo";
+import { useState } from "react";
+import { LogoMark2, Wordmark } from "@/components/LogoMark2";
+import { MenuIcon } from "@/components/Icons";
 
-// Derives the target locale path/host from the current environment (local vs prod domains)
-function langToPath(code) {
-  const c = (code || "").toLowerCase();
-  const isLocal = typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
-  if (c === "pt") return isLocal ? "http://localhost:3000/" : "https://trocash.pt/";
-  if (c === "gb" || c === "en") return "/en";
-  if (c === "ua" || c === "uk") return "/uk";
-  return "/";
-}
+const MENU_LABELS = {
+  pt: { open: "Abrir menu", close: "Fechar menu" },
+  en: { open: "Open menu", close: "Close menu" },
+  uk: { open: "Відкрити меню", close: "Закрити меню" },
+};
 
 export default function SiteHeader({
   copy,
@@ -26,12 +24,19 @@ export default function SiteHeader({
   setWishlistReturnTo,
   setNewOfferOpen,
 }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const brandHref = copy?.brandHref ?? `/${lang}`;
+
   return (
-    <header className="topbar tc-nav">
-      <button className="logo-button" onClick={() => { scrollTo && scrollTo("top"); }}>
-        <Logo />
-      </button>
-      <nav className="desktop-nav">
+    <header className="topbar tc-nav site-header--teal">
+      {/* Повне завантаження: головна та exchange мають різні CSS-набори */}
+      <a href={brandHref} className="brand" aria-label="troCASH">
+        <span style={{ display: "inline-flex", transform: "translateY(1px)" }}>
+          <LogoMark2 />
+        </span>
+        <Wordmark compact />
+      </a>
+      <nav className={`desktop-nav ${menuOpen ? "main-nav--open" : ""}`}>
         <button onClick={() => scrollTo && scrollTo("how")}>{copy?.navHow}</button>
         <button onClick={() => { scrollTo && scrollTo("explore"); }}>{copy?.navExplore}</button>
         {!hideGuestButtons && (
@@ -57,16 +62,8 @@ export default function SiteHeader({
                   key={l.code}
                   className={"flag-btn " + (lang === l.code ? "active" : "")}
                   onClick={() => {
-                    const path = langToPath(l.code);
                     setLang && setLang(l.code);
                     setLanguageOpen && setLanguageOpen(false);
-                    if (typeof path === "string" && path.startsWith("http")) {
-                      window.location.href = path;
-                    } else if (router && router.push) {
-                      router.push(path);
-                    } else {
-                      window.location.href = path;
-                    }
                   }}
                   title={l.label}
                 >
@@ -94,6 +91,18 @@ export default function SiteHeader({
             {copy?.login}
           </button>
         )}
+        <button
+          className="menu-button"
+          onClick={() => setMenuOpen((open) => !open)}
+          aria-label={
+            menuOpen
+              ? MENU_LABELS[lang]?.close ?? MENU_LABELS.pt.close
+              : MENU_LABELS[lang]?.open ?? MENU_LABELS.pt.open
+          }
+          aria-expanded={menuOpen}
+        >
+          <MenuIcon />
+        </button>
       </div>
     </header>
   );

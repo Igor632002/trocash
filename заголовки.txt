@@ -1,0 +1,12 @@
+
+Спілкуйся, щоб обміняти
+Дай нове життя речам і отримай те, що потрібно
+
+Communicate to exchange
+Give new life to things and get what you need
+
+Comunica para trocar
+Dá nova vida às coisas e recebe o que precisas
+
+
+Ще одна проблема, після натиску на кнопку troCASH в  SiteHeader.js відбувається правильне повернення на головну, наприклад - http://localhost:3000/pt, рале втрачаються стилі головної - колір фону, кольри надписів та фон меню і т.п.

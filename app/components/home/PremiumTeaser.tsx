@@ -1,4 +1,14 @@
-export default function PremiumTeaser({ copy, setPremiumOpen }) {
+import type { Dispatch, SetStateAction } from "react";
+
+type PremiumTeaserProps = {
+  copy: Record<string, string>;
+  setPremiumOpen: Dispatch<SetStateAction<boolean>>;
+};
+
+export default function PremiumTeaser({
+  copy,
+  setPremiumOpen,
+}: PremiumTeaserProps) {
   return (
     <section className="premium" id="premium">
       <div>

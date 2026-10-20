@@ -1,4 +1,8 @@
-export default function BenefitsSection({ copy }) {
+type BenefitsSectionProps = {
+  copy: Record<string, string>;
+};
+
+export default function BenefitsSection({ copy }: BenefitsSectionProps) {
   return (
     <section className="benefits" id="how">
       <div><span>✓</span><b>{copy?.verificationTitle}</b><small>{copy?.verificationSub}</small></div>

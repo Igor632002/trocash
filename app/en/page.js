@@ -1,7 +1,5 @@
-"use client"
-
-import Home from '../page'
+import HomeLanding from "@/components/HomeLanding";
 
 export default function ENPage() {
-  return <Home initialLang="en" />
+  return <HomeLanding initialLang="en" />;
 }

@@ -2,19 +2,14 @@
 
 import React from "react"
 import SiteHeader from "./home/SiteHeader"
-import HeroSection from "./home/HeroSection"
 import SearchPanel from "./home/SearchPanel"
 import FeaturedListings from "./home/FeaturedListings"
 import MatchesSection from "./home/MatchesSection"
-import TrustStrip from "./home/TrustStrip"
-import BenefitsSection from "./home/BenefitsSection"
-import PremiumTeaser from "./home/PremiumTeaser"
 import SiteFooter from "./home/SiteFooter"
 import AccountModal from "./home/AccountModal"
 import WishlistModal from "./home/WishlistModal"
 import NewWishModal from "./home/NewWishModal"
 import NewOfferModal from "./home/NewOfferModal"
-import PremiumModal from "./home/PremiumModal"
 
 export default function HomeView(props) {
   const {
@@ -56,8 +51,6 @@ export default function HomeView(props) {
     setForm,
     addOffer,
     proposeExchange,
-    premiumOpen,
-    setPremiumOpen,
     accountOpen,
     setAccountOpen,
     wishlistOpen,
@@ -93,8 +86,6 @@ export default function HomeView(props) {
         setWishlistReturnTo={setWishlistReturnTo}
         setNewOfferOpen={setNewOfferOpen}
       />
-
-      <HeroSection copy={copy} />
 
       <SearchPanel
         copy={copy}
@@ -139,12 +130,6 @@ export default function HomeView(props) {
         loading={loading}
         notice={notice}
       /> */}
-
-      <TrustStrip copy={copy} offers={offers} />
-
-      <BenefitsSection copy={copy} />
-
-      <PremiumTeaser copy={copy} setPremiumOpen={setPremiumOpen} />
 
       <SiteFooter copy={copy} />
 
@@ -205,7 +190,6 @@ export default function HomeView(props) {
         notice={notice}
       />
 
-      <PremiumModal copy={copy} premiumOpen={premiumOpen} setPremiumOpen={setPremiumOpen} />
     </main>
   )
 }

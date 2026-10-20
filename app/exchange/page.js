@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import HomeView from "./components/HomeView";
+import HomeView from "../components/HomeView";
 import { copy as uiCopy, LANGUAGES } from "@/lib/uiResources";
 import { getVisibleListings } from "@/lib/uiHelpers";
 import { useAuth } from "@/lib/hooks/useAuth";
@@ -20,13 +20,13 @@ export default function Home({ initialLang = "pt" }) {
   const [have, setHave] = useState("");
   const [want, setWant] = useState("");
   const [locationId, setLocationId] = useState("");
-  // Фактично застосовані фільтри 
+  // Фактично застосовані фільтри
 
   const [searchFilters, setSearchFilters] = useState({
     category: "Todas",
     have: "",
     want: "",
-    locationId: "Todas"
+    locationId: "Todas",
   });
 
   const [searchTab, setSearchTab] = useState("Procuro");
@@ -61,6 +61,15 @@ export default function Home({ initialLang = "pt" }) {
   const { categoriesList } = useCategories();
   const { locationsList } = useLocations();
 
+  useEffect(() => {
+    document.documentElement.lang = lang;
+  }, [lang]);
+
+  const changeLang = (code) => {
+    setLang(code);
+    window.history.replaceState(null, "", `/exchange/${code}`);
+  };
+
   const handleSearch = (overrides = {}) => {
     const next = { category, have, want, locationId, ...overrides };
     // treat empty (placeholder) as 'Todas' for applied filters
@@ -78,7 +87,7 @@ export default function Home({ initialLang = "pt" }) {
       copy={copy}
       LANGUAGES={LANGUAGES}
       lang={lang}
-      setLang={setLang}
+      setLang={changeLang}
       languageOpen={languageOpen}
       setLanguageOpen={setLanguageOpen}
 
@@ -143,5 +152,4 @@ export default function Home({ initialLang = "pt" }) {
       scrollTo={scrollTo}
     />
   );
-
 }

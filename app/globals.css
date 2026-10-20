@@ -249,6 +249,205 @@ textarea {
   color: var(--navy);
 }
 
+.tc-nav {
+  --header-height: 94px;
+  height: var(--header-height);
+  padding: 0 max(32px, calc((100% - 1460px) / 2));
+  background: rgba(2, 25, 34, .90);
+  border-bottom: 1px solid rgba(255, 255, 255, .07);
+  color: #f4f5f3;
+}
+
+.tc-nav .logo-mark {
+  width: min(68px, calc(var(--header-height) - 20px));
+  height: min(68px, calc(var(--header-height) - 20px));
+}
+
+.tc-nav .brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.tc-nav .wordmark--compact {
+  font-size: 36px;
+}
+
+.tc-nav .wordmark__light {
+  color: #f7f8f5;
+}
+
+.tc-nav .wordmark__gold {
+  color: #e9bb54;
+  font-weight: 600;
+}
+
+.tc-nav .desktop-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  gap: 36px;
+  margin: 0 auto;
+}
+
+.tc-nav .desktop-nav button {
+  padding: 0;
+  border-radius: 0;
+  color: rgba(244, 245, 243, .76);
+  font-size: 13px;
+  letter-spacing: .30em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: color .2s ease;
+}
+
+.tc-nav .desktop-nav button:hover {
+  background: transparent;
+  color: #fff0b1;
+}
+
+.tc-nav .top-actions {
+  align-items: center;
+  gap: 22px;
+  margin-left: 0;
+}
+
+.tc-nav .nav-btn,
+.tc-nav .avatar {
+  border: 1px solid rgba(236, 190, 86, .35);
+  background: transparent;
+  color: #f4f5f3;
+}
+
+.tc-nav .nav-btn:hover,
+.tc-nav .avatar:hover {
+  border-color: #e9bb54;
+  color: #fff0b1;
+}
+
+.tc-nav .light-btn.nav-btn {
+  border-color: rgba(236, 190, 86, .5);
+  background: rgba(255, 255, 255, .06);
+  color: #f4f5f3;
+}
+
+.tc-nav .language-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 60;
+  display: flex;
+  gap: 6px;
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, .10);
+  border-radius: 12px;
+  background: rgba(2, 24, 32, .98);
+  box-shadow: 0 22px 50px rgba(0, 0, 0, .30);
+}
+
+.tc-nav .flag-btn {
+  padding: 7px;
+  border-radius: 8px;
+  color: rgba(244, 245, 243, .72);
+}
+
+.tc-nav .flag-btn:hover,
+.tc-nav .flag-btn.active {
+  background: rgba(255, 255, 255, .08);
+  color: #fff0b1;
+}
+
+.tc-nav .menu-button {
+  display: none;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  background: transparent;
+  color: #e9bb54;
+  cursor: pointer;
+}
+
+@media (max-width: 1180px) {
+  .tc-nav .desktop-nav {
+    gap: 20px;
+  }
+
+  .tc-nav .top-actions {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 1050px) {
+  .tc-nav {
+    --header-height: 74px;
+    padding: 0 20px;
+  }
+
+  .tc-nav .wordmark--compact {
+    font-size: 29px;
+  }
+
+  .tc-nav .desktop-nav {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 20px;
+    left: 20px;
+    z-index: 60;
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+    margin: 0;
+    padding: 18px;
+    border: 1px solid rgba(255, 255, 255, .10);
+    border-radius: 18px;
+    background: rgba(2, 24, 32, .98);
+    box-shadow: 0 22px 50px rgba(0, 0, 0, .30);
+  }
+
+  .tc-nav .desktop-nav.main-nav--open {
+    display: flex !important;
+  }
+
+  .tc-nav .menu-button {
+    display: grid;
+    flex: 0 0 44px;
+  }
+
+  .tc-nav .top-actions {
+    gap: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .tc-nav {
+    padding: 0 12px;
+  }
+
+  .tc-nav .top-actions {
+    gap: 6px;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+    transform: none !important;
+  }
+
+  .tc-nav .brand {
+    order: 0;
+    margin-right: 0;
+  }
+
+  .tc-nav .top-actions .menu-button {
+    order: 3;
+  }
+
+  .tc-nav .wordmark--compact {
+    font-size: 25px;
+  }
+}
+
 .top-actions {
   display: flex;
   align-items: center;
@@ -385,52 +584,6 @@ textarea {
   padding-bottom: 8px;
 }
 
-.hero-image {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 320px;
-  max-width: 2200px;
-  margin: 0 auto;
-  background-image: url('/hero-dream.jpg');
-  background-size: cover;
-  background-position: center 54%;
-  filter: saturate(0.78) contrast(1.02) brightness(1);
-  transform-origin: center right;
-  z-index: 0;
-}
-
-.hero-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg,
-      rgba(255, 251, 243, 0.98) 0%,
-      rgba(255, 251, 243, 0.91) 32%,
-      rgba(255, 251, 243, 0.42) 60%,
-      rgba(255, 251, 243, 0.20) 100%);
-  z-index: 1;
-  pointer-events: none;
-}
-
-.hero-inner {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  padding-top: 16px;
-  padding-bottom: 12px;
-}
-
-.hero-content {
-  position: relative;
-  z-index: 2;
-  max-width: 1680px;
-  padding: 0 4vw 12px;
-  box-sizing: border-box;
-}
-
 .eyebrow {
   font-size: 11px;
   letter-spacing: 1.7px;
@@ -438,8 +591,7 @@ textarea {
   color: #a8741d;
   text-transform: uppercase;
 }
-.hero h1,
-.hero-title {
+.hero h1 {
   font-size: clamp(34px, 4.5vw, 72px);
   line-height: 0.98;
   margin: -8px 0 8px;
@@ -447,60 +599,27 @@ textarea {
 }
 
 .hero h1 span,
-.hero h1 strong,
-.hero-title span,
-.hero-title strong {
+.hero h1 strong {
   display: block;
 }
 
-.hero h1 span,
-.hero-title span {
+.hero h1 span {
   color: var(--navy);
   font-weight: 600;
 }
 
 
-.hero h1 strong,
-.hero-title strong {
+.hero h1 strong {
   color: var(--gold);
   font-weight: 700;
 }
 
-.hero-title strong {
-  font-size: 0.60em;
-}
-
-.hero-title span {
-  margin-bottom: 8px;
-  display: block;
-}
-.hero-copy,
-.hero-sub {
+.hero-copy {
   font-size: 18px;
   line-height: 1.55;
   max-width: 720px;
   color: #38405b;
   margin: 0;
-}
-.dream-pill {
-  display: inline-flex;
-  margin: 15px 0 22px;
-  padding: 12px 18px;
-  border: 1px solid rgba(200, 141, 37, 0.45);
-  background: rgba(255, 255, 255, 0.72);
-  border-radius: 999px;
-  color: #9b6715;
-  font-weight: 700;
-}
-
-.hero-actions {
-  display: flex;
-  gap: 12px;
-  flex-wrap: nowrap;
-  /* не дозволяємо переносити на великих екранах */
-  margin-top: 18px;
-  overflow: hidden;
-  /* запобігає рваному лейауту при дуже довгих кнопках */
 }
 
 .gold-btn.large {
@@ -514,31 +633,6 @@ textarea {
   border: 1px solid #e9d7b4;
 }
 
-.trust-row {
-  display: flex;
-  gap: 30px;
-  margin-top: 38px;
-  flex-wrap: wrap;
-}
-
-.trust-row span {
-  display: grid;
-  grid-template-columns: 24px auto;
-  column-gap: 10px;
-  align-items: center;
-  font-size: 18px;
-}
-
-.trust-row b {
-  font-size: 17px;
-}
-
-.trust-row small {
-  grid-column: 2;
-  color: #6f7482;
-  font-size: 14px;
-}
-
 /* Responsive tweaks for small screens */
 
 /* Tablet breakpoint: reduce hero height on tablets */
@@ -548,27 +642,18 @@ textarea {
     padding-top: 6px;
   }
 
-  .hero-inner {
-    padding-top: 14px;
-  }
-
-   .hero h1,
-  .hero-title {
+  .hero h1 {
     font-size: clamp(30px, 5vw, 56px);
     margin: -10px 0 8px;
   }
 
- .hero-title span,
-  .hero-title strong {
+  .hero h1 span,
+  .hero h1 strong {
     font-size: 0.63em;
   }
 
-  .hero-copy,
-  .hero-sub {
+  .hero-copy {
     font-size: 17px;
-  }
-  .hero-image {
-    height: 200px;
   }
 }
 
@@ -578,33 +663,18 @@ textarea {
     padding-top: 6px;
   }
 
-  .hero-inner {
-    padding-top: 12px;
-  }
-
-  .hero h1,
-  .hero-title {
+  .hero h1 {
     font-size: clamp(28px, 8vw, 46px);
     margin: -8px 0 6px;
   }
 
-  .hero-title span,
-  .hero-title strong {
+  .hero h1 span,
+  .hero h1 strong {
     font-size: 0.66em;
   }
 
-  .hero-title span {
-    margin-bottom: 6px;
-    display: block;
-  }
-
-  .hero-copy,
-  .hero-sub {
+  .hero-copy {
     font-size: 16px;
-  }
-
-  .hero-image {
-    height: 180px;
   }
 }
 
@@ -614,7 +684,7 @@ textarea {
 
 .search-panel {
   position: relative;
-  margin: -70px auto 0;
+  margin: 24px auto 0;
   z-index: 5;
   width: calc(100% - 16px);
   max-width: none;
@@ -627,13 +697,16 @@ textarea {
   padding: 0px;
 }
 
+.search-panel {
+  border-color: #b8d8d6;
+}
+
 /* inner container to align content with hero/content width */
 .search-panel .panel-inner {
   width: 100%;
   max-width: none;
   margin: 0 auto;
   padding: 0 1vw;
-  /* matches .hero-content horizontal padding */
   box-sizing: border-box;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -643,6 +716,33 @@ textarea {
 
 .search-panel .panel-inner>* {
   min-width: 0;
+}
+
+.search-panel .panel-inner > select.responsive-select,
+.search-panel .panel-inner .search-actions > button {
+  height: 50px;
+  box-sizing: border-box;
+}
+
+.search-panel .panel-inner > input,
+.search-panel .panel-inner > select.responsive-select {
+  border-color: #d3e4e2;
+}
+
+.search-panel .panel-inner .search-actions > button {
+  border-color: #f4c46b;
+}
+
+.search-label {
+  color: #145b53;
+}
+
+.search-panel select {
+  color: #1f304f;
+}
+
+.search-panel .search-button {
+  color: #145b53;
 }
 
 /* Mobile (single-column grid): button gets its own full-width row, right-aligned */
@@ -713,6 +813,12 @@ textarea {
   margin: 0;
   color: var(--navy);
   text-align: center;
+}
+
+.section-head.section-title .featured-title.offers-title {
+  font-family: Inter, system-ui, sans-serif;
+  font-weight: 700;
+  color: #145b53;
 }
 
 /* Tabs container */
@@ -869,6 +975,11 @@ textarea {
   height: 100%;
 }
 
+.listing-card.offer-card {
+  background: #fffdfa;
+  border-color: #b8d8d6;
+}
+
 .listing-image {
   height: 185px;
   background-size: contain;
@@ -880,6 +991,14 @@ textarea {
   border-radius: 22px;
   /* робить усі кути округлими */
   overflow: hidden;
+}
+
+.listing-image.offer-image-container {
+  background-color: #e1efec;
+}
+
+.listing-image.offer-image-container:after {
+  background: none;
 }
 
 .listing-image:after {
@@ -902,6 +1021,11 @@ textarea {
   color: #9c6818;
   font-size: 9px;
   font-weight: 800;
+}
+
+.listing-image .offer-badge {
+  background: #ffffff;
+  color: #d97706;
 }
 
 .listing-image button {
@@ -927,9 +1051,17 @@ textarea {
   color: #8a8e98;
 }
 
+.listing-body small.offer-location {
+  color: #60838b;
+}
+
 .listing-body h3 {
   font-size: 16px;
   margin: 6px 0 10px;
+}
+
+.listing-body h3.offer-name {
+  color: #003b46;
 }
 
 .listing-body.card-body > button {
@@ -948,14 +1080,37 @@ textarea {
   margin-bottom: 12px;
 }
 
+.swap-line.offer-description-box {
+  background: #f8f0e2;
+}
+
 .swap-line span {
   font-size: 9px;
   text-transform: uppercase;
   color: #9a9da7;
 }
 
+.swap-line .offer-description-label {
+  color: #7895a0;
+}
+
 .swap-line b {
   font-size: 11px;
+}
+
+.swap-line b.offer-description {
+  color: #263b4d;
+}
+
+.listing-card .offer-button {
+  background: #003b46;
+  border-color: #003b46;
+  color: #ffffff;
+}
+
+.listing-card .offer-button:hover {
+  background: #07515d;
+  border-color: #07515d;
 }
 
 .soft-notice {
@@ -1546,42 +1701,15 @@ textarea {
     padding-top: 10px;
   }
 
-  .hero-image {
-    background-position: center 46%;
-    transform: scale(1.015);
-  }
-
-  .hero-content {
-    padding: 8px 32px 20px;
-    max-width: 1120px;
-  }
-
-  .hero h1,
-  .hero-title {
+  .hero h1 {
     font-size: clamp(48px, 7.2vw, 92px);
     line-height: 0.95;
     margin: -18px 0 12px;
   }
 
-  .hero-copy,
-  .hero-sub {
+  .hero-copy {
     font-size: 17px;
     max-width: 680px;
-  }
-
-
-  .trust-row span {
-    grid-template-columns: 32px auto;
-    column-gap: 10px;
-    font-size: 19px;
-  }
-
-  .trust-row b {
-    font-size: 18px;
-  }
-
-  .trust-row small {
-    font-size: 15px;
   }
 
   .search-panel>label:first-of-type,
@@ -1620,18 +1748,7 @@ textarea {
     min-height: 200px;
   }
 
-  .hero-image {
-    background-position: center 52%;
-    transform: scale(1.01);
-    height: 200px;
-  }
-
-  .hero-content {
-    padding: 6px 28px 6px; /* bottom reduced */
-  }
-
-  .hero h1,
-  .hero-title {
+  .hero h1 {
     margin: -10px 0 6px; /* smaller gap to bottom */
   }
 
@@ -1649,32 +1766,17 @@ textarea {
     min-height: 200px;
   }
 
-  .hero-image {
-    background-position: center 52%;
-    transform: scale(1.01);
-    height: 200px;
-  }
-
-  .hero-content {
-    padding: 6px 20px 8px; /* меншого дна */
-    max-width: 100%;
-  }
-
-  .hero h1,
-  .hero-title {
+  .hero h1 {
     font-size: clamp(36px, 10vw, 56px);
     line-height: 1.02;
     margin: -12px 0 8px;
   }
 
-  .hero-copy,
-  .hero-sub {
+  .hero-copy {
     font-size: 15px;
     max-width: 100%;
     margin-bottom: 6px;
   }
-
-  .hero-actions { margin-top: 12px; } /* зменшено відступ кнопок */
 }
 @media (max-width: 650px) {
   /* одна колонка для списків */

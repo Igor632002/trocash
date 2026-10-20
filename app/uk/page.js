@@ -1,7 +1,5 @@
-"use client"
-
-import Home from '../page'
+import HomeLanding from "@/components/HomeLanding";
 
 export default function UKPage() {
-  return <Home initialLang="uk" />
+  return <HomeLanding initialLang="uk" />;
 }

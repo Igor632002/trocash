@@ -3,7 +3,7 @@ export default function FeaturedListings({ copy, visibleListings = [], isTopList
   return (
     <section className="content-section section" id="SelectedListings">
       <div className="section-head section-title">
-        <h2 className="featured-title">{isTopList ? copy?.topOffers : copy?.matches}</h2>
+        <h2 className="featured-title offers-title">{isTopList ? copy?.topOffers : copy?.matches}</h2>
         {/* <button className="text-btn"
           onClick={() => {
             setCategory && setCategory("Todas");

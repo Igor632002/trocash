@@ -18,13 +18,16 @@ export function middleware(req) {
   const host = req.headers.get('host') || ''
   const hostname = host.split(':')[0]
   const localePath = domainMap[hostname]
+  const { pathname } = req.nextUrl
+  const hasLocalePrefix = ['/pt', '/en', '/uk'].some(
+    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`)
+  )
+  const hasExchangeLocale = /^\/exchange\/(pt|en|uk)(\/|$)/.test(pathname)
 
-  if (localePath) {
+  if (localePath && !hasLocalePrefix && !hasExchangeLocale) {
     const url = req.nextUrl.clone()
-    if (!url.pathname.startsWith(localePath)) {
-      url.pathname = localePath + url.pathname
-      return NextResponse.rewrite(url)
-    }
+    url.pathname = localePath + pathname
+    return NextResponse.rewrite(url)
   }
 
   return NextResponse.next()
