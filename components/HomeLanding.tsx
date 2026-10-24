@@ -44,7 +44,7 @@ export function HomeLanding({ initialLang = "pt" }: HomeLandingProps) {
         ctaLabel={content.hero.ctaLabel}
       />
 
-      <section className="catalog container">
+      <section className="catalog container">          
         <CategoryNav labels={content.categoriesNav} />
         <div className="category-grid">
           {content.categories.map((category) => (
@@ -52,11 +52,12 @@ export function HomeLanding({ initialLang = "pt" }: HomeLandingProps) {
               key={category.kind}
               category={category}
               buttonLabel={content.categoryButtonLabel}
+              lang={initialLang}
             />
           ))}
         </div>
       </section>
-      
+
       <HomePageSections lang={initialLang} />
 
       <ValueStrip

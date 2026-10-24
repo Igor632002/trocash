@@ -11,6 +11,7 @@ type Category = {
 type CategoryCardProps = {
   category: Category;
   buttonLabel: string;
+  lang?: string;
 };
 
 const iconMap = {
@@ -20,7 +21,7 @@ const iconMap = {
   collectibles: DiamondIcon,
 };
 
-export function CategoryCard({ category, buttonLabel }: CategoryCardProps) {
+export function CategoryCard({ category, buttonLabel, lang = "pt" }: CategoryCardProps) {
   const Icon = iconMap[category.kind];
 
   return (
@@ -30,11 +31,14 @@ export function CategoryCard({ category, buttonLabel }: CategoryCardProps) {
         <div className="category-icon">
           <Icon size={25} />
         </div>
-        <div>
+        <div>          
           <h3>{category.title}</h3>
           <p>{category.description}</p>
         </div>
-        <Link href="#categories" className="outline-pill category-card__button">
+        <Link
+          href={`/exchange/${lang}?category=${category.kind}`}
+          className="outline-pill category-card__button"
+        >
           {buttonLabel} <ArrowRight size={15} />
         </Link>
       </div>

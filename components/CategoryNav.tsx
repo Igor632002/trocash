@@ -35,8 +35,7 @@ export function CategoryNav({ labels }: CategoryNavProps) {
             key={key}
             className={`catalog-tab ${active === key ? "catalog-tab--active" : ""}`}
             onClick={() => setActive(key)}
-            aria-pressed={active === key}
-          >
+            aria-pressed={active === key} >
             <Icon size={20} />
             <span>{label}</span>
           </button>

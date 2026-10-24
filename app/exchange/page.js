@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import HomeView from "../components/HomeView";
 import { copy as uiCopy, LANGUAGES } from "@/lib/uiResources";
@@ -10,6 +10,13 @@ import { fetchTopOffers } from "@/lib/dal/offers";
 import { useOffers } from "@/lib/hooks/useOffers";
 import { useCategories } from "@/lib/hooks/useCategories";
 import { useLocations } from "@/lib/hooks/useLocations";
+
+const KIND_TO_CATEGORY_NAME = {
+  personal: "Moda",
+  realestate: "Casa",
+  car: "Outros",
+  collectibles: "Outros",
+};
 
 export default function Home({ initialLang = "pt" }) {
   const [lang, setLang] = useState(initialLang);
@@ -64,6 +71,36 @@ export default function Home({ initialLang = "pt" }) {
   useEffect(() => {
     document.documentElement.lang = lang;
   }, [lang]);
+
+  // Stylesheets of /exchange conflict with the home page ones; on browser back/forward
+  // to any non-exchange page do a full document reload instead of a client navigation.
+  // The listener is intentionally not removed on unmount: Next unmounts this page before
+  // popstate listeners run, so a cleanup would remove it before it could fire.
+  useEffect(() => {
+    if (window.__exchangePopstateReload) return;
+    window.__exchangePopstateReload = true;
+    window.addEventListener("popstate", () => {
+      if (window.location.pathname.startsWith("/exchange")) return;
+      setTimeout(() => window.location.reload(), 0);
+    });
+  }, []);
+
+  // Apply the ?category=<kind> filter coming from the home page category cards.
+  // Maps a card kind to the DB category name; adjust names to match the "category" table.
+  const categoryParamApplied = useRef(false);
+  useEffect(() => {
+    if (categoryParamApplied.current || offers.length === 0 || categoriesList.length === 0) return;
+    categoryParamApplied.current = true;
+    const kind = new URLSearchParams(window.location.search).get("category");
+    const dbName = KIND_TO_CATEGORY_NAME[kind];
+    const match = categoriesList.find((c) => c.name === dbName);
+    if (!match) return;
+    const id = String(match.id);
+    setCategory(id);
+    setSearchFilters((prev) => ({ ...prev, category: id }));
+    setVisibleListings(getVisibleListings({ offers, category: id, locationId: "Todas" }));
+    setIsTopList(false);
+  }, [offers, categoriesList, setVisibleListings, setIsTopList]);
 
   const changeLang = (code) => {
     setLang(code);
