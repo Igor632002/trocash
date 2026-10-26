@@ -99,6 +99,17 @@
   color: var(--gold-light);
 }
 
+.footer.home-footer a.footer-link {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.5;
+  text-decoration: none;
+}
+
+.footer.home-footer a.footer-link:hover {
+  color: var(--gold-light);
+}
+
 .footer.home-footer p,
 .footer.home-footer small {
   margin: 0;

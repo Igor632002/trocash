@@ -1,6 +1,7 @@
+import Link from "next/link";
 import Logo from "../Logo";
 
-export default function SiteFooter({ copy }) {
+export default function SiteFooter({ copy, lang = "pt" }) {
   return (
     <>
       <footer className="footer home-footer site-footer--teal">
@@ -10,7 +11,7 @@ export default function SiteFooter({ copy }) {
           <small>{copy?.footerLine2}</small>
           <small>{copy?.footerLine3}</small>
         </div>
-        <div><b>{copy?.footerTroCASH}</b><button>{copy?.footerAbout}</button><button>{copy?.footerHow}</button><button>{copy?.footerRules}</button></div>
+        <div><b>{copy?.footerTroCASH}</b><Link className="footer-link" href={`/project/${lang}`}>{copy?.footerAbout}</Link><Link className="footer-link" href={`/how/${lang}`}>{copy?.footerHow}</Link><Link className="footer-link" href={`/rules/${lang}`}>{copy?.footerRules}</Link></div>
         <div><b>{copy?.footerSupportTitle}</b><button>{copy?.footerSupportHelp}</button><button>{copy?.footerSupportSecurity}</button><button>{copy?.footerSupportPrivacy}</button></div>
         <div><b>{copy?.footerCommunityTitle}</b>{(copy?.footerCommunityItems || "").split("|").map((x, i) => (<button key={i}>{x}</button>))}</div>
         <div className="footer-news">

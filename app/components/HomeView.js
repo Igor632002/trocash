@@ -131,7 +131,7 @@ export default function HomeView(props) {
         notice={notice}
       /> */}
 
-      <SiteFooter copy={copy} />
+      <SiteFooter copy={copy} lang={lang} />
 
       <AccountModal
         copy={copy}

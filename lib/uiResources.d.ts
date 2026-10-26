@@ -3,10 +3,24 @@ export type LangCode = "pt" | "en" | "uk";
 export type HomePagePoint = {
   title: string;
   text: string;
+  href?: string;
 };
 
 export type HomePageCategory = {
-  kind: "personal" | "realestate" | "car" | "collectibles";
+  kind:
+    | "personal"
+    | "realestate"
+    | "car"
+    | "collectibles"
+    | "electronics"
+    | "furniture"
+    | "baby"
+    | "bicycles"
+    | "watches"
+    | "tools"
+    | "agriculture"
+    | "transport"
+    | "land";
   title: string;
   description: string;
   image: string;

@@ -45,7 +45,7 @@ export function HomeLanding({ initialLang = "pt" }: HomeLandingProps) {
       />
 
       <section className="catalog container">          
-        <CategoryNav labels={content.categoriesNav} />
+        <CategoryNav labels={content.categoriesNav} lang={initialLang} />
         <div className="category-grid">
           {content.categories.map((category) => (
             <CategoryCard
@@ -66,7 +66,7 @@ export function HomeLanding({ initialLang = "pt" }: HomeLandingProps) {
           Icon: valueIcons[index] ?? LeafIcon,
         }))}
       />
-      <SiteFooter copy={uiCopy[initialLang] ?? uiCopy.pt} />
+      <SiteFooter copy={uiCopy[initialLang] ?? uiCopy.pt} lang={initialLang} />
       <section className="sr-only" id="how-it-works">
         {content.srOnly}
       </section>

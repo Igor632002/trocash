@@ -1,6 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
+import type { LangCode } from "@/lib/uiResources";
 import { CarIcon, DiamondIcon, GridIcon, HomeIcon, SearchIcon, ShirtIcon } from "./Icons";
 
 type CategoryNavLabels = {
@@ -15,9 +17,10 @@ type CategoryNavLabels = {
 
 type CategoryNavProps = {
   labels: CategoryNavLabels;
+  lang?: LangCode;
 };
 
-export function CategoryNav({ labels }: CategoryNavProps) {
+export function CategoryNav({ labels, lang = "pt" }: CategoryNavProps) {
   const [active, setActive] = useState("all");
   const items = [
     { label: labels.all, key: "all", Icon: GridIcon },
@@ -31,14 +34,15 @@ export function CategoryNav({ labels }: CategoryNavProps) {
     <div className="catalog-toolbar" id="categories">
       <div className="catalog-tabs">
         {items.map(({ label, key, Icon }) => (
-          <button
+          <Link
             key={key}
+            href={key === "all" ? `/exchange/${lang}` : `/exchange/${lang}?category=${key}`}
             className={`catalog-tab ${active === key ? "catalog-tab--active" : ""}`}
             onClick={() => setActive(key)}
-            aria-pressed={active === key} >
+            aria-pressed={active === key}>
             <Icon size={20} />
             <span>{label}</span>
-          </button>
+          </Link>
         ))}
       </div>
       <label className="search-box">

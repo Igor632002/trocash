@@ -5,7 +5,20 @@ type Category = {
   title: string;
   description: string;
   image: string;
-  kind: "personal" | "realestate" | "car" | "collectibles";
+  kind:
+    | "personal"
+    | "realestate"
+    | "car"
+    | "collectibles"
+    | "electronics"
+    | "furniture"
+    | "baby"
+    | "bicycles"
+    | "watches"
+    | "tools"
+    | "agriculture"
+    | "transport"
+    | "land";
 };
 
 type CategoryCardProps = {
@@ -19,13 +32,26 @@ const iconMap = {
   realestate: HomeIcon,
   car: CarIcon,
   collectibles: DiamondIcon,
+  electronics: DiamondIcon,
+  furniture: HomeIcon,
+  baby: ShirtIcon,
+  bicycles: CarIcon,
+  watches: DiamondIcon,
+  tools: DiamondIcon,
+  agriculture: HomeIcon,
+  transport: CarIcon,
+  land: HomeIcon,
 };
 
 export function CategoryCard({ category, buttonLabel, lang = "pt" }: CategoryCardProps) {
   const Icon = iconMap[category.kind];
 
   return (
-    <article className="category-card" style={{ backgroundImage: `url(${category.image})` }}>
+    <Link
+      href={`/exchange/${lang}?category=${category.kind}`}
+      className="category-card"
+      style={{ backgroundImage: `url(${category.image})` }}
+    >
       <div className="category-card__shade" />
       <div className="category-card__content">
         <div className="category-icon">
@@ -35,13 +61,10 @@ export function CategoryCard({ category, buttonLabel, lang = "pt" }: CategoryCar
           <h3>{category.title}</h3>
           <p>{category.description}</p>
         </div>
-        <Link
-          href={`/exchange/${lang}?category=${category.kind}`}
-          className="outline-pill category-card__button"
-        >
+        <span className="outline-pill category-card__button">
           {buttonLabel} <ArrowRight size={15} />
-        </Link>
+        </span>
       </div>
-    </article>
+    </Link>
   );
 }

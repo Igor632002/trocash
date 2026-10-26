@@ -6,6 +6,7 @@ import { ArrowRight } from "./Icons";
 type HeroPoint = {
   title: string;
   text: string;
+  href?: string;
   Icon: ComponentType<{ size?: number }>;
 };
 
@@ -61,9 +62,9 @@ export function Hero({
         </div>
 
         <aside className="hero-points" aria-label={pointsAriaLabel}>
-          {points.map(({ title, text, Icon }) => {
-            return (
-              <div className="hero-point" key={title}>
+          {points.map(({ title, text, href, Icon }) => {
+            const content = (
+              <>
                 <div className="hero-point__icon">
                   <Icon size={25} />
                 </div>
@@ -71,6 +72,16 @@ export function Hero({
                   <strong>{title}</strong>
                   <span>{text}</span>
                 </div>
+              </>
+            );
+
+            return href ? (
+              <Link href={href} className="hero-point hero-point--link" key={title}>
+                {content}
+              </Link>
+            ) : (
+              <div className="hero-point" key={title}>
+                {content}
               </div>
             );
           })}

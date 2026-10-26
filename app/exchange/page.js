@@ -12,10 +12,19 @@ import { useCategories } from "@/lib/hooks/useCategories";
 import { useLocations } from "@/lib/hooks/useLocations";
 
 const KIND_TO_CATEGORY_NAME = {
-  personal: "Moda",
-  realestate: "Casa",
-  car: "Outros",
-  collectibles: "Outros",
+  personal: "Artigos Pessoais",
+  realestate: "Imóveis",
+  car: "Automóveis",
+  collectibles: "Artigos de Coleção",
+  electronics: "Eletrónica",
+  furniture: "Mobiliário",
+  baby: "Artigos para Bebés",
+  bicycles: "Bicicletas",
+  watches: "Relógios",
+  tools: "Ferramentas",
+  agriculture: "Agricultura",
+  transport: "Transportes",
+  land: "Terrenos",
 };
 
 export default function Home({ initialLang = "pt" }) {
