@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { LogoMark, Wordmark } from "./LogoMark";
 import { MenuIcon } from "./Icons";
+import { useAuth } from "@/lib/hooks/useAuth";
 
 type NavItem = {
   label: string;
@@ -34,6 +35,7 @@ export function SiteHeader({
   menuCloseLabel,
 }: SiteHeaderProps) {
   const [open, setOpen] = useState(false);
+  const { user } = useAuth();
 
   return (
     <header className="site-header">
@@ -66,6 +68,15 @@ export function SiteHeader({
               </Link>
             ))}
           </div>
+          {user ? (
+            <Link href={`/exchange/${activeLanguage}`} className="header-avatar" aria-label={user.email ?? "Profile"}>
+              {(user.email || "U")[0].toUpperCase()}
+            </Link>
+          ) : (
+            <Link href="/auth" className="header-login">
+              Login
+            </Link>
+          )}
           <button
             className="menu-button"
             onClick={() => setOpen((v) => !v)}
