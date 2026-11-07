@@ -25,6 +25,7 @@ const KIND_TO_CATEGORY_NAME = {
   agriculture: "Agricultura",
   transport: "Transportes",
   land: "Terrenos",
+  free: "Grátis",
 };
 
 export default function Home({ initialLang = "pt" }) {

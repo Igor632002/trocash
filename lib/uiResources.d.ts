@@ -20,7 +20,8 @@ export type HomePageCategory = {
     | "tools"
     | "agriculture"
     | "transport"
-    | "land";
+    | "land"
+    | "free";
   title: string;
   description: string;
   image: string;

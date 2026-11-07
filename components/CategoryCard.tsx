@@ -18,7 +18,8 @@ type Category = {
     | "tools"
     | "agriculture"
     | "transport"
-    | "land";
+    | "land"
+    | "free";
 };
 
 type CategoryCardProps = {
@@ -41,6 +42,7 @@ const iconMap = {
   agriculture: HomeIcon,
   transport: CarIcon,
   land: HomeIcon,
+  free: DiamondIcon,
 };
 
 export function CategoryCard({ category, buttonLabel, lang = "pt" }: CategoryCardProps) {
