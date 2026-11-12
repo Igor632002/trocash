@@ -427,11 +427,6 @@ textarea {
     padding: 0 12px;
   }
 
-  .tc-nav .logo-mark {
-    width: 40px;
-    height: 40px;
-  }
-
   .tc-nav .top-actions {
     gap: 6px;
     margin-right: 0 !important;

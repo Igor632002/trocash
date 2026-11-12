@@ -899,7 +899,7 @@ button, input { font: inherit; }
 
 @media (max-width: 620px) {
   .container { width: min(100% - 26px, 560px); }
-  .brand .logo-mark { width: 38px; height: 38px; }
+  .site-header .brand .logo-mark { width: 40px !important; height: 40px !important; }
   .wordmark--compact { font-size: 25px; }
   .hero-copy h1 { font-size: 46px; }
   .hero-lead { font-size: 14px; }
