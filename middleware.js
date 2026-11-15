@@ -19,6 +19,9 @@ export function middleware(req) {
   const hostname = host.split(':')[0]
   const localePath = domainMap[hostname]
   const { pathname } = req.nextUrl
+  if (pathname.startsWith('/assets/')) {
+    return NextResponse.next()
+  }
   const hasLocalePrefix = ['/pt', '/en', '/uk'].some(
     (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`)
   )
