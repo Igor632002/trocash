@@ -3,7 +3,8 @@ create table public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
   display_name text not null,
   area text not null check (area in ('Faro','Albufeira','Portimão','Loulé','Lagos','Silves','Tavira','Olhão','Outro Algarve')),
-  created_at timestamptz default now()
+  created_at timestamptz default now(),
+  email text
 );
 
 create table public.offers (

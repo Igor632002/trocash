@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { useLocations } from "@/lib/hooks/useLocations";
@@ -7,6 +7,7 @@ import { writeAuthSessionCookie } from "@/lib/auth/cookie-client";
 
 export default function AuthPage() {
   const router = useRouter();
+  const manualAuth = useRef(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
@@ -17,10 +18,53 @@ export default function AuthPage() {
 
   const { locationsList } = useLocations();
 
+  // The profile can only be inserted with an authenticated session (RLS), which exists
+  // only after the email is confirmed. Signup details travel in user_metadata until then.
+  async function ensureProfile(user) {
+    if (!user) return;
+    const { data: existing } = await supabase
+      .from("profiles")
+      .select("id")
+      .eq("id", user.id)
+      .maybeSingle();
+    if (existing) return;
+
+    const meta = user.user_metadata || {};
+    const userEmail = user.email || "";
+    const { error: profileErr } = await supabase.from("profiles").insert([
+      {
+        id: user.id,
+        email: userEmail,
+        display_name: meta.display_name || userEmail.split("@")[0],
+        area: meta.area || "Faro",
+      },
+    ]);
+    if (profileErr) throw profileErr;
+  }
+
+  // Handles the redirect from the confirmation email (session arrives in the URL)
+  useEffect(() => {
+    const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event !== "SIGNED_IN" || !session || manualAuth.current) return;
+      setTimeout(async () => {
+        try {
+          await ensureProfile(session.user);
+          writeAuthSessionCookie(session);
+          router.push("/");
+        } catch (err) {
+          setError(err.message);
+        }
+      }, 0);
+    });
+    return () => listener?.subscription?.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   async function handleAuth(e) {
     e.preventDefault();
     setError("");
     setLoading(true);
+    manualAuth.current = true;
 
     try {
       if (isSignup) {
@@ -28,23 +72,19 @@ export default function AuthPage() {
         const { data: authData, error: signupErr } = await supabase.auth.signUp({
           email,
           password,
+          options: {
+            emailRedirectTo: `${window.location.origin}/auth`,
+            data: { display_name: displayName || email.split("@")[0], area },
+          },
         });
         if (signupErr) throw signupErr;
 
-        // Create profile
-        if (authData.user) {
-          const { error: profileErr } = await supabase.from("profiles").insert([
-            {
-              id: authData.user.id,
-              email: email,
-              display_name: displayName || email.split("@")[0],
-              area,
-            },
-          ]);
-          if (profileErr) throw profileErr;
+        // Session exists only when email confirmation is disabled
+        if (authData.session) {
+          await ensureProfile(authData.user);
         }
 
-        setError(" Conta criada! Verifique seu email.");
+        setError("✅ Conta criada! Verifique o seu email para confirmar o registo.");
         setEmail("");
         setPassword("");
         setDisplayName("");
@@ -56,6 +96,7 @@ export default function AuthPage() {
         });
         if (signinErr) throw signinErr;
         const { data: sessionData } = await supabase.auth.getSession();
+        await ensureProfile(sessionData?.session?.user);
         writeAuthSessionCookie(sessionData?.session || null);
         // Redirect to home page after successful login
         router.push("/");
@@ -63,6 +104,7 @@ export default function AuthPage() {
     } catch (err) {
       setError(err.message);
     } finally {
+      manualAuth.current = false;
       setLoading(false);
     }
   }
