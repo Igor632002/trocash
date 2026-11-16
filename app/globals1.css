@@ -638,6 +638,13 @@ button, input { font: inherit; }
   font-size: 18px;
   color: var(--gold-light);
 }
+.contact-page__email {
+  color: var(--gold-light);
+  font-size: 18px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.contact-page__email:hover { color: #fff; }
 .rules-section { margin-top: 34px; }
 .rules-section h2 {
   margin: 0 0 10px;

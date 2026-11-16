@@ -13,6 +13,7 @@ type SupportProjectCopy = {
   supportProjectFrequencyOnce: string;
   supportProjectFrequencyMonthly: string;
   supportProjectPaymentInstructions: string;
+  supportProjectBankDetailsTitle: string;
   supportProjectMonthlyInstructions: string;
   supportProjectIdeaTitle: string;
   supportProjectIdea: string;
@@ -119,6 +120,9 @@ export function SupportProject({ copy }: SupportProjectProps) {
             <div className="support-project__payment">
               <p>{copy.supportProjectPaymentInstructions}</p>
               <strong>MB WAY: 931950828</strong>
+              <p>{copy.supportProjectBankDetailsTitle}</p>
+              <strong>NIB: 0193 0000 1050 2011 4476 4</strong>
+              <strong>IBAN: PT50 0193 0000 1050 2011 4476 4</strong>
               <p>{copy.supportProjectMonthlyInstructions}</p>
             </div>
             <p className="support-project__idea">

@@ -12,7 +12,7 @@ export default function SiteFooter({ copy, lang = "pt" }) {
           <small>{copy?.footerLine3}</small>
         </div>
         <div><b>{copy?.footerTroCASH}</b><Link className="footer-link" href={`/project/${lang}`}>{copy?.footerAbout}</Link><Link className="footer-link" href={`/how/${lang}`}>{copy?.footerHow}</Link><Link className="footer-link" href={`/rules/${lang}`}>{copy?.footerRules}</Link></div>
-        <div><b>{copy?.footerSupportTitle}</b><button>{copy?.footerSupportHelp}</button><button>{copy?.footerSupportSecurity}</button><button>{copy?.footerSupportPrivacy}</button></div>
+        <div><b>{copy?.footerSupportTitle}</b><Link className="footer-link" href={`/contact/${lang}`}>{copy?.footerContact}</Link><button>{copy?.footerSupportHelp}</button><button>{copy?.footerSupportSecurity}</button><button>{copy?.footerSupportPrivacy}</button></div>
         <div><b>{copy?.footerCommunityTitle}</b>{(copy?.footerCommunityItems || "").split("|").map((x, i) => (<button key={i}>{x}</button>))}</div>
         <div className="footer-news">
           <b>{copy?.footerNewsTitle}</b>
