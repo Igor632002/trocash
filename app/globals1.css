@@ -251,6 +251,28 @@ button, input { font: inherit; }
   accent-color: var(--gold);
 }
 
+.support-project__payment {
+  margin-top: 20px;
+  padding: 14px;
+  border: 1px solid var(--line-gold);
+  border-radius: 12px;
+  color: var(--text);
+}
+
+.support-project__payment p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.support-project__payment strong {
+  display: block;
+  margin: 6px 0;
+  color: var(--gold-light);
+  font-size: 18px;
+}
+
 .support-project__idea {
   margin: 20px 0 0;
 }

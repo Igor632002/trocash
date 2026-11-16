@@ -12,6 +12,8 @@ type SupportProjectCopy = {
   supportProjectFrequencyTitle: string;
   supportProjectFrequencyOnce: string;
   supportProjectFrequencyMonthly: string;
+  supportProjectPaymentInstructions: string;
+  supportProjectMonthlyInstructions: string;
   supportProjectIdeaTitle: string;
   supportProjectIdea: string;
   supportProjectCloseLabel: string;
@@ -114,6 +116,11 @@ export function SupportProject({ copy }: SupportProjectProps) {
                 {copy.supportProjectFrequencyMonthly}
               </label>
             </fieldset>
+            <div className="support-project__payment">
+              <p>{copy.supportProjectPaymentInstructions}</p>
+              <strong>MB WAY: 931950828</strong>
+              <p>{copy.supportProjectMonthlyInstructions}</p>
+            </div>
             <p className="support-project__idea">
               <strong>{copy.supportProjectIdeaTitle}</strong> {copy.supportProjectIdea}
             </p>
