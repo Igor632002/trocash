@@ -25,18 +25,16 @@ export function middleware(req) {
   const hasLocalePrefix = ['/pt', '/en', '/uk'].some(
     (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`)
   )
-  const hasExchangeLocale = /^\/exchange\/(pt|en|uk)(\/|$)/.test(pathname)
+  // Routes like /exchange/pt, /safety/pt, /how/en already carry the locale as a segment
+  const hasSegmentLocale = /^\/[^/]+\/(pt|en|uk)(\/|$)/.test(pathname)
 
-  if (
-    pathname === '/auth' ||
-    pathname.startsWith('/auth/') ||
-    pathname === '/api' ||
-    pathname.startsWith('/api/')
-  ) {
+  // Routes that exist without a locale prefix and must not be rewritten
+  const noRewrite = ['/auth', '/api', '/exchange', '/offers', '/profile', '/chat', '/chat-test']
+  if (noRewrite.some((p) => pathname === p || pathname.startsWith(`${p}/`))) {
     return NextResponse.next()
   }
 
-  if (localePath && !hasLocalePrefix && !hasExchangeLocale) {
+  if (localePath && !hasLocalePrefix && !hasSegmentLocale) {
     const url = req.nextUrl.clone()
     url.pathname = localePath + pathname
     return NextResponse.rewrite(url)
