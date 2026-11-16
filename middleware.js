@@ -27,6 +27,15 @@ export function middleware(req) {
   )
   const hasExchangeLocale = /^\/exchange\/(pt|en|uk)(\/|$)/.test(pathname)
 
+  if (
+    pathname === '/auth' ||
+    pathname.startsWith('/auth/') ||
+    pathname === '/api' ||
+    pathname.startsWith('/api/')
+  ) {
+    return NextResponse.next()
+  }
+
   if (localePath && !hasLocalePrefix && !hasExchangeLocale) {
     const url = req.nextUrl.clone()
     url.pathname = localePath + pathname

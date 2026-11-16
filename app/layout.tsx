@@ -1,20 +1,29 @@
 import type { Metadata } from "next";
 import "./globals1.css";
 import "./home-footer.css";
+import SetLang from "./components/SetLang.client";
 
 export const metadata: Metadata = {
-  title: "troCASH — Обмінюйтесь тим, що вам цінно",
-  description: "Платформа для обміну речами, нерухомістю, автомобілями та колекційними предметами.",
+  title: "Troca de coisas e serviços no Algarve – Faro, Lagos, Portimão",
+  description:
+    "Descubra oportunidades de troca de objetos e serviços em Faro, Lagos, Portimão e outras cidades do Algarve. Conecte-se com a comunidade local e troque sem dinheiro.",
+  alternates: {
+    canonical: "https://trocash.pt/",
+    languages: {
+      pt: "https://trocash.pt/",
+      en: "https://trocash.pt/en",
+      uk: "https://trocash.pt/uk",
+    },
+  },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="uk">
-      <body>{children}</body>
+    <html lang="pt" data-scroll-behavior="smooth">
+      <body>
+        <SetLang />
+        {children}
+      </body>
     </html>
   );
 }
