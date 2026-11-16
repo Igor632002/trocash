@@ -4,6 +4,7 @@ import { GlobeIcon, HeartIcon, LeafIcon, ShieldIcon, UsersIcon } from "@/compone
 import { Hero } from "@/components/Hero";
 import { HomePageSections } from "@/components/HomePageSections";
 import { SiteHeader } from "@/components/SiteHeader";
+import { SupportProject } from "@/components/SupportProject";
 import SiteFooter from "@/app/components/home/SiteFooter";
 import { ValueStrip } from "@/components/ValueStrip";
 import { copy as uiCopy, HOME_PAGE_CONTENT, type HomePageContent, type LangCode } from "@/lib/uiResources";
@@ -17,6 +18,7 @@ type HomeLandingProps = {
 
 export function HomeLanding({ initialLang = "pt" }: HomeLandingProps) {
   const content: HomePageContent = HOME_PAGE_CONTENT[initialLang] ?? HOME_PAGE_CONTENT.pt;
+  const localizedCopy = uiCopy[initialLang] ?? uiCopy.pt;
 
   return (
     <main className="site-shell">
@@ -43,6 +45,7 @@ export function HomeLanding({ initialLang = "pt" }: HomeLandingProps) {
         ctaHref={`/exchange/${initialLang}`}
         ctaLabel={content.hero.ctaLabel}
       />
+      <SupportProject copy={localizedCopy} />
 
       <section className="catalog container">          
         <CategoryNav labels={content.categoriesNav} lang={initialLang} />
@@ -66,7 +69,7 @@ export function HomeLanding({ initialLang = "pt" }: HomeLandingProps) {
           Icon: valueIcons[index] ?? LeafIcon,
         }))}
       />
-      <SiteFooter copy={uiCopy[initialLang] ?? uiCopy.pt} lang={initialLang} />
+      <SiteFooter copy={localizedCopy} lang={initialLang} />
       <section className="sr-only" id="how-it-works">
         {content.srOnly}
       </section>

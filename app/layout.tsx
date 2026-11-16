@@ -15,6 +15,10 @@ export const metadata: Metadata = {
       uk: "https://trocash.pt/uk",
     },
   },
+  openGraph: {
+    url: "https://trocash.pt/",
+    type: "website",
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

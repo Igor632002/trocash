@@ -24,6 +24,8 @@ export default function RootLayout({ children }) {
         <link rel="alternate" hrefLang="uk" href="https://trocash.pt/uk" />
         <link rel="alternate" hrefLang="x-default" href="https://trocash.pt/" />
         <link rel="canonical" href="https://trocash.pt/" />
+        <meta property="og:url" content="https://trocash.pt/" />
+        <meta property="og:type" content="website" />
       </head>
       <body>
         <SetLang />
