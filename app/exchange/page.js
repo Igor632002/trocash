@@ -11,23 +11,6 @@ import { useOffers } from "@/lib/hooks/useOffers";
 import { useCategories } from "@/lib/hooks/useCategories";
 import { useLocations } from "@/lib/hooks/useLocations";
 
-const KIND_TO_CATEGORY_NAME = {
-  personal: "Artigos Pessoais",
-  realestate: "Imóveis",
-  car: "Automóveis",
-  collectibles: "Artigos de Coleção",
-  electronics: "Eletrónica",
-  furniture: "Mobiliário",
-  baby: "Artigos para Bebés",
-  bicycles: "Bicicletas",
-  watches: "Relógios",
-  tools: "Ferramentas",
-  agriculture: "Agricultura",
-  transport: "Transportes",
-  land: "Terrenos",
-  free: "Grátis",
-};
-
 export default function Home({ initialLang = "pt" }) {
   const [lang, setLang] = useState(initialLang);
   const [languageOpen, setLanguageOpen] = useState(false);
@@ -77,6 +60,7 @@ export default function Home({ initialLang = "pt" }) {
   } = useOffers({ user, copy, category, onPublished: () => setNewOfferOpen(false) });
   const { categoriesList } = useCategories();
   const { locationsList } = useLocations();
+  const searchManuallyApplied = useRef(false);
 
   useEffect(() => {
     document.documentElement.lang = lang;
@@ -95,16 +79,23 @@ export default function Home({ initialLang = "pt" }) {
     });
   }, []);
 
-  // Apply the ?category=<kind> filter coming from the home page category cards.
-  // Maps a card kind to the DB category name; adjust names to match the "category" table.
-  const categoryParamApplied = useRef(false);
   useEffect(() => {
-    if (categoryParamApplied.current || offers.length === 0 || categoriesList.length === 0) return;
-    categoryParamApplied.current = true;
-    const kind = new URLSearchParams(window.location.search).get("category");
-    const dbName = KIND_TO_CATEGORY_NAME[kind];
-    const match = categoriesList.find((c) => c.name === dbName);
-    if (!match) return;
+    if (searchManuallyApplied.current || new URLSearchParams(window.location.search).get("view") !== "all") return;
+    setCategory("Todas");
+    setVisibleListings(offers.length ? getVisibleListings({ offers }) : []);
+    setIsTopList(false);
+  }, [offers, setVisibleListings, setIsTopList]);
+
+  // Apply the database category ID passed by the home page category cards.
+  useEffect(() => {
+    if (categoriesList.length === 0) return;
+    const categoryId = new URLSearchParams(window.location.search).get("categoryId");
+    if (!categoryId) return;
+    const match = categoriesList.find((c) => String(c.id) === categoryId);
+    if (!match) {
+      console.warn("No active database category found for category ID", categoryId);
+      return;
+    }
     const id = String(match.id);
     setCategory(id);
     setSearchFilters((prev) => ({ ...prev, category: id }));
@@ -114,10 +105,11 @@ export default function Home({ initialLang = "pt" }) {
 
   const changeLang = (code) => {
     setLang(code);
-    window.history.replaceState(null, "", `/exchange/${code}`);
+    window.history.replaceState(null, "", `/exchange/${code}${window.location.search}`);
   };
 
   const handleSearch = (overrides = {}) => {
+    searchManuallyApplied.current = true;
     const next = { category, have, want, locationId, ...overrides };
     // treat empty (placeholder) as 'Todas' for applied filters
     next.category = next.category || "Todas";

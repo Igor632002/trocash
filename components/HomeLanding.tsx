@@ -1,5 +1,4 @@
-import { CategoryCard } from "@/components/CategoryCard";
-import { CategoryNav } from "@/components/CategoryNav";
+import { CategoryCatalog } from "@/components/CategoryCatalog";
 import { GlobeIcon, HeartIcon, LeafIcon, ShieldIcon, UsersIcon } from "@/components/Icons";
 import { Hero } from "@/components/Hero";
 import { HomePageSections } from "@/components/HomePageSections";
@@ -46,19 +45,8 @@ export function HomeLanding({ initialLang = "pt" }: HomeLandingProps) {
         ctaLabel={content.hero.ctaLabel}
       />
       <SupportProject copy={localizedCopy} />
-
       <section className="catalog container">          
-        <CategoryNav labels={content.categoriesNav} lang={initialLang} />
-        <div className="category-grid">
-          {content.categories.map((category) => (
-            <CategoryCard
-              key={category.kind}
-              category={category}
-              buttonLabel={content.categoryButtonLabel}
-              lang={initialLang}
-            />
-          ))}
-        </div>
+        <CategoryCatalog content={content} lang={initialLang} />
       </section>
 
       <HomePageSections lang={initialLang} />

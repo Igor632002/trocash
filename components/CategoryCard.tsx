@@ -19,11 +19,15 @@ type Category = {
     | "agriculture"
     | "transport"
     | "land"
-    | "free";
+    | "free"
+    | "book"
+    | "services"
+    | "others";
 };
 
 type CategoryCardProps = {
   category: Category;
+  categoryId: string;
   buttonLabel: string;
   lang?: string;
 };
@@ -43,17 +47,19 @@ const iconMap = {
   transport: CarIcon,
   land: HomeIcon,
   free: DiamondIcon,
+  book: DiamondIcon,
+  services: HomeIcon,
+  others: ShirtIcon,
 };
 
-export function CategoryCard({ category, buttonLabel, lang = "pt" }: CategoryCardProps) {
+export function CategoryCard({ category, categoryId, buttonLabel, lang = "pt" }: CategoryCardProps) {
   const Icon = iconMap[category.kind];
 
   return (
-    <Link
-      href={`/exchange/${lang}?category=${category.kind}`}
+    <Link href={`/exchange/${lang}?categoryId=${encodeURIComponent(categoryId)}`}
       className="category-card"
-      style={{ backgroundImage: `url(${category.image})` }}
-    >
+      style={{ backgroundImage: `url(${category.image})` }}>
+
       <div className="category-card__shade" />
       <div className="category-card__content">
         <div className="category-icon">
