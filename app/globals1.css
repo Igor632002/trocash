@@ -214,12 +214,31 @@ button, input { font: inherit; }
   list-style: none;
 }
 
-.support-project__amounts li {
+.support-project__amounts button {
+  width: 100%;
+  min-height: 42px;
   padding: 10px 12px;
   border: 1px solid var(--line);
   border-radius: 10px;
+  background: rgba(255,255,255,.03);
   color: var(--text);
   font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color .2s ease, background .2s ease;
+}
+
+.support-project__amounts button:hover,
+.support-project__amounts button:focus-visible {
+  border-color: var(--line-gold);
+  background: rgba(214,163,53,.1);
+}
+
+.support-project__amounts button:focus-visible,
+.support-project__payment-action:focus-visible,
+.support-project__back:focus-visible {
+  outline: 2px solid var(--gold-light);
+  outline-offset: 2px;
 }
 
 .support-project__frequency {
@@ -271,6 +290,73 @@ button, input { font: inherit; }
   margin: 6px 0;
   color: var(--gold-light);
   font-size: 18px;
+}
+
+.support-project__custom-amount {
+  display: grid;
+  gap: 8px;
+  margin-top: 8px;
+  color: var(--text);
+  font-size: 13px;
+}
+
+.support-project__custom-amount span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.support-project__custom-amount input {
+  width: min(220px, 100%);
+  padding: 9px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255,255,255,.05);
+  color: var(--text);
+  font: inherit;
+}
+
+.support-project__payment-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.support-project__payment-action,
+.support-project__back {
+  min-height: 40px;
+  padding: 9px 13px;
+  border: 1px solid var(--line-gold);
+  border-radius: 9px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.support-project__payment-action--primary {
+  background: linear-gradient(135deg, #b87812, #e4b85d);
+  color: #fff;
+}
+
+.support-project__payment-action:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+.support-project__copy-status {
+  margin-top: 10px !important;
+}
+
+.support-project__back {
+  margin-top: 14px;
+}
+
+.support-project__payment-result h3 {
+  margin-top: 0;
 }
 
 .support-project__idea {
