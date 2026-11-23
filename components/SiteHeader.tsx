@@ -5,6 +5,7 @@ import Link from "next/link";
 import { LogoMark, Wordmark } from "./LogoMark";
 import { MenuIcon } from "./Icons";
 import { useAuth } from "@/lib/hooks/useAuth";
+import { copy as UI_COPY } from "@/lib/uiResources";
 
 type NavItem = {
   label: string;
@@ -56,7 +57,7 @@ export function SiteHeader({
         </nav>
 
         <div className="header-actions">
-          <div className="language-list" aria-label="Мова">
+          <div className="language-list" aria-label={UI_COPY[activeLanguage].languageLabel}>
             {languages.map((lang) => (
               <Link
                 href={lang.href}

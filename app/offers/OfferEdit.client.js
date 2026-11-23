@@ -2,9 +2,11 @@
 import React, { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
+import { copy as UI_COPY } from "@/lib/uiResources";
 
-export default function OfferEditForm({ offer }) {
+export default function OfferEditForm({ offer, lang = "pt" }) {
   const router = useRouter();
+  const L = UI_COPY[lang] ?? UI_COPY.pt;
   const [title, setTitle] = useState(offer.title || "");
   const [description, setDescription] = useState(offer.description || "");
   const [loading, setLoading] = useState(false);
@@ -27,10 +29,10 @@ export default function OfferEditForm({ offer }) {
 
     //console.log("Update result", res);
     if (res.error) {
-      alert("Помилка збереження: " + res.error.message);
+      alert(`${L.offerSaveError}: ${res.error.message}`);
       return;
     }
-    setNotice("Збережено");
+    setNotice(L.offerSaved);
     if (router && router.refresh) router.refresh();
     // очистити повідомлення через 3 сек
     //setTimeout(() => setNotice(null), 3000);
@@ -58,21 +60,21 @@ export default function OfferEditForm({ offer }) {
         <div className="offer-edit-notice" role="status" aria-live="polite">
           <span>{notice}</span>
           <button  className="notice-close" onClick={() => setNotice(null)}
-            aria-label="Закрити повідомлення">× </button>
+            aria-label={L.offerCloseNotice}>× </button>
         </div>
       )}
 
       <form onSubmit={handleSubmit} style={{ maxWidth: 640 }}>
         <label style={{ display: "block", marginBottom: 8 }}>
-          Заголовок
+          {L.offerTitleLabel}
           <input value={title} onChange={e => setTitle(e.target.value)} style={{ width: "100%", padding: 8, marginTop: 4 }} />
         </label>
         <label style={{ display: "block", marginBottom: 8 }}>
-          Опис
+          {L.offerDescriptionLabel}
           <textarea value={description} onChange={e => setDescription(e.target.value)} rows={6} style={{ width: "100%", padding: 8, marginTop: 4 }} />
         </label>
         <div>
-          <button type="submit" disabled={loading} className="gold-btn">{loading ? "Зберегти..." : "Зберегти"}</button>
+          <button type="submit" disabled={loading} className="gold-btn">{loading ? L.offerSaving : L.saveButton}</button>
         </div>
       </form>
     </div>
