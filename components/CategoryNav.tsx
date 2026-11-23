@@ -54,10 +54,22 @@ export function CategoryNav({ labels, categoryIds, lang = "pt" }: CategoryNavPro
           </Link>
         ))}
       </div>
-      <label className="search-box">
-        <SearchIcon size={19} />
-        <input aria-label={labels.searchAriaLabel} placeholder={labels.searchPlaceholder} />
-      </label>
+      <form
+        className="search-box"
+        action={lang === "pt" ? "/exchange" : `/exchange/${lang}`}
+        method="get"
+      >
+        <button type="submit" aria-label={labels.searchAriaLabel}>
+          <SearchIcon size={19} />
+        </button>
+        <input
+          aria-label={labels.searchAriaLabel}
+          name="q"
+          type="search"
+          placeholder={labels.searchPlaceholder}
+          required
+        />
+      </form>
     </div>
   );
 }

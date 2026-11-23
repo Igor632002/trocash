@@ -628,6 +628,20 @@ button, input { font: inherit; }
   border-color: rgba(235,190,83,.55);
   box-shadow: 0 0 0 3px rgba(235,190,83,.08);
 }
+.search-box button {
+  display: grid;
+  place-items: center;
+  flex: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.search-box button:focus-visible {
+  outline: 2px solid var(--gold-light);
+  outline-offset: 3px;
+}
 .search-box input {
   flex: 1;
   min-width: 0;

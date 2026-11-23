@@ -103,6 +103,39 @@ export default function Home({ initialLang = "pt" }) {
     setIsTopList(false);
   }, [offers, categoriesList, setVisibleListings, setIsTopList]);
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const query = params.get("q")?.trim();
+    if (!query) return;
+
+    const requestedCategoryId = params.get("categoryId");
+    let categoryFilter = "Todas";
+    if (requestedCategoryId) {
+      if (categoriesList.length === 0) return;
+      const match = categoriesList.find((item) => String(item.id) === requestedCategoryId);
+      if (match) categoryFilter = String(match.id);
+    }
+
+    searchManuallyApplied.current = true;
+    setCategory(categoryFilter);
+    setHave("");
+    setWant(query);
+    setLocationId("Todas");
+    setSearchFilters({
+      category: categoryFilter,
+      have: "",
+      want: query,
+      locationId: "Todas",
+    });
+    setVisibleListings(getVisibleListings({
+      offers,
+      category: categoryFilter,
+      want: query,
+      locationId: "Todas",
+    }));
+    setIsTopList(false);
+  }, [offers, categoriesList, setVisibleListings, setIsTopList]);
+
   const changeLang = (code) => {
     setLang(code);
     window.history.replaceState(null, "", `/exchange/${code}${window.location.search}`);
